@@ -28,8 +28,19 @@
 		 */
 		updateUserPosition: function(x, y){
 			this._settings.previous.set(this._settings.current);
-			this._settings.current.set(x, y).abs().floor();
+			pxl.activeView.fitToTransition(
+				this._settings.current.set(x, y).abs().floor()
+			);
+			this._settings.current.sub(pxl.activeView.getImagePoint());
 			return this;
+		},
+
+		/**
+		 * @method updateUserPosition
+		 * @return {Boolean}
+		 */
+		positionChanged: function(){
+			return !this._settings.previous.cmp(this._settings.current);
 		},
 
 		/**
@@ -145,21 +156,12 @@
 				var scaleOffset = activeView.getScaleOffset();
 				var scale = activeView.getScale();
 
-				activeView.fitToTransition(
-					_options.start.set(this._settings.previous)
-				);
-				_options.start.sub(activeView.getImagePoint());
+				_options.start.set(this._settings.previous);
 
-				activeView
-				.clear(_options)
-				.redraw(_options);
+				activeView.clear(_options).redraw(_options);
 
 				_options.offset.set(this._settings.pixelSize); //update offset
-
-				activeView.fitToTransition(
-					_options.start.set(this._settings.current)
-				);
-				_options.start.sub(activeView.getImagePoint());
+				_options.start.set(this._settings.current);
 
 				_options.pixel = this._settings.pixel;
 				activeView.drawRect(_options);

@@ -11,7 +11,7 @@
 		_canvas.width = _canvas.height = 1; //reduce the amount of memory
 		_ctx = _canvas.getContext("2d");
 		_imgDataCtor = Object.getPrototypeOf( //ES5
-			_ctx.getImageData(0,0,1,1).data
+			_ctx.getImageData(0, 0, 1, 1).data
 		).constructor;
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn't have a buffer
@@ -31,30 +31,35 @@
 	return{
 		/**
 		 * @property MIN_ZOOM_SCALE
+		 * @type {Number}
 		 * @final
 		 */
 		MIN_ZOOM_SCALE: 1,
 
 		/**
 		 * @property MAX_ZOOM_SCALE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_ZOOM_SCALE: 64,
 
 		/**
 		 * @property MIN_PEN_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MIN_PEN_SIZE: 1,
 
 		/**
 		 * @property MAX_PEN_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_PEN_SIZE: 5,
 
 		/**
 		 * @property MIN_CANVAS_SIZE
+		 * @type {Number}
 		 * @final
 		 */
         MIN_CANVAS_SIZE: 8,
@@ -63,6 +68,7 @@
 		 * Strict limitation, but that's enough for pixel-art
 		 *
 		 * @property MAX_CANVAS_SIZE
+		 * @type {Number}
 		 * @final
 		 */
         MAX_CANVAS_SIZE: 1024,
@@ -71,12 +77,14 @@
 		 * Maximum layer count per layout
 		 *
 		 * @property MAX_LAYER_COUNT
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_LAYER_COUNT: 8,
 
 		/**
 		 * @property MAX_HISTORY_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_HISTORY_SIZE: 20,
@@ -85,6 +93,7 @@
 		 * View-model event name.
 		 *
 		 * @property PIXELS_CHANGED_EVENT
+		 * @type {String}
 		 * @final
 		 */
 		PIXELS_CHANGED_EVENT: "pixelsChanged",

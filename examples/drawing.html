@@ -13,6 +13,7 @@
 		<script src="../pxl.min.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
+			var isDraw = false;
 			
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
@@ -26,20 +27,13 @@
 					element: canvas
 				});
 
-				//controller for easy model-view manipulations:
 				var controller = pxl.Layout.controller;
-
-				//draw square:
-				controller.record(function(){
-					this.plotLine(200, 200, 250, 200);
-					this.plotLine(250, 200, 250, 250);
-					this.plotLine(250, 250, 200, 250);
-					this.plotLine(200, 250, 200, 200);
-				});
+				
+				controller.plotLine(200, 200, 200, 200);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
-				document.addEventListener("touchstart", userDownTouch, false);
+				document.addEventListener("mouseup", userUpMouse, false);
 				document.addEventListener("wheel", userWheel, false);
 				document.addEventListener("keypress", userKey, false);
 				canvas.addEventListener("mousemove", userMove, false);
@@ -48,17 +42,33 @@
 			}
 
 			function userDownMouse(e){
-				fill(Math.floor(e.pageX), Math.floor(e.pageY));
+				isDraw = true;
 			};
 
-			function userDownTouch(e){ //in case you open this demo on your device
-				fill(Math.floor(e.pageX), Math.floor(e.pageY));
+			function userUpMouse(e){
+				isDraw = false;
 			};
 
 			function userMove(e){
-				controller.updateUserPosition(e.pageX, e.pageY).draw(function(){
-					this.carryPixel(); //draw pixel under cursor
-				});
+				controller.updateUserPosition(e.pageX, e.pageY);
+				if (isDraw){
+					if (controller.positionChanged()){
+						controller.draw(function(){
+							this.setColor( //pick random colour
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0
+							).record(function(){
+								this.plotLine();
+							}).setColor(0, 0, 0, 255); //turn back to black
+						});
+					}
+				} else {
+					controller.draw(function(){
+						this.carryPixel(); //draw pixel under cursor
+					});
+				}
 			};
 
 			function userWheel(e){
@@ -69,22 +79,12 @@
 			function userKey(e){
 				//no time to catch "ctrl + z" or "ctrl + y",
 				//so, just "z" or "y"
-				if (e.keyCode === 121) controller.redo();
-				else if (e.keyCode === 122) controller.undo();
+				controller.draw(function(){
+					if (e.keyCode === 121) controller.redo();
+					else if (e.keyCode === 122) controller.undo();
+				});
 			};
-
-			function fill(x, y){
-				controller.setColor( //pick random colour
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0
-				).draw(function(){
-					this.record(function(){
-						this.fill(x, y);
-					});
-				}).setColor(0, 0, 0, 255); //turn to black
-			}
+			
 		</script>
 	</body>
 </html>

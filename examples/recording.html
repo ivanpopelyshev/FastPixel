@@ -40,9 +40,7 @@
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
 				document.addEventListener("touchstart", userDownTouch, false);
-				document.addEventListener("wheel", userWheel, false);
 				document.addEventListener("keypress", userKey, false);
-				canvas.addEventListener("mousemove", userMove, false);
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
@@ -53,17 +51,6 @@
 
 			function userDownTouch(e){ //in case you open this demo on your device
 				fill(Math.floor(e.pageX), Math.floor(e.pageY));
-			};
-
-			function userMove(e){
-				controller.updateUserPosition(e.pageX, e.pageY).draw(function(){
-					this.carryPixel(); //draw pixel under cursor
-				});
-			};
-
-			function userWheel(e){
-				var dt = e.deltaY || e.detail || e.wheelDelta;
-				controller.rescale(dt > 0 ? -1 : 1); //change scale by mouse wheel
 			};
 
 			function userKey(e){
