@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>FAST PIXEL API DEMO</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="common.css"/>
+	</head>
+	<body>
+		<canvas id="canvas" width="512" height="512"></canvas>
+
+		<script src="../pxl.min.js"></script>
+		<script src="common.js"></script>
+		<script>
+			//make sure that the current browser is cool:
+			if (pxl.isSupported()){
+
+				//create the new View instance, and set it as active:
+				var view = pxl.activeView = pxl.Layout.View.create({
+					canvasSize: {
+						width: 512,
+						height: 512
+					},
+					element: document.querySelector("CANVAS")
+				});
+
+				//move it a little bit
+				view.setImagePoint(10, 15);
+
+				//controller for easy model-view manipulations:
+				var controller = pxl.Layout.controller;
+
+				//change colour (rgba):
+				controller.record(function(){
+					this.plotLine(200, 200, 250, 200);
+				});
+			} else{
+				alert("Not supported!"); //old IE or something like that
+			}
+		</script>
+	</body>
+</html>

@@ -25,7 +25,8 @@
 	 *
 	 * @module pxl
 	 * @class pxl
-	 * @static
+	 * @main pxl
+	 * @author Kurz Studious
 	 */
 	return{
 		/**
