@@ -10,10 +10,11 @@
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
 
-		<script src="../pxl.min.js"></script>
+		<script src="../pxl.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
-			var isDraw = false;
+			var isMouseDown = false;
+			var posList = [];
 			
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
@@ -28,8 +29,6 @@
 				});
 
 				var controller = pxl.Layout.controller;
-				
-				controller.plotLine(200, 200, 200, 200);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
@@ -42,17 +41,17 @@
 			}
 
 			function userDownMouse(e){
-				isDraw = true;
+				isMouseDown = true;
 			};
 
 			function userUpMouse(e){
-				isDraw = false;
+				isMouseDown = false;
 			};
 
 			function userMove(e){
 				controller.updateUserPosition(e.pageX, e.pageY);
-				if (isDraw){
-					if (controller.positionChanged()){
+				if (controller.positionUpdated()){
+					if (isMouseDown){
 						controller.draw(function(){
 							this.setColor( //pick random colour
 								(Math.random() * 255) | 0,
@@ -63,11 +62,11 @@
 								this.plotLine();
 							}).setColor(0, 0, 0, 255); //turn back to black
 						});
+					} else {
+						controller.draw(function(){
+							this.carryPixel(); //draw pixel under cursor
+						});
 					}
-				} else {
-					controller.draw(function(){
-						this.carryPixel(); //draw pixel under cursor
-					});
 				}
 			};
 
@@ -84,7 +83,7 @@
 					else if (e.keyCode === 122) controller.undo();
 				});
 			};
-			
 		</script>
+		<p>pretty simple drawing example. Each time, when user move his mouse an app pick new random colour</p>
 	</body>
 </html>

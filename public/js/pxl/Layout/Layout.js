@@ -94,12 +94,16 @@
 	 * Notify subscribers.
 	 *
 	 * @param options {Object} [in]
+	 * @param options.isMix {Boolean}
+	 * @param options.start {Vector2}
+	 * @param options.offset {Vector2}
+	 * @param options.indexes {Array}
+	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options){
-		options = options || {};
-		var clonedOpts = Object.create(options);
+		var clonedOpts = {};
 		var visibleLayers = this._visibleLayers();
 		var layerCount = visibleLayers.length;
 		var dataLayer = this.dataLayer;
@@ -107,6 +111,7 @@
 			dataLayer.reset();
 		} else{
 			if ((options.start && options.offset) || options.indexes){
+				clonedOpts.indexes = options.indexes || this.indexesAt(options);
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
 				dataLayer.merge(clonedOpts); //copy bottom layer
@@ -119,7 +124,9 @@
 				dataLayer.merge(clonedOpts); //mix other layers
 			}
 		}
-		this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		if (options.isNotifyView === true){
+			this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		}
 		return this;
 	};
 
@@ -158,7 +165,7 @@
      */
     layoutProto.fill = function(options){
 		if (this.activeLayer.fill(options)){
-			this.mergeLayers();
+			this.mergeLayers(options);
 		}
 		return this;
     };

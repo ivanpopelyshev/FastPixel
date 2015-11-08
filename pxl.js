@@ -743,12 +743,16 @@
 	 * Notify subscribers.
 	 *
 	 * @param options {Object} [in]
+	 * @param options.isMix {Boolean}
+	 * @param options.start {Vector2}
+	 * @param options.offset {Vector2}
+	 * @param options.indexes {Array}
+	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options){
-		options = options || {};
-		var clonedOpts = Object.create(options);
+		var clonedOpts = {};
 		var visibleLayers = this._visibleLayers();
 		var layerCount = visibleLayers.length;
 		var dataLayer = this.dataLayer;
@@ -756,6 +760,7 @@
 			dataLayer.reset();
 		} else{
 			if ((options.start && options.offset) || options.indexes){
+				clonedOpts.indexes = options.indexes || this.indexesAt(options);
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
 				dataLayer.merge(clonedOpts); //copy bottom layer
@@ -768,7 +773,9 @@
 				dataLayer.merge(clonedOpts); //mix other layers
 			}
 		}
-		this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		if (options.isNotifyView === true){
+			this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		}
 		return this;
 	};
 
@@ -807,7 +814,7 @@
      */
     layoutProto.fill = function(options){
 		if (this.activeLayer.fill(options)){
-			this.mergeLayers();
+			this.mergeLayers(options);
 		}
 		return this;
     };
@@ -1608,14 +1615,18 @@
 	 * @chainable
 	 */
 	viewProto.update = function(options){
-		if (this._layout && this._layoutOwner){
+		if (this._layoutOwner){
 			if (options.start && options.offset){
 				this._buffer.putImageData(
 					this._layout.getImageData(
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-					0, 0
+
+					0, 0,
+
+					options.start.x, options.start.y,
+					options.offset.x, options.offset.y
 				);
 			} else{
 				this._buffer.putImageData(this._layout.getImageData(), 0, 0);
@@ -1980,7 +1991,7 @@
 		 * @method rec
 		 * @param layer {Layer|undefined}
 		 */
-		rec: function(layer){
+		record: function(layer){
 			if (!this.lastSession){
 				this.lastSession = {
 					"pixelMap": {},
@@ -2144,10 +2155,10 @@
 		},
 
 		/**
-		 * @method updateUserPosition
+		 * @method positionUpdated
 		 * @return {Boolean}
 		 */
-		positionChanged: function(){
+		positionUpdated: function(){
 			return !this._settings.previous.cmp(this._settings.current);
 		},
 
@@ -2166,7 +2177,8 @@
 				"start": new pxl.Vector2,
 				"offset": new pxl.Vector2,
 				"pixel": null,
-				"isMix": true
+				"isMix": true,
+				"isNotifyView": true
 			};
 			return function(x, y){
 				if (arguments.length){
@@ -2208,6 +2220,13 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
+				
+				/*pxl.activeView.drawRect({
+					offset: new pxl.Vector2(1),
+					start: new pxl.Vector2(x0, y0),
+					pixel: this._settings.pixel
+				});*/
+				
 				if (x0 === x1 && y0 === y1) break;
 				e2 = err + err;
 				if (e2 >= dy){
@@ -2232,18 +2251,16 @@
 		 * @param y {Number}
 		 */
 		fill: function(x, y){
-			var position = null;
-			if (arguments.length){
-				position = new pxl.Vector2(x, y);
-			} else{
-				position = new pxl.Vector2(this._settings.current);
-			}
+			var position = (arguments.length
+				? new pxl.Vector2(x, y)
+				: new pxl.Vector2(this._settings.current)
+			);
 			pxl.activeView.fitToTransition(position);
-			//position.sub(pxl.activeView.getImagePoint());
 			pxl.activeView.getLayout().fill({
 				"position": position,
 				"pixel": this._settings.pixel,
-				"isMix": true
+				"isMix": true,
+				"isNotifyView": true
 			});
 		},
 
@@ -2336,7 +2353,7 @@
 		 * @chainable
 		 */
 		record: function(callback){
-			history.rec(pxl.activeView.getLayout().activeLayer);
+			history.record(pxl.activeView.getLayout().activeLayer);
 			callback.call(this);
 			history.stop();
 			return this;
@@ -2352,7 +2369,7 @@
 			callback.call(this);
 			pxl.activeView.end();
 			return this;
-		}
+		},
 	};
 
 	//Helper:
@@ -2361,7 +2378,7 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers().observer.notify(
+				session.layer.getLayout().mergeLayers({}).observer.notify(
 					pxl.PIXELS_CHANGED_EVENT, {}
 				);
 			}

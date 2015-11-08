@@ -112,7 +112,7 @@
 		 * @method rec
 		 * @param layer {Layer|undefined}
 		 */
-		rec: function(layer){
+		record: function(layer){
 			if (!this.lastSession){
 				this.lastSession = {
 					"pixelMap": {},

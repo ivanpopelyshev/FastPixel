@@ -12,6 +12,8 @@
 
 		<script src="../pxl.min.js"></script>
 		<script>
+			var canvas = document.querySelector("#canvas");
+			
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
 
@@ -21,7 +23,7 @@
 						width: 512,
 						height: 512
 					},
-					element: document.querySelector("#canvas")
+					element: canvas
 				});
 
 				//controller for easy model-view manipulations:
@@ -30,28 +32,47 @@
 				//draw square:
 				controller.record(function(){
 					this.plotLine(200, 200, 250, 200);
-				});
-				controller.record(function(){
 					this.plotLine(250, 200, 250, 250);
-				});
-				controller.record(function(){
 					this.plotLine(250, 250, 200, 250);
-				});
-				controller.record(function(){
 					this.plotLine(200, 250, 200, 200);
 				});
 
 				//listen for some of user movements:
-				document.addEventListener("keypress", function(e){
-					//no time to catch "ctrl + z" or "ctrl + y",
-					//so, just "z" or "y"
-					if (e.keyCode === 121) controller.redo();
-					else if (e.keyCode === 122) controller.undo();
-				}, false);
+				document.addEventListener("mousedown", userDownMouse, false);
+				document.addEventListener("touchstart", userDownTouch, false);
+				document.addEventListener("keypress", userKey, false);
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
+
+			function userDownMouse(e){
+				fill(Math.floor(e.pageX), Math.floor(e.pageY));
+			};
+
+			function userDownTouch(e){ //in case you open this demo on your device
+				fill(Math.floor(e.pageX), Math.floor(e.pageY));
+			};
+
+			function userKey(e){
+				//no time to catch "ctrl + z" or "ctrl + y",
+				//so, just "z" or "y"
+				if (e.keyCode === 121) controller.redo();
+				else if (e.keyCode === 122) controller.undo();
+			};
+
+			function fill(x, y){
+				controller.setColor( //pick random colour
+					(Math.random() * 255) | 0,
+					(Math.random() * 255) | 0,
+					(Math.random() * 255) | 0,
+					(Math.random() * 255) | 0
+				).draw(function(){
+					this.record(function(){
+						this.fill(x, y);
+					});
+				}).setColor(0, 0, 0, 255); //turn to black
+			}
 		</script>
-		<p>Press "z" key to invoke "undo" method and "y" key to "redo"</p>
+		<p>click on different zones to see how invoke "fill" method</p>
 	</body>
 </html>

@@ -36,10 +36,10 @@
 		},
 
 		/**
-		 * @method updateUserPosition
+		 * @method positionUpdated
 		 * @return {Boolean}
 		 */
-		positionChanged: function(){
+		positionUpdated: function(){
 			return !this._settings.previous.cmp(this._settings.current);
 		},
 
@@ -58,7 +58,8 @@
 				"start": new pxl.Vector2,
 				"offset": new pxl.Vector2,
 				"pixel": null,
-				"isMix": true
+				"isMix": true,
+				"isNotifyView": true
 			};
 			return function(x, y){
 				if (arguments.length){
@@ -100,6 +101,13 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
+				
+				/*pxl.activeView.drawRect({
+					offset: new pxl.Vector2(1),
+					start: new pxl.Vector2(x0, y0),
+					pixel: this._settings.pixel
+				});*/
+				
 				if (x0 === x1 && y0 === y1) break;
 				e2 = err + err;
 				if (e2 >= dy){
@@ -124,18 +132,16 @@
 		 * @param y {Number}
 		 */
 		fill: function(x, y){
-			var position = null;
-			if (arguments.length){
-				position = new pxl.Vector2(x, y);
-			} else{
-				position = new pxl.Vector2(this._settings.current);
-			}
+			var position = (arguments.length
+				? new pxl.Vector2(x, y)
+				: new pxl.Vector2(this._settings.current)
+			);
 			pxl.activeView.fitToTransition(position);
-			//position.sub(pxl.activeView.getImagePoint());
 			pxl.activeView.getLayout().fill({
 				"position": position,
 				"pixel": this._settings.pixel,
-				"isMix": true
+				"isMix": true,
+				"isNotifyView": true
 			});
 		},
 
@@ -228,7 +234,7 @@
 		 * @chainable
 		 */
 		record: function(callback){
-			history.rec(pxl.activeView.getLayout().activeLayer);
+			history.record(pxl.activeView.getLayout().activeLayer);
 			callback.call(this);
 			history.stop();
 			return this;
@@ -244,7 +250,7 @@
 			callback.call(this);
 			pxl.activeView.end();
 			return this;
-		}
+		},
 	};
 
 	//Helper:
@@ -253,7 +259,7 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers().observer.notify(
+				session.layer.getLayout().mergeLayers({}).observer.notify(
 					pxl.PIXELS_CHANGED_EVENT, {}
 				);
 			}

@@ -103,7 +103,7 @@
 		_canvas.width = _canvas.height = 1; //reduce the amount of memory
 		_ctx = _canvas.getContext(&quot;2d&quot;);
 		_imgDataCtor = Object.getPrototypeOf( //ES5
-			_ctx.getImageData(0,0,1,1).data
+			_ctx.getImageData(0, 0, 1, 1).data
 		).constructor;
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn&#x27;t have a buffer
@@ -123,30 +123,35 @@
 	return{
 		/**
 		 * @property MIN_ZOOM_SCALE
+		 * @type {Number}
 		 * @final
 		 */
 		MIN_ZOOM_SCALE: 1,
 
 		/**
 		 * @property MAX_ZOOM_SCALE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_ZOOM_SCALE: 64,
 
 		/**
 		 * @property MIN_PEN_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MIN_PEN_SIZE: 1,
 
 		/**
 		 * @property MAX_PEN_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_PEN_SIZE: 5,
 
 		/**
 		 * @property MIN_CANVAS_SIZE
+		 * @type {Number}
 		 * @final
 		 */
         MIN_CANVAS_SIZE: 8,
@@ -155,6 +160,7 @@
 		 * Strict limitation, but that&#x27;s enough for pixel-art
 		 *
 		 * @property MAX_CANVAS_SIZE
+		 * @type {Number}
 		 * @final
 		 */
         MAX_CANVAS_SIZE: 1024,
@@ -163,12 +169,14 @@
 		 * Maximum layer count per layout
 		 *
 		 * @property MAX_LAYER_COUNT
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_LAYER_COUNT: 8,
 
 		/**
 		 * @property MAX_HISTORY_SIZE
+		 * @type {Number}
 		 * @final
 		 */
 		MAX_HISTORY_SIZE: 20,
@@ -177,6 +185,7 @@
 		 * View-model event name.
 		 *
 		 * @property PIXELS_CHANGED_EVENT
+		 * @type {String}
 		 * @final
 		 */
 		PIXELS_CHANGED_EVENT: &quot;pixelsChanged&quot;,
@@ -826,12 +835,16 @@
 	 * Notify subscribers.
 	 *
 	 * @param options {Object} [in]
+	 * @param options.isMix {Boolean}
+	 * @param options.start {Vector2}
+	 * @param options.offset {Vector2}
+	 * @param options.indexes {Array}
+	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options){
-		options = options || {};
-		var clonedOpts = Object.create(options);
+		var clonedOpts = {};
 		var visibleLayers = this._visibleLayers();
 		var layerCount = visibleLayers.length;
 		var dataLayer = this.dataLayer;
@@ -839,6 +852,7 @@
 			dataLayer.reset();
 		} else{
 			if ((options.start &amp;&amp; options.offset) || options.indexes){
+				clonedOpts.indexes = options.indexes || this.indexesAt(options);
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
 				dataLayer.merge(clonedOpts); //copy bottom layer
@@ -851,7 +865,9 @@
 				dataLayer.merge(clonedOpts); //mix other layers
 			}
 		}
-		this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		if (options.isNotifyView === true){
+			this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+		}
 		return this;
 	};
 
@@ -890,7 +906,7 @@
      */
     layoutProto.fill = function(options){
 		if (this.activeLayer.fill(options)){
-			this.mergeLayers();
+			this.mergeLayers(options);
 		}
 		return this;
     };
@@ -1691,14 +1707,18 @@
 	 * @chainable
 	 */
 	viewProto.update = function(options){
-		if (this._layout &amp;&amp; this._layoutOwner){
+		if (this._layoutOwner){
 			if (options.start &amp;&amp; options.offset){
 				this._buffer.putImageData(
 					this._layout.getImageData(
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-					0, 0
+
+					0, 0,
+
+					options.start.x, options.start.y,
+					options.offset.x, options.offset.y
 				);
 			} else{
 				this._buffer.putImageData(this._layout.getImageData(), 0, 0);
@@ -2063,7 +2083,7 @@
 		 * @method rec
 		 * @param layer {Layer|undefined}
 		 */
-		rec: function(layer){
+		record: function(layer){
 			if (!this.lastSession){
 				this.lastSession = {
 					&quot;pixelMap&quot;: {},
@@ -2219,8 +2239,19 @@
 		 */
 		updateUserPosition: function(x, y){
 			this._settings.previous.set(this._settings.current);
-			this._settings.current.set(x, y).abs().floor();
+			pxl.activeView.fitToTransition(
+				this._settings.current.set(x, y).abs().floor()
+			);
+			this._settings.current.sub(pxl.activeView.getImagePoint());
 			return this;
+		},
+
+		/**
+		 * @method positionUpdated
+		 * @return {Boolean}
+		 */
+		positionUpdated: function(){
+			return !this._settings.previous.cmp(this._settings.current);
 		},
 
 		/**
@@ -2238,7 +2269,8 @@
 				&quot;start&quot;: new pxl.Vector2,
 				&quot;offset&quot;: new pxl.Vector2,
 				&quot;pixel&quot;: null,
-				&quot;isMix&quot;: true
+				&quot;isMix&quot;: true,
+				&quot;isNotifyView&quot;: true
 			};
 			return function(x, y){
 				if (arguments.length){
@@ -2280,6 +2312,13 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
+				
+				/*pxl.activeView.drawRect({
+					offset: new pxl.Vector2(1),
+					start: new pxl.Vector2(x0, y0),
+					pixel: this._settings.pixel
+				});*/
+				
 				if (x0 === x1 &amp;&amp; y0 === y1) break;
 				e2 = err + err;
 				if (e2 &gt;= dy){
@@ -2304,18 +2343,16 @@
 		 * @param y {Number}
 		 */
 		fill: function(x, y){
-			var position = null;
-			if (arguments.length){
-				position = new pxl.Vector2(x, y);
-			} else{
-				position = new pxl.Vector2(this._settings.current);
-			}
+			var position = (arguments.length
+				? new pxl.Vector2(x, y)
+				: new pxl.Vector2(this._settings.current)
+			);
 			pxl.activeView.fitToTransition(position);
-			//position.sub(pxl.activeView.getImagePoint());
 			pxl.activeView.getLayout().fill({
 				&quot;position&quot;: position,
 				&quot;pixel&quot;: this._settings.pixel,
-				&quot;isMix&quot;: true
+				&quot;isMix&quot;: true,
+				&quot;isNotifyView&quot;: true
 			});
 		},
 
@@ -2336,21 +2373,12 @@
 				var scaleOffset = activeView.getScaleOffset();
 				var scale = activeView.getScale();
 
-				activeView.fitToTransition(
-					_options.start.set(this._settings.previous)
-				);
-				_options.start.sub(activeView.getImagePoint());
+				_options.start.set(this._settings.previous);
 
-				activeView
-				.clear(_options)
-				.redraw(_options);
+				activeView.clear(_options).redraw(_options);
 
 				_options.offset.set(this._settings.pixelSize); //update offset
-
-				activeView.fitToTransition(
-					_options.start.set(this._settings.current)
-				);
-				_options.start.sub(activeView.getImagePoint());
+				_options.start.set(this._settings.current);
 
 				_options.pixel = this._settings.pixel;
 				activeView.drawRect(_options);
@@ -2417,7 +2445,7 @@
 		 * @chainable
 		 */
 		record: function(callback){
-			history.rec(pxl.activeView.getLayout().activeLayer);
+			history.record(pxl.activeView.getLayout().activeLayer);
 			callback.call(this);
 			history.stop();
 			return this;
@@ -2433,7 +2461,7 @@
 			callback.call(this);
 			pxl.activeView.end();
 			return this;
-		}
+		},
 	};
 
 	//Helper:
@@ -2442,7 +2470,7 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers().observer.notify(
+				session.layer.getLayout().mergeLayers({}).observer.notify(
 					pxl.PIXELS_CHANGED_EVENT, {}
 				);
 			}

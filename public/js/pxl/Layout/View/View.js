@@ -226,14 +226,18 @@
 	 * @chainable
 	 */
 	viewProto.update = function(options){
-		if (this._layout && this._layoutOwner){
+		if (this._layoutOwner){
 			if (options.start && options.offset){
 				this._buffer.putImageData(
 					this._layout.getImageData(
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-					0, 0
+
+					0, 0,
+
+					options.start.x, options.start.y,
+					options.offset.x, options.offset.y
 				);
 			} else{
 				this._buffer.putImageData(this._layout.getImageData(), 0, 0);
