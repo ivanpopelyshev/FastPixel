@@ -7,7 +7,7 @@ Currently in progress (unstable beta).
 ## It is just works!
 
 ```javascript
-//creating new view instance:
+//create view instance and make it active:
 pxl.activeView = pxl.Layout.View.create({
 	canvasSize: {
 		width: 128,
@@ -20,7 +20,7 @@ pxl.activeView = pxl.Layout.View.create({
 pxl.Layout.controller.plotLine(25, 25, 50, 100);
 ```
 
-Look at [examples][] to see more examples!
+Look at [examples][] to see more!
 
 ## Dependencies
 
@@ -46,7 +46,7 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 
 [examples]: ./examples
 [pxl.js]: ./pxl.js
-[pxl.js]: ./pxl.min.js
+[pxl.min.js]: ./pxl.min.js
 [Vector2]: ./public/js/pxl/Vector2/Vector2.js
 [Observer]: ./public/js/pxl/Observer/Observer.js
 [PrimitivePool]: ./public/js/pxl/PrimitivePool/PrimitivePool.js
