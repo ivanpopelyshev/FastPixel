@@ -1477,8 +1477,8 @@
 			canvas = document.body.appendChild(pxl.createCanvas());
 		}
 		if (options.source){
-			bufferCanvas = options.src._buffer.canvas;
-			layout = options.src._layout;
+			bufferCanvas = options.source._buffer.canvas;
+			layout = options.source._layout;
 			isOwner = false;
 		} else{
 			bufferCanvas = pxl.createCanvas();

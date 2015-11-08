@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>FAST PIXEL API DEMO</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<link rel="stylesheet" href="common.css"/>
+	</head>
+	<body>
+		<canvas width="256" height="256"></canvas>
+		<canvas width="256" height="256"></canvas>
+
+		<script src="../pxl.js"></script>
+		<script>
+
+			//make sure that the current browser is cool:
+			if (pxl.isSupported()){
+
+				//create the new View instance, and set it as active:
+				pxl.activeView = pxl.Layout.View.create({
+					canvasSize: { //size (in pixels) of your "off-screen" canvas
+						width: 128,
+						height: 128
+					},
+					element: document.querySelectorAll("CANVAS")[0]
+				});
+
+				//create view instance,
+				//that duplicate all changes on model of source instance
+				pxl.Layout.View.create({
+					source: pxl.activeView,
+					element: document.querySelectorAll("CANVAS")[1] //make sure you set another element
+				});
+
+				//method above will draw simple rectangle
+				//but only on an active view instance,
+				//since this one don't change the model:
+				pxl.activeView.drawRect({
+					"start": new pxl.Vector2(60, 60),
+					"offset": new pxl.Vector2(8, 8),
+					"pixel": new pxl.ImageDataArray([255, 0, 255, 255]) //magenta
+				});
+
+				//this method change model, so each view instance,
+				//that subscribed on changes will update them:
+				pxl.Layout.controller.plotLine(60, 50, 68, 50);
+
+			} else{
+				alert("Not supported!"); //old IE or something like that
+			}
+		</script>
+		<p>multiple views with same model</p>
+	</body>
+</html>
