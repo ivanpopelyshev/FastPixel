@@ -268,11 +268,10 @@
 	 */
 	layoutProto.destroy = function(){
 		this.dataLayer.destroy();
-		this.activeLayer = null;
-		for (var i = 0; i < this.layerList.length; ++i){
-			this.layerList[i].destroy();
-			this.layerList[i] = null;
+		this.dataLayer = this.activeLayer = null;
+		while (this.layerList.length){
+			this.layerList.pop().destroy();
 		}
-		Layout.history.clean();
+		this._imageData = null;
 	};
 })();

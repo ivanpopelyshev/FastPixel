@@ -405,14 +405,16 @@
 	viewProto.deleteLayout = function(){
 		var instances = View.instances;
 		this._unsubscribe();
-		if (this._layout && this._layoutOwner){
+		if (this._layoutOwner){
 			for (var i = 0; i < instances.length; ++i){
-				if (this._layout === instances[i]._layout){
-					instances[i]._layout = null;
+				if (this !== instances[i] &&
+					this._layout === instances[i]._layout){
+					instances[i]._unsubscribe();
+					_removeLayout(instances[i]);
 				}
 			}
 			this._layout.destroy();
-			this._layout = null;
+			_removeLayout(this);
 		}
 		return this;
 	};
@@ -425,13 +427,12 @@
 	 * @chainable
      */
     viewProto._subscribe = function(){
-        if (!this._layout || this._boundedRender){
-			return;
+        if (!this._boundedRender){
+			this._boundedRender = this.render.bind(this);
+			this._layout.observer.subscribe(
+				pxl.PIXELS_CHANGED_EVENT, this._boundedRender
+			);
 		}
-		this._boundedRender = this.render.bind(this);
-		this._layout.observer.subscribe(
-			pxl.PIXELS_CHANGED_EVENT, this._boundedRender
-		);
 		return this;
     };
 
@@ -443,9 +444,6 @@
 	 * @chainable
      */
     viewProto._unsubscribe = function(){
-		if (!this._layout){
-			return;
-		}
 		this._layout.observer.unsubscribe(
 			pxl.PIXELS_CHANGED_EVENT, this._boundedRender
 		);
@@ -482,6 +480,12 @@
 		}
 		return dest;
 	};
+
+	//Helper
+	//remove _layout and _buffer properties
+	function _removeLayout(view){
+		view._buffer = view._layout = null;
+	}
 
 	//Helper
 	function _offset(scale, side){

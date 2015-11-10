@@ -87,7 +87,7 @@
 	};
 
 	/**
-	 * Mix two pixels from dest and src ImageDataArray containers
+	 * Mix two colours
 	 *
 	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
 	 * @method mix

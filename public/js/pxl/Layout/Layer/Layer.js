@@ -334,5 +334,6 @@
 	layerProto.destroy = function(){
 		this._layout = this.data = null;
 		this.isVisible = false;
+		pxl.Layout.history.clean();
 	};
 })();
