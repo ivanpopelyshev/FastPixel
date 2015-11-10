@@ -2225,12 +2225,6 @@
 			for (;;){
 				this.plotPixel(x0, y0);
 				
-				/*pxl.activeView.drawRect({
-					offset: new pxl.Vector2(1),
-					start: new pxl.Vector2(x0, y0),
-					pixel: this._settings.pixel
-				});*/
-				
 				if (x0 === x1 && y0 === y1) break;
 				e2 = err + err;
 				if (e2 >= dy){
