@@ -2,7 +2,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.View
+	 * 
 	 *
 	 * @constructor
 	 * @class View
@@ -139,6 +139,8 @@
 	};
 
 	/**
+	 * Draw rectangle at canvas element directly.
+	 *
 	 * @method drawRect
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -164,7 +166,7 @@
 	};
 
 	/**
-	 * Just redraw old/previous imageData.
+	 * Just redraw from old imageData.
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
@@ -194,6 +196,8 @@
 	};
 
 	/**
+	 * Clear canvas element directly.
+	 *
 	 * @method clear
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -247,7 +251,7 @@
 	};
 
 	/**
-	 * Transform canvas to scale offset.
+	 * Transform canvas according to scale & translate.
 	 *
 	 * @method begin
 	 * @chainable
@@ -265,7 +269,7 @@
 	};
 
 	/**
-	 * Restore.
+	 * Restore context.
 	 *
 	 * @method end
 	 * @chainable
@@ -352,7 +356,7 @@
 		for (var i = 0; i < instances.length; ++i){
 			if (instances[i] !== this && //looking for same layout
 				otherLayout === instances[i]._layout){
-				this._layoutOwner = false;
+				this._layoutOwner = false; //two views can't own same layout
 				break;
 			}
 		}
@@ -420,7 +424,7 @@
 	};
 
     /**
-     * Subscribe on events that fired when model (layout) has been changed.
+     * Listen for events that fired when layout has been changed.
 	 *
 	 * @method _subscribe
 	 * @private
@@ -437,7 +441,7 @@
     };
 
     /**
-     * Unsubscribe from all events.
+     * Stop listen the layout changes.
 	 *
 	 * @method _unsubscribe
 	 * @private

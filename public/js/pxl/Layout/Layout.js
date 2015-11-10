@@ -2,7 +2,6 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout
 	 * Call with width and height parameters
 	 * or with already existing ImageData as source
 	 *
@@ -50,7 +49,7 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance (if possible).
+	 * Append new Layer instance into the layerList (if possible).
 	 *
 	 * @method appendLayer
 	 * @chainable
@@ -68,22 +67,22 @@
 	};
 
 	/**
-	 * Delete active layer (if has at least one).
+	 * Delete active layer.
 	 *
 	 * @method deleteLayer
 	 * @chainable
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		if (layerList.length === 1){
-			layerList[0].reset(); //don't delete the last one
-		} else{
-			for (var i = 0; i < layerList.length; ++i){
-				if (layerList[i] === this.activeLayer){
+		for (var i = 0; i < layerList.length; ++i){
+			if (layerList[i] === this.activeLayer){
+				if (layerList.length === 1){
+					this.activeLayer.reset(); //don't delete the last one
+				} else{
 					layerList.splice(i, 1);
 					this.activeLayer = layerList[layerList.length - 1]; //top layer become active
-					break;
 				}
+				break;
 			}
 		}
 		return this;
@@ -104,7 +103,7 @@
 	 */
 	layoutProto.mergeLayers = function(options){
 		var clonedOpts = {};
-		var visibleLayers = this._visibleLayers();
+		var visibleLayers = this.visibleLayers();
 		var layerCount = visibleLayers.length;
 		var dataLayer = this.dataLayer;
 		if (!layerCount){
@@ -247,11 +246,11 @@
 	};
 
 	/**
-	 * @method _visibleLayers
+	 * @method visibleLayers
 	 * @private
 	 * @return {Array}
 	 */
-	layoutProto._visibleLayers = function(){
+	layoutProto.visibleLayers = function(){
 		var visibleLayers = [];
 		var layerList = this.layerList;
 		for (var i = 0; i < layerList.length; ++i){

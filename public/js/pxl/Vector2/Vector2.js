@@ -154,7 +154,7 @@
 	 * @method cmp
      * @param param1 {Vector2|Number}
      * @param param2 {Number|undefined}
-	 * @retun {Boolean}
+	 * @return {Boolean}
      */
     vector2Proto.cmp = function(param1, param2){
 		var EPSILON = Vector2.EPSILON;

@@ -245,6 +245,17 @@
 			pxl.activeView.end();
 			return this;
 		},
+
+		/**
+		 * @method removeActiveView
+		 * @chainable
+		 */
+		removeActiveView: function(){
+			pxl.activeView.destroy();
+			pxl.activeView.clear({});
+			pxl.activeView = null;
+			return this;
+		}
 	};
 
 	//Helper:

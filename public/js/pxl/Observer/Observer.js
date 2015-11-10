@@ -56,7 +56,7 @@
 
     /**
 	 * @method notify
-     * @param event {String} [in][in] Name of event.
+     * @param event {String} [in] Name of event.
      * @param eventObj {Object} [in/out] Special event data.
      */
     observerProto.notify = function(event, eventObj){

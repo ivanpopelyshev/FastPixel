@@ -74,7 +74,7 @@
         MAX_CANVAS_SIZE: 1024,
 
 		/**
-		 * Maximum layer count per layout
+		 * Maximum number of layers per layout
 		 *
 		 * @property MAX_LAYER_COUNT
 		 * @type {Number}
@@ -99,6 +99,8 @@
 		PIXELS_CHANGED_EVENT: "pixelsChanged",
 
 		/**
+		 * Type of an array that uses by ImageData. Depends on browser.
+		 *
 		 * @property ImageDataArray
 		 * @type {Uint8ClampedArray|Uint8Array|Uint16Array|Uint32Array}
 		 */
@@ -138,8 +140,8 @@
 
 		/**
 		 * @method createImageData
-		 * @param {ImageData|Number}
-		 * @param {undefined|Number}
+		 * @param arguments[0] {ImageData|Number}
+		 * @param arguments[1] {undefined|Number}
 		 * @return {ImageData}
 		 */
 		createImageData: function(){
@@ -147,7 +149,7 @@
 		},
 
 		/**
-		 * Use this method to create canvas elements.
+		 * More safest and fastest method to create canvas elements.
 		 *
 		 * @method createCanvas
 		 * @return {HTMLCanvasElement}
@@ -313,7 +315,7 @@
 	 * @method cmp
      * @param param1 {Vector2|Number}
      * @param param2 {Number|undefined}
-	 * @retun {Boolean}
+	 * @return {Boolean}
      */
     vector2Proto.cmp = function(param1, param2){
 		var EPSILON = Vector2.EPSILON;
@@ -519,7 +521,7 @@
 
     /**
 	 * @method notify
-     * @param event {String} [in][in] Name of event.
+     * @param event {String} [in] Name of event.
      * @param eventObj {Object} [in/out] Special event data.
      */
     observerProto.notify = function(event, eventObj){
@@ -568,7 +570,7 @@
 	var poolProto = PrimitivePool.prototype;
 
 	/**
-	 * Get the current pool's "occupancy".
+	 * Get the current occupied size.
 	 *
 	 * @method size
 	 * @return {Number}
@@ -578,6 +580,8 @@
 	};
 
 	/**
+	 * Method don't check for type matching, so be careful!
+	 *
 	 * @method push
 	 * @param primitive {String|Number|Boolean} [in]
 	 */
@@ -651,7 +655,6 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout
 	 * Call with width and height parameters
 	 * or with already existing ImageData as source
 	 *
@@ -699,7 +702,7 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance (if possible).
+	 * Append new Layer instance into the layerList (if possible).
 	 *
 	 * @method appendLayer
 	 * @chainable
@@ -717,22 +720,22 @@
 	};
 
 	/**
-	 * Delete active layer (if has at least one).
+	 * Delete active layer.
 	 *
 	 * @method deleteLayer
 	 * @chainable
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		if (layerList.length === 1){
-			layerList[0].reset(); //don't delete the last one
-		} else{
-			for (var i = 0; i < layerList.length; ++i){
-				if (layerList[i] === this.activeLayer){
+		for (var i = 0; i < layerList.length; ++i){
+			if (layerList[i] === this.activeLayer){
+				if (layerList.length === 1){
+					this.activeLayer.reset(); //don't delete the last one
+				} else{
 					layerList.splice(i, 1);
 					this.activeLayer = layerList[layerList.length - 1]; //top layer become active
-					break;
 				}
+				break;
 			}
 		}
 		return this;
@@ -753,7 +756,7 @@
 	 */
 	layoutProto.mergeLayers = function(options){
 		var clonedOpts = {};
-		var visibleLayers = this._visibleLayers();
+		var visibleLayers = this.visibleLayers();
 		var layerCount = visibleLayers.length;
 		var dataLayer = this.dataLayer;
 		if (!layerCount){
@@ -896,11 +899,11 @@
 	};
 
 	/**
-	 * @method _visibleLayers
+	 * @method visibleLayers
 	 * @private
 	 * @return {Array}
 	 */
-	layoutProto._visibleLayers = function(){
+	layoutProto.visibleLayers = function(){
 		var visibleLayers = [];
 		var layerList = this.layerList;
 		for (var i = 0; i < layerList.length; ++i){
@@ -928,7 +931,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.Layer
+	 * 
 	 *
 	 * @constructor
 	 * @class Layer
@@ -988,7 +991,7 @@
 	};
 
 	/**
-	 * Make sure that layers have equal size
+	 * Make sure layers have same size
 	 *
 	 * @method copy
 	 * @param {Layer} [in]
@@ -1040,7 +1043,7 @@
 
 	/**
 	 * Flood fill (no recursion, custom stack);
-	 * Warn: there are possible freezes on canvas sizes more than 512x512
+	 * Warn: there are possible freezes on sizes more than 512x512
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
@@ -1143,6 +1146,8 @@
 	})();
 
 	/**
+	 * Put pixel within start and offset.
+	 *
 	 * @method plot
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray}
@@ -1267,7 +1272,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.Layer.Pixel
+	 * 
 	 *
 	 * @constructor
 	 * @class Pixel
@@ -1391,7 +1396,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.View
+	 * 
 	 *
 	 * @constructor
 	 * @class View
@@ -1528,6 +1533,8 @@
 	};
 
 	/**
+	 * Draw rectangle at canvas element directly.
+	 *
 	 * @method drawRect
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -1553,7 +1560,7 @@
 	};
 
 	/**
-	 * Just redraw old/previous imageData.
+	 * Just redraw from old imageData.
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
@@ -1583,6 +1590,8 @@
 	};
 
 	/**
+	 * Clear canvas element directly.
+	 *
 	 * @method clear
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -1636,7 +1645,7 @@
 	};
 
 	/**
-	 * Transform canvas to scale offset.
+	 * Transform canvas according to scale & translate.
 	 *
 	 * @method begin
 	 * @chainable
@@ -1654,7 +1663,7 @@
 	};
 
 	/**
-	 * Restore.
+	 * Restore context.
 	 *
 	 * @method end
 	 * @chainable
@@ -1741,7 +1750,7 @@
 		for (var i = 0; i < instances.length; ++i){
 			if (instances[i] !== this && //looking for same layout
 				otherLayout === instances[i]._layout){
-				this._layoutOwner = false;
+				this._layoutOwner = false; //two views can't own same layout
 				break;
 			}
 		}
@@ -1809,7 +1818,7 @@
 	};
 
     /**
-     * Subscribe on events that fired when model (layout) has been changed.
+     * Listen for events that fired when layout has been changed.
 	 *
 	 * @method _subscribe
 	 * @private
@@ -1826,7 +1835,7 @@
     };
 
     /**
-     * Unsubscribe from all events.
+     * Stop listen the layout changes.
 	 *
 	 * @method _unsubscribe
 	 * @private
@@ -2368,6 +2377,17 @@
 			pxl.activeView.end();
 			return this;
 		},
+
+		/**
+		 * @method removeActiveView
+		 * @chainable
+		 */
+		removeActiveView: function(){
+			pxl.activeView.destroy();
+			pxl.activeView.clear({});
+			pxl.activeView = null;
+			return this;
+		}
 	};
 
 	//Helper:

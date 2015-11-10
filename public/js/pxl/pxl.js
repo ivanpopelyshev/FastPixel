@@ -74,7 +74,7 @@
         MAX_CANVAS_SIZE: 1024,
 
 		/**
-		 * Maximum layer count per layout
+		 * Maximum number of layers per layout
 		 *
 		 * @property MAX_LAYER_COUNT
 		 * @type {Number}
@@ -99,6 +99,8 @@
 		PIXELS_CHANGED_EVENT: "pixelsChanged",
 
 		/**
+		 * Type of an array that uses by ImageData. Depends on browser.
+		 *
 		 * @property ImageDataArray
 		 * @type {Uint8ClampedArray|Uint8Array|Uint16Array|Uint32Array}
 		 */
@@ -138,8 +140,8 @@
 
 		/**
 		 * @method createImageData
-		 * @param {ImageData|Number}
-		 * @param {undefined|Number}
+		 * @param arguments[0] {ImageData|Number}
+		 * @param arguments[1] {undefined|Number}
 		 * @return {ImageData}
 		 */
 		createImageData: function(){
@@ -147,7 +149,7 @@
 		},
 
 		/**
-		 * Use this method to create canvas elements.
+		 * More safest and fastest method to create canvas elements.
 		 *
 		 * @method createCanvas
 		 * @return {HTMLCanvasElement}

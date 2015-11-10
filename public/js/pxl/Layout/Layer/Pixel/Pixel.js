@@ -2,7 +2,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.Layer.Pixel
+	 * 
 	 *
 	 * @constructor
 	 * @class Pixel

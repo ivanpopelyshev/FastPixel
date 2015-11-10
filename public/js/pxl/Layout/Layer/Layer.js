@@ -2,7 +2,7 @@
 	"use strict";
 
 	/**
-	 * pxl.Layout.Layer
+	 * 
 	 *
 	 * @constructor
 	 * @class Layer
@@ -62,7 +62,7 @@
 	};
 
 	/**
-	 * Make sure that layers have equal size
+	 * Make sure layers have same size
 	 *
 	 * @method copy
 	 * @param {Layer} [in]
@@ -114,7 +114,7 @@
 
 	/**
 	 * Flood fill (no recursion, custom stack);
-	 * Warn: there are possible freezes on canvas sizes more than 512x512
+	 * Warn: there are possible freezes on sizes more than 512x512
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
@@ -217,6 +217,8 @@
 	})();
 
 	/**
+	 * Put pixel within start and offset.
+	 *
 	 * @method plot
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray}

@@ -35,7 +35,7 @@
 	var poolProto = PrimitivePool.prototype;
 
 	/**
-	 * Get the current pool's "occupancy".
+	 * Get the current occupied size.
 	 *
 	 * @method size
 	 * @return {Number}
@@ -45,6 +45,8 @@
 	};
 
 	/**
+	 * Method don't check for type matching, so be careful!
+	 *
 	 * @method push
 	 * @param primitive {String|Number|Boolean} [in]
 	 */
