@@ -28,7 +28,8 @@ No! At all! Everything is you need is just a one file: [pxl.js][] or [pxl.min.js
 
 ## Modules
 
-API is based on different modules, separated by files (thanks to gulp).
+API is completely synchronous & single thread.
+Based on different modules, separated by files (thanks to gulp).
 There are three absolutely independence modules:
 - [Vector2][]
 - [Observer][]
