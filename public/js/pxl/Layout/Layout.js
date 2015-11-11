@@ -30,12 +30,14 @@
 		/**
 		 * @property layerList
 		 * @type {Array}
+		 * @default []
 		 */
 		this.layerList = [];
 
 		/**
 		 * @property activeLayer
 		 * @type {Layer}
+		 * @default null
 		 */
 		this.activeLayer = null;
 
@@ -74,14 +76,14 @@
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		for (var i = 0; i < layerList.length; ++i){
+		var length = layerList.length;
+		for (var i = 0; i < length; ++i){
 			if (layerList[i] === this.activeLayer){
-				if (layerList.length === 1){
-					this.activeLayer.reset(); //don't delete the last one
-				} else{
-					layerList.splice(i, 1);
-					this.activeLayer = layerList[layerList.length - 1]; //top layer become active
-				}
+				layerList.splice(i, 1);
+				this.activeLayer = (length === 0
+					? null
+					: layerList[length - 1] //top layer become active
+				);
 				break;
 			}
 		}
