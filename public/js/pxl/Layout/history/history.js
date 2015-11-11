@@ -176,14 +176,26 @@
 		},
 
 		/**
-		 * Remove sessions with deleted layers
+		 * Remove sessions with deleted/empty layers
 		 *
 		 * @method clean
 		 */
 		clean: function(){
 			var container = this._container;
+			var tokenSession = null;
 			for (var i = 0; i < container.length; ++i){
-				if (!container[i].layer || container[i].layer.data === null){
+				tokenSession = container[i];
+				if (!tokenSession.layer || tokenSession.layer.data === null){
+					//correctly move pointer:
+					if (tokenSession === container[this._pointer]){
+						if (container.length > 1){
+							if (this._pointer !== 0){
+								--this._pointer;
+							}
+						} else{
+							this._pointer = 0;
+						}
+					}
 					container.splice(i, 1);
 				}
 			}
