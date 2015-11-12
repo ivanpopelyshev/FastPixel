@@ -42,26 +42,25 @@
 
 			function userDownMouse(e){
 				isMouseDown = true;
+				controller.startRecord().startDraw();
 			};
 
 			function userUpMouse(e){
 				isMouseDown = false;
+				controller.stopRecord().stopDraw();
 			};
 
 			function userMove(e){
 				controller.updateUserPosition(e.pageX, e.pageY);
 				if (controller.positionUpdated()){
 					if (isMouseDown){
-						controller.draw(function(){
-							this.setColor( //pick random colour
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0
-							).record(function(){
-								this.plotLine();
-							}).setColor(0, 0, 0, 255); //turn back to black
-						});
+						controller.setColor( //pick random colour
+							(Math.random() * 255) | 0,
+							(Math.random() * 255) | 0,
+							(Math.random() * 255) | 0,
+							(Math.random() * 255) | 0
+						).plotLine();
+						controller.setColor(0, 0, 0, 255); //turn back to black
 					} else {
 						controller.draw(function(){
 							this.carryPixel(); //draw pixel under cursor

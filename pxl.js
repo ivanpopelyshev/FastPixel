@@ -683,12 +683,14 @@
 		/**
 		 * @property layerList
 		 * @type {Array}
+		 * @default []
 		 */
 		this.layerList = [];
 
 		/**
 		 * @property activeLayer
 		 * @type {Layer}
+		 * @default null
 		 */
 		this.activeLayer = null;
 
@@ -720,21 +722,21 @@
 	};
 
 	/**
-	 * Delete active layer.
+	 * Delete an active layer.
 	 *
 	 * @method deleteLayer
 	 * @chainable
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		for (var i = 0; i < layerList.length; ++i){
+		var length = layerList.length;
+		for (var i = 0; i < length; ++i){
 			if (layerList[i] === this.activeLayer){
-				if (layerList.length === 1){
-					this.activeLayer.reset(); //don't delete the last one
-				} else{
-					layerList.splice(i, 1);
-					this.activeLayer = layerList[layerList.length - 1]; //top layer become active
-				}
+				layerList.splice(i, 1);
+				this.activeLayer = (layerList.length === 0
+					? null
+					: layerList[length - 1] //top layer become active
+				);
 				break;
 			}
 		}
@@ -1631,9 +1633,7 @@
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-
 					0, 0,
-
 					options.start.x, options.start.y,
 					options.offset.x, options.offset.y
 				);
@@ -2068,14 +2068,26 @@
 		},
 
 		/**
-		 * Remove sessions with deleted layers
+		 * Remove sessions with deleted/empty layers
 		 *
 		 * @method clean
 		 */
 		clean: function(){
 			var container = this._container;
+			var tokenSession = null;
 			for (var i = 0; i < container.length; ++i){
-				if (!container[i].layer || container[i].layer.data === null){
+				tokenSession = container[i];
+				if (!tokenSession.layer || tokenSession.layer.data === null){
+					//correctly move pointer:
+					if (tokenSession === container[this._pointer]){
+						if (container.length > 1){
+							if (this._pointer !== 0){
+								--this._pointer;
+							}
+						} else{
+							this._pointer = 0;
+						}
+					}
 					container.splice(i, 1);
 				}
 			}
@@ -2168,6 +2180,8 @@
 		},
 
 		/**
+		 * Inform: is previous user position not equal to current.
+		 *
 		 * @method positionUpdated
 		 * @return {Boolean}
 		 */
@@ -2198,7 +2212,7 @@
 					_options.start.set(x, y);
 				} else{
 					_options.start.set(this._settings.current);
-				}				
+				}
 				_options.offset.set(this._settings.pixelSize);
 				_options.pixel = this._settings.pixel;
 				pxl.activeView.getLayout().plot(_options);
@@ -2272,7 +2286,7 @@
 		},
 
 		/**
-		 * Carry the current pixel according to "userHolder" object.
+		 * Carry the current pixel according to last updated user position.
 		 *
 		 * @method carryPixel
 		 * @chainable
@@ -2355,27 +2369,63 @@
 		},
 
 		/**
-		 * @method record
-		 * @param callback {Function}
+		 * @method startRecord
 		 * @chainable
 		 */
-		record: function(callback){
+		startRecord: function(){
 			history.record(pxl.activeView.getLayout().activeLayer);
-			callback.call(this);
+			return this;
+		},
+
+		/**
+		 * @method stopRecord
+		 * @chainable
+		 */
+		stopRecord: function(){
 			history.stop();
 			return this;
 		},
 
 		/**
+		 * Using startRecord and stopRecord inside.
+		 *
+		 * @method record
+		 * @param callback {Function}
+		 * @chainable
+		 */
+		record: function(callback){
+			callback.call(this.startRecord());
+			return this.stopRecord();
+		},
+
+		/**
+		 * @method startDraw
+		 * @chainable
+		 */
+		startDraw: function(){
+			pxl.activeView.begin();
+			return this;
+		},
+
+		/**
+		 * @method stopDraw
+		 * @chainable
+		 */
+		stopDraw: function(){
+			pxl.activeView.end();
+			return this;
+		},
+
+		/**
+         * Using startDraw and stopDraw inside.
+         *
 		 * @method draw
 		 * @param callback {Function}
 		 * @chainable
 		 */
 		draw: function(callback){
-			pxl.activeView.begin();
-			callback.call(this);
-			pxl.activeView.end();
-			return this;
+			callback.call(this.startDraw());
+			return this.stopDraw();
 		},
 
 		/**

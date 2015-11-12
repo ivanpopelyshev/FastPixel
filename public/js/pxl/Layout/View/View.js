@@ -237,9 +237,7 @@
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-
 					0, 0,
-
 					options.start.x, options.start.y,
 					options.offset.x, options.offset.y
 				);

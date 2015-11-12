@@ -225,56 +225,56 @@
 		},
 
 		/**
-		* @method startRecord
-		* @chainable
-		*/
+		 * @method startRecord
+		 * @chainable
+		 */
 		startRecord: function(){
 			history.record(pxl.activeView.getLayout().activeLayer);
 			return this;
 		},
 
 		/**
-		* @method stopRecord
-		* @chainable
-		*/
+		 * @method stopRecord
+		 * @chainable
+		 */
 		stopRecord: function(){
 			history.stop();
 			return this;
 		},
 
 		/**
-		* Using startRecord and stopRecord inside.
-		*
-		* @method record
-		* @param callback {Function}
-		* @chainable
-		*/
+		 * Using startRecord and stopRecord inside.
+		 *
+		 * @method record
+		 * @param callback {Function}
+		 * @chainable
+		 */
 		record: function(callback){
 			callback.call(this.startRecord());
 			return this.stopRecord();
 		},
 
 		/**
-		* @method startDraw
-		* @chainable
-		*/
+		 * @method startDraw
+		 * @chainable
+		 */
 		startDraw: function(){
 			pxl.activeView.begin();
 			return this;
 		},
 
 		/**
-		* @method stopDraw
-		* @chainable
-		*/
+		 * @method stopDraw
+		 * @chainable
+		 */
 		stopDraw: function(){
 			pxl.activeView.end();
 			return this;
 		},
 
 		/**
-       * Using startDraw and stopDraw inside.
-       *
+         * Using startDraw and stopDraw inside.
+         *
 		 * @method draw
 		 * @param callback {Function}
 		 * @chainable
