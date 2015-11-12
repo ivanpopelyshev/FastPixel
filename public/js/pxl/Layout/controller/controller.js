@@ -36,6 +36,8 @@
 		},
 
 		/**
+		 * Inform: is previous user position not equal to current.
+		 *
 		 * @method positionUpdated
 		 * @return {Boolean}
 		 */
@@ -66,7 +68,7 @@
 					_options.start.set(x, y);
 				} else{
 					_options.start.set(this._settings.current);
-				}				
+				}
 				_options.offset.set(this._settings.pixelSize);
 				_options.pixel = this._settings.pixel;
 				pxl.activeView.getLayout().plot(_options);
@@ -140,7 +142,7 @@
 		},
 
 		/**
-		 * Carry the current pixel according to "userHolder" object.
+		 * Carry the current pixel according to last updated user position.
 		 *
 		 * @method carryPixel
 		 * @chainable
@@ -223,27 +225,63 @@
 		},
 
 		/**
-		 * @method record
-		 * @param callback {Function}
-		 * @chainable
-		 */
-		record: function(callback){
+		* @method startRecord
+		* @chainable
+		*/
+		startRecord: function(){
 			history.record(pxl.activeView.getLayout().activeLayer);
-			callback.call(this);
+			return this;
+		},
+
+		/**
+		* @method stopRecord
+		* @chainable
+		*/
+		stopRecord: function(){
 			history.stop();
 			return this;
 		},
 
 		/**
+		* Using startRecord and stopRecord inside.
+		*
+		* @method record
+		* @param callback {Function}
+		* @chainable
+		*/
+		record: function(callback){
+			callback.call(this.startRecord());
+			return this.stopRecord();
+		},
+
+		/**
+		* @method startDraw
+		* @chainable
+		*/
+		startDraw: function(){
+			pxl.activeView.begin();
+			return this;
+		},
+
+		/**
+		* @method stopDraw
+		* @chainable
+		*/
+		stopDraw: function(){
+			pxl.activeView.end();
+			return this;
+		},
+
+		/**
+       * Using startDraw and stopDraw inside.
+       *
 		 * @method draw
 		 * @param callback {Function}
 		 * @chainable
 		 */
 		draw: function(callback){
-			pxl.activeView.begin();
-			callback.call(this);
-			pxl.activeView.end();
-			return this;
+			callback.call(this.startDraw());
+			return this.stopDraw();
 		},
 
 		/**
