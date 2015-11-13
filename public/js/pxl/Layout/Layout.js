@@ -116,10 +116,10 @@
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
 				dataLayer.merge(clonedOpts); //copy bottom layer
-				clonedOpts.isMix = !!options.isMix;
 			} else{
 				dataLayer.copy(visibleLayers[0]); //much faster
 			}
+			clonedOpts.isMix = !!options.isMix;
 			for (var i = 1; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
 				dataLayer.merge(clonedOpts); //mix other layers
