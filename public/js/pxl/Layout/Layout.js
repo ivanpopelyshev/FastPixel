@@ -80,6 +80,7 @@
 		for (var i = 0; i < length; ++i){
 			if (layerList[i] === this.activeLayer){
 				layerList.splice(i, 1);
+				this.activeLayer.destroy(); //don't forget to destroy one!
 				this.activeLayer = (layerList.length === 0
 					? null
 					: layerList[length - 1] //top layer become active
