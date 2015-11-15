@@ -246,10 +246,11 @@
 			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
 			var indexes = this.indexesAt(options);
 			var length = indexes.length;
-			for (var i = 0; i < length; ++i){
-				dataPixel.index = i;
+			for (var i = 0, j = 0; i < length; ++i){
+				dataPixel.index = j;
 				otherPixel.index = indexes[i] << 2;
 				dataPixel.set(otherPixel);
+				j += 4;
 			}
 		} else{
 			imageData = this._imageData;
