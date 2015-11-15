@@ -103,7 +103,6 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
-				
 				if (x0 === x1 && y0 === y1) break;
 				e2 = err + err;
 				if (e2 >= dy){
@@ -289,9 +288,18 @@
 		 * @chainable
 		 */
 		removeActiveView: function(){
-			pxl.activeView.destroy();
 			pxl.activeView.clear({});
+			pxl.activeView.destroy();
 			pxl.activeView = null;
+			return this;
+		},
+
+		/**
+		 * @method moveView
+		 * @chainable
+		 */
+		moveView: function(x, y){
+			pxl.activeView.setImagePoint(x, y).redraw({});
 			return this;
 		}
 	};

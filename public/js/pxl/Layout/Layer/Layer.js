@@ -65,8 +65,8 @@
 	 * Make sure layers have same size
 	 *
 	 * @method copy
-	 * @param {Layer} [in]
-	 * @param {Boolean|undefined} [in]
+	 * @param other {Layer} [in]
+	 * @param fullCopy {Boolean|undefined} [in]
 	 */
 	layerProto.copy = function(other, fullCopy){
 		this.data.set(other.data);

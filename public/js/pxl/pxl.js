@@ -16,7 +16,7 @@
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn't have a buffer
 		}
-    } catch(err){
+	} catch(err){
 		_isSupported = false;
 	}
 
@@ -28,7 +28,7 @@
 	 * @main pxl
 	 * @author Kurz Studious
 	 */
-	return{
+	return {
 		/**
 		 * @property MIN_ZOOM_SCALE
 		 * @type {Number}
@@ -62,7 +62,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MIN_CANVAS_SIZE: 8,
+		MIN_CANVAS_SIZE: 8,
 
 		/**
 		 * Strict limitation, but that's enough for pixel-art
@@ -71,7 +71,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MAX_CANVAS_SIZE: 1024,
+		MAX_CANVAS_SIZE: 1024,
 
 		/**
 		 * Maximum number of layers per layout

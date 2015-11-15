@@ -6,28 +6,51 @@
 		<meta charset="utf-8"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 		<link rel="stylesheet" href="common.css"/>
+		<style>
+			#duplicate{
+				position: absolute;
+				right: 0;
+			}
+		</style>
 	</head>
 	<body>
-		<canvas id="canvas" width="512" height="512"></canvas>
+		<canvas id="main" width="512" height="512"></canvas>
+		<canvas id="duplicate" width="128" height="128"></canvas>
 
 		<script src="../pxl.js"></script>
 		<script>
-			var canvas = document.querySelector("#canvas");
+			var canvas = document.querySelectorAll("CANVAS")[0];
 			var isMouseDown = false;
-			
+
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
 
 				//create the new View instance, and set it as active:
-				pxl.activeView = pxl.Layout.View.create({
+				var activeView = pxl.activeView = pxl.Layout.View.create({
 					canvasSize: {
-						width: 512,
-						height: 512
+						width: 128,
+						height: 128
 					},
 					element: canvas
 				});
 
+				pxl.Layout.View.create({
+					source: activeView,
+					element: document.querySelectorAll("CANVAS")[1]
+				});
+
 				var controller = pxl.Layout.controller;
+
+				controller.plotLine(0, 0, 127, 0);
+				controller.plotLine(127, 0, 127, 127);
+				controller.plotLine(127, 127, 0, 127);
+				controller.plotLine(0, 127, 0, 0);
+
+				controller.setColor(0, 0, 255, 255);
+
+				activeView.setImagePoint(190, 190);
+
+				controller.rescale(2);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
@@ -41,25 +64,19 @@
 
 			function userDownMouse(e){
 				isMouseDown = true;
-				controller.startRecord().startDraw();
+				controller.startDraw().plotPixel();
 			};
 
 			function userUpMouse(e){
 				isMouseDown = false;
-				controller.stopRecord().stopDraw();
+				controller.stopDraw();
 			};
 
 			function userMove(e){
 				controller.updateUserPosition(e.pageX, e.pageY);
 				if (controller.positionUpdated()){
 					if (isMouseDown){
-						controller.setColor( //pick random colour
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0
-						).plotLine();
-						controller.setColor(0, 0, 0, 255); //turn back to black
+						controller.plotLine();
 					} else {
 						controller.draw(function(){
 							this.carryPixel(); //draw pixel under cursor
@@ -74,14 +91,15 @@
 			};
 
 			function userKey(e){
-				//no time to catch "ctrl + z" or "ctrl + y",
-				//so, just "z" or "y"
-				controller.draw(function(){
-					if (e.keyCode === 121) controller.redo();
-					else if (e.keyCode === 122) controller.undo();
-				});
+				if (e.keyCode === 100){
+					controller.removeActiveView();
+					document.removeEventListener("mousedown", userDownMouse);
+					document.removeEventListener("mouseup", userUpMouse);
+					document.removeEventListener("wheel", userWheel);
+					canvas.removeEventListener("mousemove", userMove);
+				}
 			};
 		</script>
-		<p>pretty simple drawing example. Each time, when user move his mouse an app pick new random colour</p>
+		<p>draw on the left canvas and then, press 'd' key to delete active view instance</p>
 	</body>
 </html>

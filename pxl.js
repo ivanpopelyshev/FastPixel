@@ -16,7 +16,7 @@
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn't have a buffer
 		}
-    } catch(err){
+	} catch(err){
 		_isSupported = false;
 	}
 
@@ -28,7 +28,7 @@
 	 * @main pxl
 	 * @author Kurz Studious
 	 */
-	return{
+	return {
 		/**
 		 * @property MIN_ZOOM_SCALE
 		 * @type {Number}
@@ -62,7 +62,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MIN_CANVAS_SIZE: 8,
+		MIN_CANVAS_SIZE: 8,
 
 		/**
 		 * Strict limitation, but that's enough for pixel-art
@@ -71,7 +71,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MAX_CANVAS_SIZE: 1024,
+		MAX_CANVAS_SIZE: 1024,
 
 		/**
 		 * Maximum number of layers per layout
@@ -704,7 +704,8 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance into the layerList (if possible).
+	 * Append new Layer instance into the layerList (if possible);
+	 * activeLayer point on new instance.
 	 *
 	 * @method appendLayer
 	 * @chainable
@@ -733,6 +734,7 @@
 		for (var i = 0; i < length; ++i){
 			if (layerList[i] === this.activeLayer){
 				layerList.splice(i, 1);
+				this.activeLayer.destroy(); //don't forget to destroy one!
 				this.activeLayer = (layerList.length === 0
 					? null
 					: layerList[length - 1] //top layer become active
@@ -751,7 +753,6 @@
 	 * @param options.isMix {Boolean}
 	 * @param options.start {Vector2}
 	 * @param options.offset {Vector2}
-	 * @param options.indexes {Array}
 	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
@@ -764,15 +765,18 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
-			if ((options.start && options.offset) || options.indexes){
-				clonedOpts.indexes = options.indexes || this.indexesAt(options);
+			//copy bottom layer:
+			if (options.start && options.offset){
+				clonedOpts.start = options.start;
+				clonedOpts.offset = options.offset;
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
-				dataLayer.merge(clonedOpts); //copy bottom layer
+				dataLayer.merge(clonedOpts);
 			} else{
-				dataLayer.copy(visibleLayers[0]); //much faster
+				dataLayer.copy(visibleLayers[0]);
 			}
-			clonedOpts.isMix = !!options.isMix;
+			clonedOpts.isMix = !!options.isMix; //pick correct setting after all
+			//process other layers:
 			for (var i = 1; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
 				dataLayer.merge(clonedOpts); //mix other layers
@@ -785,7 +789,8 @@
 	};
 
     /**
-     * Replace old color by new one in an active layer.
+     * Replace old colour by new one;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
@@ -798,7 +803,8 @@
 	};
 
     /**
-     * Plot pixel or group of pixels onto active layer.
+     * Plot pixel or group of pixels;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method plot
 	 * @param options {Object} [in]
@@ -811,7 +817,8 @@
 	};
 
     /**
-     * Flood fill on an active layer.
+     * Flood fill;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
@@ -834,7 +841,7 @@
 	layoutProto.indexesAt = (function(){ //anonymous
 		var _container = [0];
 		return function(options){
-			var rContainer = _container; //store reference in current scope
+			var rContainer = _container; //move reference in current scope
 			var start = options.start;
 			var x = Math.max(0, options.start.x);
 			var y = Math.max(0, options.start.y);
@@ -856,7 +863,8 @@
 	})();
 
 	/**
-	 * Provide an index from position
+	 * Provide an index from position.
+	 *
 	 * @method indexAt
 	 * @param position {Vector2} [in]
 	 * @return {Number}
@@ -866,7 +874,8 @@
 	};
 
 	/**
-	 * Provide position according to index
+	 * Provide position according to index.
+	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
 	 * @return {Vector2}
@@ -902,7 +911,6 @@
 
 	/**
 	 * @method visibleLayers
-	 * @private
 	 * @return {Array}
 	 */
 	layoutProto.visibleLayers = function(){
@@ -996,8 +1004,8 @@
 	 * Make sure layers have same size
 	 *
 	 * @method copy
-	 * @param {Layer} [in]
-	 * @param {Boolean|undefined} [in]
+	 * @param other {Layer} [in]
+	 * @param fullCopy {Boolean|undefined} [in]
 	 */
 	layerProto.copy = function(other, fullCopy){
 		this.data.set(other.data);
@@ -1019,7 +1027,6 @@
 	 * @param options.other {Layer}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
-	 * @param options.indexes {Array|undefined}
      */
 	layerProto.merge = function(options){
 		var i = 0;
@@ -1027,8 +1034,8 @@
 		var method = (options.isMix === true ? "mix" : "set");
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
 		var otherPixel = new pxl.Layout.Layer.Pixel(options.other.data);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				thisPixel.index = otherPixel.index = indexes[i] << 2;
@@ -1153,7 +1160,6 @@
 	 * @method plot
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -1165,8 +1171,8 @@
 		var history = pxl.Layout.history;
 		var method = (options.isMix === true ? "mix" : "set");
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				thisPixel.index = indexes[i] << 2;
@@ -1188,7 +1194,6 @@
 	 * @param options {Object} [in]
 	 * @param options.oldPixel {ImageDataArray|Array}
 	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -1201,8 +1206,8 @@
 		var oldPixel = new pxl.ImageDataArray(options.oldPixel);
 		var destPixel = new pxl.Layout.Layer.Pixel(options.oldPixel);
 		destPixel[options.isMix === true ? "mix" : "set"](options.pixel);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				pixel.index = indexes[i] << 2;
@@ -2247,7 +2252,6 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
-				
 				if (x0 === x1 && y0 === y1) break;
 				e2 = err + err;
 				if (e2 >= dy){
@@ -2433,9 +2437,18 @@
 		 * @chainable
 		 */
 		removeActiveView: function(){
-			pxl.activeView.destroy();
 			pxl.activeView.clear({});
+			pxl.activeView.destroy();
 			pxl.activeView = null;
+			return this;
+		},
+
+		/**
+		 * @method moveView
+		 * @chainable
+		 */
+		moveView: function(x, y){
+			pxl.activeView.setImagePoint(x, y).redraw({});
 			return this;
 		}
 	};

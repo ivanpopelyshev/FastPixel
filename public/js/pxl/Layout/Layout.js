@@ -51,7 +51,8 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance into the layerList (if possible).
+	 * Append new Layer instance into the layerList (if possible);
+	 * activeLayer point on new instance.
 	 *
 	 * @method appendLayer
 	 * @chainable
@@ -111,16 +112,18 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
+			//copy bottom layer:
 			if (options.start && options.offset){
 				clonedOpts.start = options.start;
 				clonedOpts.offset = options.offset;
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
-				dataLayer.merge(clonedOpts); //copy bottom layer
+				dataLayer.merge(clonedOpts);
 			} else{
-				dataLayer.copy(visibleLayers[0]); //much faster
+				dataLayer.copy(visibleLayers[0]);
 			}
-			clonedOpts.isMix = !!options.isMix;
+			clonedOpts.isMix = !!options.isMix; //pick correct setting after all
+			//process other layers:
 			for (var i = 1; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
 				dataLayer.merge(clonedOpts); //mix other layers
@@ -133,7 +136,8 @@
 	};
 
     /**
-     * Replace old color by new one in an active layer.
+     * Replace old colour by new one;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
@@ -146,7 +150,8 @@
 	};
 
     /**
-     * Plot pixel or group of pixels onto active layer.
+     * Plot pixel or group of pixels;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method plot
 	 * @param options {Object} [in]
@@ -159,7 +164,8 @@
 	};
 
     /**
-     * Flood fill on an active layer.
+     * Flood fill;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
@@ -182,7 +188,7 @@
 	layoutProto.indexesAt = (function(){ //anonymous
 		var _container = [0];
 		return function(options){
-			var rContainer = _container; //store reference in current scope
+			var rContainer = _container; //move reference in current scope
 			var start = options.start;
 			var x = Math.max(0, options.start.x);
 			var y = Math.max(0, options.start.y);
@@ -204,7 +210,8 @@
 	})();
 
 	/**
-	 * Provide an index from position
+	 * Provide an index from position.
+	 *
 	 * @method indexAt
 	 * @param position {Vector2} [in]
 	 * @return {Number}
@@ -214,7 +221,8 @@
 	};
 
 	/**
-	 * Provide position according to index
+	 * Provide position according to index.
+	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
 	 * @return {Vector2}
@@ -250,7 +258,6 @@
 
 	/**
 	 * @method visibleLayers
-	 * @private
 	 * @return {Array}
 	 */
 	layoutProto.visibleLayers = function(){
