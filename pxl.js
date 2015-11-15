@@ -889,8 +889,25 @@
 	 * @method getImageData
 	 * @return {ImageData}
 	 */
-	layoutProto.getImageData = function(){
-		return this._imageData;
+	layoutProto.getImageData = function(options){
+		var imageData = null;
+		if (options){
+			imageData = pxl.createImageData(options.offset.x, options.offset.y);
+			var dataPixel = new pxl.Layout.Layer.Pixel(
+				new pxl.ImageDataArray(imageData.data.buffer)
+			);
+			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
+			var indexes = this.indexesAt(options);
+			var length = indexes.length;
+			for (var i = 0; i < length; ++i){
+				dataPixel.index = i;
+				otherPixel.index = indexes[i] << 2;
+				dataPixel.set(otherPixel);
+			}
+		} else{
+			imageData = this._imageData;
+		}
+		return imageData;
 	};
 
 	/**
@@ -1540,7 +1557,7 @@
 	 */
 	viewProto.render = function(options){
 		options = options || {};
-		return this.clear(options).update(options).redraw(options);
+		return this.update(options).redraw(options);
 	};
 
 	/**
@@ -1583,6 +1600,7 @@
 		if (options.start && options.offset){
 			this._ctx.drawImage(
 				this._buffer.canvas,
+
 				options.start.x, options.start.y, //from
 				options.offset.x, options.offset.y,
 
@@ -1638,12 +1656,9 @@
 		if (this._layoutOwner){
 			if (options.start && options.offset){
 				this._buffer.putImageData(
-					this._layout.getImageData(
-						options.start.x, options.start.y,
-						options.offset.x, options.offset.y
-					),
-					0, 0,
+					this._layout.getImageData(options),
 					options.start.x, options.start.y,
+					0, 0,
 					options.offset.x, options.offset.y
 				);
 			} else{
@@ -2463,9 +2478,8 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers({}).observer.notify(
-					pxl.PIXELS_CHANGED_EVENT, {}
-				);
+				pxl.activeView.clear({});
+				session.layer.getLayout().mergeLayers({"isNotifyView": true});
 			}
 			return pxl.Layout.controller;
 		};

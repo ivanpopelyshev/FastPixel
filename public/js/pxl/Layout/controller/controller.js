@@ -310,9 +310,8 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers({}).observer.notify(
-					pxl.PIXELS_CHANGED_EVENT, {}
-				);
+				pxl.activeView.clear({});
+				session.layer.getLayout().mergeLayers({"isNotifyView": true});
 			}
 			return pxl.Layout.controller;
 		};
