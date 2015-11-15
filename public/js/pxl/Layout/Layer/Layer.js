@@ -62,7 +62,7 @@
 	};
 
 	/**
-	 * Make sure layers have same size
+	 * Make sure layers have same size.
 	 *
 	 * @method copy
 	 * @param other {Layer} [in]
@@ -79,8 +79,8 @@
 
 	/**
 	 * Put "start" and "offset" to apply only to area within;
-	 * Or put already computed "indexes" list and only that pixels will be merged;
-	 * Or just skip this two definitions above and the whole layer will be merged;
+	 * Or just skip this definitions above and the whole layer will be merged;
+	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method merge
      * @param options {Object}[in]
@@ -113,6 +113,7 @@
 
 	/**
 	 * Flood fill (no recursion, custom stack);
+	 * Delegate pixel processing to Pixel local instance;
 	 * Warn: there are possible freezes on sizes more than 512x512
 	 *
 	 * @method fill
@@ -216,7 +217,8 @@
 	})();
 
 	/**
-	 * Put pixel within start and offset.
+	 * Put pixel within start and offset;
+	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method plot
 	 * @param options {Object} [in]
@@ -251,6 +253,8 @@
 	};
 
 	/**
+	 * Delegate pixel processing to Pixel local instance.
+	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @param options.oldPixel {ImageDataArray|Array}

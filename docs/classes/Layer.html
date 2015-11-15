@@ -91,7 +91,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l933"><code>pxl.js:933</code></a>
+            Defined in: <a href="../files/pxl.js.html#l943"><code>pxl.js:943</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -126,7 +126,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l933"><code>pxl.js:933</code></a>
+        <a href="../files/pxl.js.html#l943"><code>pxl.js:943</code></a>
         </p>
 
 
@@ -303,7 +303,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1184"><code>pxl.js:1184</code></a>
+        <a href="../files/pxl.js.html#l1194"><code>pxl.js:1194</code></a>
         </p>
 
 
@@ -311,7 +311,8 @@
     </div>
 
     <div class="description">
-        
+        <p>Delegate pixel processing to Pixel local instance.</p>
+
     </div>
 
         <div class="params">
@@ -341,15 +342,6 @@
                             <li class="param">
                                     <code class="param-name">pixel</code>
                                     <span class="type">ImageDataArray | Array</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -397,10 +389,10 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code class="optional">[in]</code>
+                        <code>other</code>
                 </li>
                 <li class="arg">
-                        <code class="optional">[in]</code>
+                        <code>fullCopy</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -415,7 +407,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l993"><code>pxl.js:993</code></a>
+        <a href="../files/pxl.js.html#l1003"><code>pxl.js:1003</code></a>
         </p>
 
 
@@ -423,7 +415,7 @@
     </div>
 
     <div class="description">
-        <p>Make sure layers have same size</p>
+        <p>Make sure layers have same size.</p>
 
     </div>
 
@@ -432,24 +424,24 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name optional">[in]</code>
+                        <code class="param-name">other</code>
                         <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                         
+                        <p>[in]</p>
+
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name optional">[in]</code>
+                        <code class="param-name">fullCopy</code>
                         <span class="type">Boolean | Undefined</span>
-                        <span class="flag optional" title="This parameter is optional.">optional</span>
 
 
                     <div class="param-description">
-                         
+                        <p>[in]</p>
+
                     </div>
 
                 </li>
@@ -474,7 +466,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1261"><code>pxl.js:1261</code></a>
+        <a href="../files/pxl.js.html#l1272"><code>pxl.js:1272</code></a>
         </p>
 
 
@@ -513,7 +505,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1044"><code>pxl.js:1044</code></a>
+        <a href="../files/pxl.js.html#l1053"><code>pxl.js:1053</code></a>
         </p>
 
 
@@ -522,6 +514,7 @@
 
     <div class="description">
         <p>Flood fill (no recursion, custom stack);
+Delegate pixel processing to Pixel local instance;
 Warn: there are possible freezes on sizes more than 512x512</p>
 
     </div>
@@ -619,7 +612,7 @@ Warn: there are possible freezes on sizes more than 512x512</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1244"><code>pxl.js:1244</code></a>
+        <a href="../files/pxl.js.html#l1255"><code>pxl.js:1255</code></a>
         </p>
 
 
@@ -662,7 +655,7 @@ Warn: there are possible freezes on sizes more than 512x512</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1009"><code>pxl.js:1009</code></a>
+        <a href="../files/pxl.js.html#l1019"><code>pxl.js:1019</code></a>
         </p>
 
 
@@ -671,8 +664,8 @@ Warn: there are possible freezes on sizes more than 512x512</p>
 
     <div class="description">
         <p>Put &quot;start&quot; and &quot;offset&quot; to apply only to area within;
-Or put already computed &quot;indexes&quot; list and only that pixels will be merged;
-Or just skip this two definitions above and the whole layer will be merged;</p>
+Or just skip this definitions above and the whole layer will be merged;
+Delegate pixel processing to Pixel local instance.</p>
 
     </div>
 
@@ -727,15 +720,6 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
                                 </div>
 
                             </li>
-                            <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array | Undefined</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
                         </ul>
                 </li>
             </ul>
@@ -768,7 +752,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1252"><code>pxl.js:1252</code></a>
+        <a href="../files/pxl.js.html#l1263"><code>pxl.js:1263</code></a>
         </p>
 
 
@@ -833,7 +817,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1234"><code>pxl.js:1234</code></a>
+        <a href="../files/pxl.js.html#l1245"><code>pxl.js:1245</code></a>
         </p>
 
 
@@ -896,7 +880,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1224"><code>pxl.js:1224</code></a>
+        <a href="../files/pxl.js.html#l1235"><code>pxl.js:1235</code></a>
         </p>
 
 
@@ -956,7 +940,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1148"><code>pxl.js:1148</code></a>
+        <a href="../files/pxl.js.html#l1158"><code>pxl.js:1158</code></a>
         </p>
 
 
@@ -964,7 +948,8 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     </div>
 
     <div class="description">
-        <p>Put pixel within start and offset.</p>
+        <p>Put pixel within start and offset;
+Delegate pixel processing to Pixel local instance.</p>
 
     </div>
 
@@ -986,15 +971,6 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
                             <li class="param">
                                     <code class="param-name">pixel</code>
                                     <span class="type">ImageDataArray</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1051,7 +1027,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l977"><code>pxl.js:977</code></a>
+        <a href="../files/pxl.js.html#l987"><code>pxl.js:987</code></a>
         </p>
 
 
@@ -1084,7 +1060,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l967"><code>pxl.js:967</code></a>
+        <a href="../files/pxl.js.html#l977"><code>pxl.js:977</code></a>
         </p>
 
 
@@ -1108,7 +1084,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l944"><code>pxl.js:944</code></a>
+        <a href="../files/pxl.js.html#l954"><code>pxl.js:954</code></a>
         </p>
 
 
@@ -1132,7 +1108,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l960"><code>pxl.js:960</code></a>
+        <a href="../files/pxl.js.html#l970"><code>pxl.js:970</code></a>
         </p>
 
 
@@ -1157,7 +1133,7 @@ Or just skip this two definitions above and the whole layer will be merged;</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l953"><code>pxl.js:953</code></a>
+        <a href="../files/pxl.js.html#l963"><code>pxl.js:963</code></a>
         </p>
 
 

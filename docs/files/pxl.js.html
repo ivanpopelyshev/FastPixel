@@ -108,7 +108,7 @@
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn&#x27;t have a buffer
 		}
-    } catch(err){
+	} catch(err){
 		_isSupported = false;
 	}
 
@@ -120,7 +120,7 @@
 	 * @main pxl
 	 * @author Kurz Studious
 	 */
-	return{
+	return {
 		/**
 		 * @property MIN_ZOOM_SCALE
 		 * @type {Number}
@@ -154,7 +154,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MIN_CANVAS_SIZE: 8,
+		MIN_CANVAS_SIZE: 8,
 
 		/**
 		 * Strict limitation, but that&#x27;s enough for pixel-art
@@ -163,7 +163,7 @@
 		 * @type {Number}
 		 * @final
 		 */
-        MAX_CANVAS_SIZE: 1024,
+		MAX_CANVAS_SIZE: 1024,
 
 		/**
 		 * Maximum number of layers per layout
@@ -775,12 +775,14 @@
 		/**
 		 * @property layerList
 		 * @type {Array}
+		 * @default []
 		 */
 		this.layerList = [];
 
 		/**
 		 * @property activeLayer
 		 * @type {Layer}
+		 * @default null
 		 */
 		this.activeLayer = null;
 
@@ -794,7 +796,8 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance into the layerList (if possible).
+	 * Append new Layer instance into the layerList (if possible);
+	 * activeLayer point on new instance.
 	 *
 	 * @method appendLayer
 	 * @chainable
@@ -812,21 +815,22 @@
 	};
 
 	/**
-	 * Delete active layer.
+	 * Delete an active layer.
 	 *
 	 * @method deleteLayer
 	 * @chainable
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		for (var i = 0; i &lt; layerList.length; ++i){
+		var length = layerList.length;
+		for (var i = 0; i &lt; length; ++i){
 			if (layerList[i] === this.activeLayer){
-				if (layerList.length === 1){
-					this.activeLayer.reset(); //don&#x27;t delete the last one
-				} else{
-					layerList.splice(i, 1);
-					this.activeLayer = layerList[layerList.length - 1]; //top layer become active
-				}
+				layerList.splice(i, 1);
+				this.activeLayer.destroy(); //don&#x27;t forget to destroy one!
+				this.activeLayer = (layerList.length === 0
+					? null
+					: layerList[length - 1] //top layer become active
+				);
 				break;
 			}
 		}
@@ -841,7 +845,6 @@
 	 * @param options.isMix {Boolean}
 	 * @param options.start {Vector2}
 	 * @param options.offset {Vector2}
-	 * @param options.indexes {Array}
 	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
@@ -854,15 +857,18 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
-			if ((options.start &amp;&amp; options.offset) || options.indexes){
-				clonedOpts.indexes = options.indexes || this.indexesAt(options);
+			//copy bottom layer:
+			if (options.start &amp;&amp; options.offset){
+				clonedOpts.start = options.start;
+				clonedOpts.offset = options.offset;
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
-				dataLayer.merge(clonedOpts); //copy bottom layer
-				clonedOpts.isMix = !!options.isMix;
+				dataLayer.merge(clonedOpts);
 			} else{
-				dataLayer.copy(visibleLayers[0]); //much faster
+				dataLayer.copy(visibleLayers[0]);
 			}
+			clonedOpts.isMix = !!options.isMix; //pick correct setting after all
+			//process other layers:
 			for (var i = 1; i &lt; layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
 				dataLayer.merge(clonedOpts); //mix other layers
@@ -875,7 +881,8 @@
 	};
 
     /**
-     * Replace old color by new one in an active layer.
+     * Replace old colour by new one;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
@@ -888,7 +895,8 @@
 	};
 
     /**
-     * Plot pixel or group of pixels onto active layer.
+     * Plot pixel or group of pixels;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method plot
 	 * @param options {Object} [in]
@@ -901,7 +909,8 @@
 	};
 
     /**
-     * Flood fill on an active layer.
+     * Flood fill;
+	 * delegate processing to the activeLayer.
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
@@ -924,7 +933,7 @@
 	layoutProto.indexesAt = (function(){ //anonymous
 		var _container = [0];
 		return function(options){
-			var rContainer = _container; //store reference in current scope
+			var rContainer = _container; //move reference in current scope
 			var start = options.start;
 			var x = Math.max(0, options.start.x);
 			var y = Math.max(0, options.start.y);
@@ -946,7 +955,8 @@
 	})();
 
 	/**
-	 * Provide an index from position
+	 * Provide an index from position.
+	 *
 	 * @method indexAt
 	 * @param position {Vector2} [in]
 	 * @return {Number}
@@ -956,7 +966,8 @@
 	};
 
 	/**
-	 * Provide position according to index
+	 * Provide position according to index.
+	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
 	 * @return {Vector2}
@@ -992,7 +1003,6 @@
 
 	/**
 	 * @method visibleLayers
-	 * @private
 	 * @return {Array}
 	 */
 	layoutProto.visibleLayers = function(){
@@ -1083,11 +1093,11 @@
 	};
 
 	/**
-	 * Make sure layers have same size
+	 * Make sure layers have same size.
 	 *
 	 * @method copy
-	 * @param {Layer} [in]
-	 * @param {Boolean|undefined} [in]
+	 * @param other {Layer} [in]
+	 * @param fullCopy {Boolean|undefined} [in]
 	 */
 	layerProto.copy = function(other, fullCopy){
 		this.data.set(other.data);
@@ -1100,8 +1110,8 @@
 
 	/**
 	 * Put &quot;start&quot; and &quot;offset&quot; to apply only to area within;
-	 * Or put already computed &quot;indexes&quot; list and only that pixels will be merged;
-	 * Or just skip this two definitions above and the whole layer will be merged;
+	 * Or just skip this definitions above and the whole layer will be merged;
+	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method merge
      * @param options {Object}[in]
@@ -1109,7 +1119,6 @@
 	 * @param options.other {Layer}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
-	 * @param options.indexes {Array|undefined}
      */
 	layerProto.merge = function(options){
 		var i = 0;
@@ -1117,8 +1126,8 @@
 		var method = (options.isMix === true ? &quot;mix&quot; : &quot;set&quot;);
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
 		var otherPixel = new pxl.Layout.Layer.Pixel(options.other.data);
-		if ((options.start &amp;&amp; options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start &amp;&amp; options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				thisPixel.index = otherPixel.index = indexes[i] &lt;&lt; 2;
@@ -1135,6 +1144,7 @@
 
 	/**
 	 * Flood fill (no recursion, custom stack);
+	 * Delegate pixel processing to Pixel local instance;
 	 * Warn: there are possible freezes on sizes more than 512x512
 	 *
 	 * @method fill
@@ -1238,12 +1248,12 @@
 	})();
 
 	/**
-	 * Put pixel within start and offset.
+	 * Put pixel within start and offset;
+	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method plot
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -1255,8 +1265,8 @@
 		var history = pxl.Layout.history;
 		var method = (options.isMix === true ? &quot;mix&quot; : &quot;set&quot;);
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
-		if ((options.start &amp;&amp; options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start &amp;&amp; options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				thisPixel.index = indexes[i] &lt;&lt; 2;
@@ -1274,11 +1284,12 @@
 	};
 
 	/**
+	 * Delegate pixel processing to Pixel local instance.
+	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @param options.oldPixel {ImageDataArray|Array}
 	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -1291,8 +1302,8 @@
 		var oldPixel = new pxl.ImageDataArray(options.oldPixel);
 		var destPixel = new pxl.Layout.Layer.Pixel(options.oldPixel);
 		destPixel[options.isMix === true ? &quot;mix&quot; : &quot;set&quot;](options.pixel);
-		if ((options.start &amp;&amp; options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start &amp;&amp; options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				pixel.index = indexes[i] &lt;&lt; 2;
@@ -1723,9 +1734,7 @@
 						options.start.x, options.start.y,
 						options.offset.x, options.offset.y
 					),
-
 					0, 0,
-
 					options.start.x, options.start.y,
 					options.offset.x, options.offset.y
 				);
@@ -2058,8 +2067,8 @@
 		},
 
 		/**
-		 * Take pixel colour from layer (lastSession&#x27;s member)
-		 * Save in history
+		 * Take pixel colour from layer (lastSession&#x27;s member);
+		 * Save in history.
 		 *
 		 * @method cache
 		 * @param pixel {Pixel}
@@ -2091,7 +2100,7 @@
 		},
 
 		/**
-		 * Start recording the Layer
+		 * Start recording the Layer.
 		 *
 		 * @method rec
 		 * @param layer {Layer|undefined}
@@ -2108,7 +2117,7 @@
 		},
 
 		/**
-		 * Stop recording the current Layer and save it&#x27;s pixels
+		 * Stop recording the current Layer and save it&#x27;s pixels.
 		 *
 		 * @method stop
 		 */
@@ -2160,21 +2169,33 @@
 		},
 
 		/**
-		 * Remove sessions with deleted layers
+		 * Remove sessions with deleted/empty layers.
 		 *
 		 * @method clean
 		 */
 		clean: function(){
 			var container = this._container;
+			var tokenSession = null;
 			for (var i = 0; i &lt; container.length; ++i){
-				if (!container[i].layer || container[i].layer.data === null){
+				tokenSession = container[i];
+				if (!tokenSession.layer || tokenSession.layer.data === null){
+					//correctly move pointer:
+					if (tokenSession === container[this._pointer]){
+						if (container.length &gt; 1){
+							if (this._pointer !== 0){
+								--this._pointer;
+							}
+						} else{
+							this._pointer = 0;
+						}
+					}
 					container.splice(i, 1);
 				}
 			}
 		},
 
 		/**
-		 * Used by undo and redo methods
+		 * Used by undo and redo methods.
 		 *
 		 * @method _rewrite
 		 * @private
@@ -2260,6 +2281,8 @@
 		},
 
 		/**
+		 * Inform: is previous user position not equal to current.
+		 *
 		 * @method positionUpdated
 		 * @return {Boolean}
 		 */
@@ -2290,7 +2313,7 @@
 					_options.start.set(x, y);
 				} else{
 					_options.start.set(this._settings.current);
-				}				
+				}
 				_options.offset.set(this._settings.pixelSize);
 				_options.pixel = this._settings.pixel;
 				pxl.activeView.getLayout().plot(_options);
@@ -2325,7 +2348,6 @@
 			var e2 = 0;
 			for (;;){
 				this.plotPixel(x0, y0);
-				
 				if (x0 === x1 &amp;&amp; y0 === y1) break;
 				e2 = err + err;
 				if (e2 &gt;= dy){
@@ -2364,7 +2386,7 @@
 		},
 
 		/**
-		 * Carry the current pixel according to &quot;userHolder&quot; object.
+		 * Carry the current pixel according to last updated user position.
 		 *
 		 * @method carryPixel
 		 * @chainable
@@ -2447,27 +2469,63 @@
 		},
 
 		/**
-		 * @method record
-		 * @param callback {Function}
+		 * @method startRecord
 		 * @chainable
 		 */
-		record: function(callback){
+		startRecord: function(){
 			history.record(pxl.activeView.getLayout().activeLayer);
-			callback.call(this);
+			return this;
+		},
+
+		/**
+		 * @method stopRecord
+		 * @chainable
+		 */
+		stopRecord: function(){
 			history.stop();
 			return this;
 		},
 
 		/**
+		 * Using startRecord and stopRecord inside.
+		 *
+		 * @method record
+		 * @param callback {Function}
+		 * @chainable
+		 */
+		record: function(callback){
+			callback.call(this.startRecord());
+			return this.stopRecord();
+		},
+
+		/**
+		 * @method startDraw
+		 * @chainable
+		 */
+		startDraw: function(){
+			pxl.activeView.begin();
+			return this;
+		},
+
+		/**
+		 * @method stopDraw
+		 * @chainable
+		 */
+		stopDraw: function(){
+			pxl.activeView.end();
+			return this;
+		},
+
+		/**
+         * Using startDraw and stopDraw inside.
+         *
 		 * @method draw
 		 * @param callback {Function}
 		 * @chainable
 		 */
 		draw: function(callback){
-			pxl.activeView.begin();
-			callback.call(this);
-			pxl.activeView.end();
-			return this;
+			callback.call(this.startDraw());
+			return this.stopDraw();
 		},
 
 		/**
@@ -2475,9 +2533,18 @@
 		 * @chainable
 		 */
 		removeActiveView: function(){
-			pxl.activeView.destroy();
 			pxl.activeView.clear({});
+			pxl.activeView.destroy();
 			pxl.activeView = null;
+			return this;
+		},
+
+		/**
+		 * @method moveView
+		 * @chainable
+		 */
+		moveView: function(x, y){
+			pxl.activeView.setImagePoint(x, y).redraw({});
 			return this;
 		}
 	};

@@ -74,8 +74,8 @@
 		},
 
 		/**
-		 * Take pixel colour from layer (lastSession's member)
-		 * Save in history
+		 * Take pixel colour from layer (lastSession's member);
+		 * Save in history.
 		 *
 		 * @method cache
 		 * @param pixel {Pixel}
@@ -107,7 +107,7 @@
 		},
 
 		/**
-		 * Start recording the Layer
+		 * Start recording the Layer.
 		 *
 		 * @method rec
 		 * @param layer {Layer|undefined}
@@ -124,7 +124,7 @@
 		},
 
 		/**
-		 * Stop recording the current Layer and save it's pixels
+		 * Stop recording the current Layer and save it's pixels.
 		 *
 		 * @method stop
 		 */
@@ -176,7 +176,7 @@
 		},
 
 		/**
-		 * Remove sessions with deleted/empty layers
+		 * Remove sessions with deleted/empty layers.
 		 *
 		 * @method clean
 		 */
@@ -202,7 +202,7 @@
 		},
 
 		/**
-		 * Used by undo and redo methods
+		 * Used by undo and redo methods.
 		 *
 		 * @method _rewrite
 		 * @private

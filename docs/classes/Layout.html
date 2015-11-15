@@ -256,7 +256,7 @@ or with already existing ImageData as source</p>
                                 <a href="#method_positionFrom">positionFrom</a>
 
                             </li>
-                            <li class="index-item method private">
+                            <li class="index-item method">
                                 <a href="#method_visibleLayers">visibleLayers</a>
 
                             </li>
@@ -312,7 +312,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l704"><code>pxl.js:704</code></a>
+        <a href="../files/pxl.js.html#l706"><code>pxl.js:706</code></a>
         </p>
 
 
@@ -320,7 +320,8 @@ or with already existing ImageData as source</p>
     </div>
 
     <div class="description">
-        <p>Append new Layer instance into the layerList (if possible).</p>
+        <p>Append new Layer instance into the layerList (if possible);
+activeLayer point on new instance.</p>
 
     </div>
 
@@ -350,7 +351,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l785"><code>pxl.js:785</code></a>
+        <a href="../files/pxl.js.html#l791"><code>pxl.js:791</code></a>
         </p>
 
 
@@ -358,7 +359,8 @@ or with already existing ImageData as source</p>
     </div>
 
     <div class="description">
-        <p>Replace old color by new one in an active layer.</p>
+        <p>Replace old colour by new one;
+delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -399,7 +401,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l722"><code>pxl.js:722</code></a>
+        <a href="../files/pxl.js.html#l725"><code>pxl.js:725</code></a>
         </p>
 
 
@@ -407,7 +409,7 @@ or with already existing ImageData as source</p>
     </div>
 
     <div class="description">
-        <p>Delete active layer.</p>
+        <p>Delete an active layer.</p>
 
     </div>
 
@@ -430,7 +432,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l917"><code>pxl.js:917</code></a>
+        <a href="../files/pxl.js.html#l927"><code>pxl.js:927</code></a>
         </p>
 
 
@@ -467,7 +469,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l811"><code>pxl.js:811</code></a>
+        <a href="../files/pxl.js.html#l819"><code>pxl.js:819</code></a>
         </p>
 
 
@@ -475,7 +477,8 @@ or with already existing ImageData as source</p>
     </div>
 
     <div class="description">
-        <p>Flood fill on an active layer.</p>
+        <p>Flood fill;
+delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -518,7 +521,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l893"><code>pxl.js:893</code></a>
+        <a href="../files/pxl.js.html#l904"><code>pxl.js:904</code></a>
         </p>
 
 
@@ -558,7 +561,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l877"><code>pxl.js:877</code></a>
+        <a href="../files/pxl.js.html#l888"><code>pxl.js:888</code></a>
         </p>
 
 
@@ -598,7 +601,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l885"><code>pxl.js:885</code></a>
+        <a href="../files/pxl.js.html#l896"><code>pxl.js:896</code></a>
         </p>
 
 
@@ -644,7 +647,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l856"><code>pxl.js:856</code></a>
+        <a href="../files/pxl.js.html#l865"><code>pxl.js:865</code></a>
         </p>
 
 
@@ -652,7 +655,7 @@ or with already existing ImageData as source</p>
     </div>
 
     <div class="description">
-        <p>Provide an index from position</p>
+        <p>Provide an index from position.</p>
 
     </div>
 
@@ -708,7 +711,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l825"><code>pxl.js:825</code></a>
+        <a href="../files/pxl.js.html#l834"><code>pxl.js:834</code></a>
         </p>
 
 
@@ -791,7 +794,7 @@ or with already existing ImageData as source</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l744"><code>pxl.js:744</code></a>
+        <a href="../files/pxl.js.html#l748"><code>pxl.js:748</code></a>
         </p>
 
 
@@ -847,15 +850,6 @@ Notify subscribers.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
                                     <code class="param-name">isNotifyView</code>
                                     <span class="type">Boolean</span>
 
@@ -894,7 +888,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l798"><code>pxl.js:798</code></a>
+        <a href="../files/pxl.js.html#l805"><code>pxl.js:805</code></a>
         </p>
 
 
@@ -902,7 +896,8 @@ Notify subscribers.</p>
     </div>
 
     <div class="description">
-        <p>Plot pixel or group of pixels onto active layer.</p>
+        <p>Plot pixel or group of pixels;
+delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -951,7 +946,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l866"><code>pxl.js:866</code></a>
+        <a href="../files/pxl.js.html#l876"><code>pxl.js:876</code></a>
         </p>
 
 
@@ -959,7 +954,7 @@ Notify subscribers.</p>
     </div>
 
     <div class="description">
-        <p>Provide position according to index</p>
+        <p>Provide position according to index.</p>
 
     </div>
 
@@ -991,7 +986,7 @@ Notify subscribers.</p>
 
 
 </div>
-<div id="method_visibleLayers" class="method item private">
+<div id="method_visibleLayers" class="method item">
     <h3 class="name"><code>visibleLayers</code></h3>
 
         <span class="paren">()</span>
@@ -1001,7 +996,6 @@ Notify subscribers.</p>
         </span>
 
 
-        <span class="flag private">private</span>
 
 
 
@@ -1010,7 +1004,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l901"><code>pxl.js:901</code></a>
+        <a href="../files/pxl.js.html#l912"><code>pxl.js:912</code></a>
         </p>
 
 
@@ -1073,7 +1067,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l689"><code>pxl.js:689</code></a>
+        <a href="../files/pxl.js.html#l690"><code>pxl.js:690</code></a>
         </p>
 
 
@@ -1083,6 +1077,7 @@ Notify subscribers.</p>
         
     </div>
 
+        <p><strong>Default:</strong> null</p>
 
 
 </div>
@@ -1131,6 +1126,7 @@ Notify subscribers.</p>
         
     </div>
 
+        <p><strong>Default:</strong> []</p>
 
 
 </div>
@@ -1145,7 +1141,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l695"><code>pxl.js:695</code></a>
+        <a href="../files/pxl.js.html#l697"><code>pxl.js:697</code></a>
         </p>
 
 
