@@ -135,7 +135,7 @@
 	 */
 	viewProto.render = function(options){
 		options = options || {};
-		return this.clear(options).update(options).redraw(options);
+		return this.update(options).redraw(options);
 	};
 
 	/**
@@ -178,6 +178,7 @@
 		if (options.start && options.offset){
 			this._ctx.drawImage(
 				this._buffer.canvas,
+
 				options.start.x, options.start.y, //from
 				options.offset.x, options.offset.y,
 
@@ -233,12 +234,9 @@
 		if (this._layoutOwner){
 			if (options.start && options.offset){
 				this._buffer.putImageData(
-					this._layout.getImageData(
-						options.start.x, options.start.y,
-						options.offset.x, options.offset.y
-					),
-					0, 0,
+					this._layout.getImageData(options),
 					options.start.x, options.start.y,
+					0, 0,
 					options.offset.x, options.offset.y
 				);
 			} else{
