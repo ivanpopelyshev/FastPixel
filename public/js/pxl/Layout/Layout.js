@@ -236,8 +236,25 @@
 	 * @method getImageData
 	 * @return {ImageData}
 	 */
-	layoutProto.getImageData = function(){
-		return this._imageData;
+	layoutProto.getImageData = function(options){
+		var imageData = null;
+		if (options){
+			imageData = pxl.createImageData(options.offset.x, options.offset.y);
+			var dataPixel = new pxl.Layout.Layer.Pixel(
+				new pxl.ImageDataArray(imageData.data.buffer)
+			);
+			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
+			var indexes = this.indexesAt(options);
+			var length = indexes.length;
+			for (var i = 0; i < length; ++i){
+				dataPixel.index = i;
+				otherPixel.index = indexes[i] << 2;
+				dataPixel.set(otherPixel);
+			}
+		} else{
+			imageData = this._imageData;
+		}
+		return imageData;
 	};
 
 	/**
