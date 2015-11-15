@@ -310,7 +310,6 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				pxl.activeView.clear({});
 				session.layer.getLayout().mergeLayers({"isNotifyView": true});
 			}
 			return pxl.Layout.controller;

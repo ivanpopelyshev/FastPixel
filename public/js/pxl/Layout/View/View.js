@@ -135,7 +135,7 @@
 	 */
 	viewProto.render = function(options){
 		options = options || {};
-		return this.update(options).redraw(options);
+		return this.clear(options).update(options).redraw(options);
 	};
 
 	/**
