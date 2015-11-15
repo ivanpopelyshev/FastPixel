@@ -88,7 +88,6 @@
 	 * @param options.other {Layer}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
-	 * @param options.indexes {Array|undefined}
      */
 	layerProto.merge = function(options){
 		var i = 0;
@@ -96,8 +95,8 @@
 		var method = (options.isMix === true ? "mix" : "set");
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
 		var otherPixel = new pxl.Layout.Layer.Pixel(options.other.data);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				thisPixel.index = otherPixel.index = indexes[i] << 2;
@@ -222,7 +221,6 @@
 	 * @method plot
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -234,8 +232,8 @@
 		var history = pxl.Layout.history;
 		var method = (options.isMix === true ? "mix" : "set");
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				thisPixel.index = indexes[i] << 2;
@@ -257,7 +255,6 @@
 	 * @param options {Object} [in]
 	 * @param options.oldPixel {ImageDataArray|Array}
 	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.indexes {Array|undefined}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
@@ -270,8 +267,8 @@
 		var oldPixel = new pxl.ImageDataArray(options.oldPixel);
 		var destPixel = new pxl.Layout.Layer.Pixel(options.oldPixel);
 		destPixel[options.isMix === true ? "mix" : "set"](options.pixel);
-		if ((options.start && options.offset) || options.indexes){
-			var indexes = options.indexes || this._layout.indexesAt(options);
+		if (options.start && options.offset){
+			var indexes = this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				pixel.index = indexes[i] << 2;

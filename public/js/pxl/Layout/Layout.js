@@ -99,7 +99,6 @@
 	 * @param options.isMix {Boolean}
 	 * @param options.start {Vector2}
 	 * @param options.offset {Vector2}
-	 * @param options.indexes {Array}
 	 * @param options.isNotifyView {Boolean}
 	 * @method mergeLayers
 	 * @chainable
@@ -112,8 +111,9 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
-			if ((options.start && options.offset) || options.indexes){
-				clonedOpts.indexes = options.indexes || this.indexesAt(options);
+			if (options.start && options.offset){
+				clonedOpts.start = options.start;
+				clonedOpts.offset = options.offset;
 				clonedOpts.other = visibleLayers[0];
 				clonedOpts.isMix = false;
 				dataLayer.merge(clonedOpts); //copy bottom layer
