@@ -6,14 +6,6 @@
 	 */
 	pxl.Layout.history = {
 		/**
-		 * @property _MAX_TEMPORARY_STORAGE_SIZE
-		 * @private
-		 * @type {Number}
-		 * @final
-		 */
-		_MAX_TEMPORARY_STORAGE_SIZE: 5,
-
-		/**
 		 * @property _container
 		 * @private
 		 * @type {Array}
@@ -37,15 +29,6 @@
 		 * @default false
 		 */
 		_isRecording: false,
-
-		/**
-		 * Contain just used index pools
-		 *
-		 * @property _tempPoolStorage
-		 * @private
-		 * @type {Array}
-		 */
-		_tempPoolStorage: [],
 
 		/**
 		 * @property lastSession
@@ -86,12 +69,10 @@
 				var color = pixel.toString();
 				if (!(color in pixelMap)){
 					this.lastSession.assoc.push(color);
-					pixelMap[color] = (this._tempPoolStorage.length
-						? this._tempPoolStorage.pop() //re-use index pools
-						: new pxl.PrimitivePool(Number)
-					);
+					pixelMap[color] = [pixel.index];
+				} else{
+					pixelMap[color].push(pixel.index);
 				}
-				pixelMap[color].push(pixel.index);
 			}
 		},
 
@@ -133,28 +114,12 @@
 				return; //empty session (no colours in assoc queue)
 			}
 
-			var key = "";
-			var pixelMap = this.lastSession.pixelMap;
-			for (key in pixelMap){
-				pixelMap[key].shrink(); //reduce unnecessary memory using
-			}
-
 			if (this._pointer < pxl.MAX_HISTORY_SIZE){ //prevent overflow
 				this._container[this._pointer++] = this.lastSession;
 				this._container.splice(this._pointer, this._container.length);
-				this.lastSession = null;
 			} else{
 				this._container.push(this.lastSession);
-				this.lastSession = this._container.shift();
-			}
-
-			if (this.lastSession &&
-				this._tempPoolStorage.length < this._MAX_TEMPORARY_STORAGE_SIZE){
-				pixelMap = this.lastSession.pixelMap;
-				for (key in pixelMap){
-					pixelMap[key].reduce();
-					this._tempPoolStorage.push(pixelMap[key]); //take index pools for next re-use
-				}
+				this._container.shift();
 			}
 
 			this.lastSession = null;
@@ -223,8 +188,8 @@
 			while (session.assoc.length){
 				color = session.assoc.pop();
 				tokenPixel.set(color.split(","));
-				indexes = pixelMap[color]._container; //god forgive me!
-				length = pixelMap[color].size();
+				indexes = pixelMap[color];
+				length = indexes.length;
 				for (i = 0; i < length; ++i){
 					tokenIndex = pixel.index = indexes[i];
 
@@ -234,14 +199,11 @@
 						color = pixel.toString();
 						if (!(color in swapedPixelMap)){
 							swappedAssoc.push(color);
-							swapedPixelMap[color] = (this._tempPoolStorage.length
-								? this._tempPoolStorage.pop() //re-use index pools
-								: new pxl.PrimitivePool(Number)
-							);
+							swapedPixelMap[color] = [tokenIndex];
+						} else{
+							swapedPixelMap[color].push(tokenIndex);
 						}
-						swapedPixelMap[color].push(tokenIndex);
 					}
-
 					pixel.set(tokenPixel);
 				}
 			}
