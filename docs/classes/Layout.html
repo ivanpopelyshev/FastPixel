@@ -245,6 +245,10 @@ or with already existing ImageData as source</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_isWithinLayout">isWithinLayout</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_mergeLayers">mergeLayers</a>
 
                             </li>
@@ -432,7 +436,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l927"><code>pxl.js:927</code></a>
+        <a href="../files/pxl.js.html#l962"><code>pxl.js:962</code></a>
         </p>
 
 
@@ -521,7 +525,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l904"><code>pxl.js:904</code></a>
+        <a href="../files/pxl.js.html#l927"><code>pxl.js:927</code></a>
         </p>
 
 
@@ -546,7 +550,13 @@ delegate processing to the activeLayer.</p>
 <div id="method_getImageData" class="method item">
     <h3 class="name"><code>getImageData</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
         <span class="returns-inline">
             <span class="type">ImageData</span>
@@ -561,7 +571,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l888"><code>pxl.js:888</code></a>
+        <a href="../files/pxl.js.html#l890"><code>pxl.js:890</code></a>
         </p>
 
 
@@ -569,9 +579,27 @@ delegate processing to the activeLayer.</p>
     </div>
 
     <div class="description">
-        
+        <p>Get whole image data or just a part of it (according to options).</p>
+
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object | Undefined</span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
         <div class="returns">
             <h4>Returns:</h4>
@@ -601,7 +629,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l896"><code>pxl.js:896</code></a>
+        <a href="../files/pxl.js.html#l919"><code>pxl.js:919</code></a>
         </p>
 
 
@@ -647,7 +675,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l865"><code>pxl.js:865</code></a>
+        <a href="../files/pxl.js.html#l867"><code>pxl.js:867</code></a>
         </p>
 
 
@@ -719,7 +747,8 @@ delegate processing to the activeLayer.</p>
     </div>
 
     <div class="description">
-        
+        <p>Provide list of indexes within start and offset coordinates.</p>
+
     </div>
 
         <div class="params">
@@ -767,6 +796,69 @@ delegate processing to the activeLayer.</p>
                         <span class="type">Array</span>:
                     <p>warn: static array(read-only)</p>
 
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isWithinLayout" class="method item">
+    <h3 class="name"><code>isWithinLayout</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>position</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l950"><code>pxl.js:950</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">position</code>
+                        <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
             </div>
         </div>
 
@@ -946,7 +1038,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l876"><code>pxl.js:876</code></a>
+        <a href="../files/pxl.js.html#l878"><code>pxl.js:878</code></a>
         </p>
 
 
@@ -1004,7 +1096,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l912"><code>pxl.js:912</code></a>
+        <a href="../files/pxl.js.html#l935"><code>pxl.js:935</code></a>
         </p>
 
 

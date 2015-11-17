@@ -924,6 +924,8 @@
     };
 
 	/**
+	 * Provide list of indexes within start and offset coordinates.
+	 *
 	 * @method indexesAt
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -935,11 +937,11 @@
 		return function(options){
 			var rContainer = _container; //move reference in current scope
 			var start = options.start;
-			var x = Math.max(0, options.start.x);
-			var y = Math.max(0, options.start.y);
+			var x = Math.max(0, start.x);
+			var y = Math.max(0, start.y);
 			var width = Math.min(this.getWidth() - 1, options.offset.x);
 			var length = width * Math.min(this.getHeight() - 1, options.offset.y);
-			var posWrapper = new pxl.Vector2;
+			var positionTmp = new pxl.Vector2;
 			var indexOffset = 0;
 			var index = this.indexAt(start);
 			rContainer.length = length;
@@ -947,7 +949,7 @@
 				rContainer[i] = index + indexOffset; //take an index relative to coordinates
 				if (++indexOffset &gt;= width){
 					indexOffset = 0;
-					index = this.indexAt(posWrapper.set(x, ++y));
+					index = this.indexAt(positionTmp.set(x, ++y));
 				}
 			}
 			return rContainer;
@@ -978,11 +980,32 @@
 	};
 
 	/**
+	 * Get whole image data or just a part of it (according to options).
+	 *
 	 * @method getImageData
+	 * @param options {Object|undefined} [in]
 	 * @return {ImageData}
 	 */
-	layoutProto.getImageData = function(){
-		return this._imageData;
+	layoutProto.getImageData = function(options){
+		var imageData = null;
+		if (options){
+			imageData = pxl.createImageData(options.offset.x, options.offset.y);
+			var dataPixel = new pxl.Layout.Layer.Pixel(
+				new pxl.ImageDataArray(imageData.data.buffer)
+			);
+			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
+			var indexes = this.indexesAt(options);
+			var length = indexes.length;
+			for (var i = 0, j = 0; i &lt; length; ++i){
+				dataPixel.index = j;
+				otherPixel.index = indexes[i] &lt;&lt; 2;
+				dataPixel.set(otherPixel);
+				j += 4;
+			}
+		} else{
+			imageData = this._imageData;
+		}
+		return imageData;
 	};
 
 	/**
@@ -1014,6 +1037,18 @@
 			}
 		}
 		return visibleLayers;
+	};
+
+	/**
+	 * @method isWithinLayout
+	 * @param position {Vector2} [in]
+	 * @return {Boolean}
+	 */
+	layoutProto.isWithinLayout = function(position){
+		return (
+			position.x &gt;= 0 &amp;&amp; position.x &lt; this.getWidth() &amp;&amp;
+			position.y &gt;= 0 &amp;&amp; position.y &lt; this.getHeight()
+		);
 	};
 
 	/**
@@ -1109,8 +1144,8 @@
 	};
 
 	/**
-	 * Put &quot;start&quot; and &quot;offset&quot; to apply only to area within;
-	 * Or just skip this definitions above and the whole layer will be merged;
+	 * Merge layers within start and offset;
+	 * Or pixels by pre-computing indexes;
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method merge
@@ -1119,6 +1154,7 @@
 	 * @param options.other {Layer}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
+	 * @param options.indexes {Array|undefined}
      */
 	layerProto.merge = function(options){
 		var i = 0;
@@ -1126,8 +1162,8 @@
 		var method = (options.isMix === true ? &quot;mix&quot; : &quot;set&quot;);
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
 		var otherPixel = new pxl.Layout.Layer.Pixel(options.other.data);
-		if (options.start &amp;&amp; options.offset){
-			var indexes = this._layout.indexesAt(options);
+		if ((options.start &amp;&amp; options.offset) || options.indexes){
+			var indexes = options.indexes || this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				thisPixel.index = otherPixel.index = indexes[i] &lt;&lt; 2;
@@ -1248,7 +1284,8 @@
 	})();
 
 	/**
-	 * Put pixel within start and offset;
+	 * Plot pixel within start and offset;
+	 * Or to pixels by pre-computing indexes;
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method plot
@@ -1256,6 +1293,7 @@
 	 * @param options.pixel {ImageDataArray}
 	 * @param options.start {Vector2|undefined}
 	 * @param options.offset {Vector2|undefined}
+	 * @param options.indexes {Array|undefined}
 	 * @param options.isMix {Boolean}
 	 */
 	layerProto.plot = function(options){
@@ -1265,8 +1303,8 @@
 		var history = pxl.Layout.history;
 		var method = (options.isMix === true ? &quot;mix&quot; : &quot;set&quot;);
 		var thisPixel = new pxl.Layout.Layer.Pixel(this.data);
-		if (options.start &amp;&amp; options.offset){
-			var indexes = this._layout.indexesAt(options);
+		if ((options.start &amp;&amp; options.offset) || options.indexes){
+			var indexes = options.indexes || this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				thisPixel.index = indexes[i] &lt;&lt; 2;
@@ -1284,6 +1322,8 @@
 	};
 
 	/**
+	 * Replace pixel by new one within start and offset;
+	 * Or according to pre-computing indexes;
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method colorReplace
@@ -1291,6 +1331,7 @@
 	 * @param options.oldPixel {ImageDataArray|Array}
 	 * @param options.pixel {ImageDataArray|Array}
 	 * @param options.start {Vector2|undefined}
+	 * @param options.indexes {Array|undefined}
 	 * @param options.offset {Vector2|undefined}
 	 * @param options.isMix {Boolean}
 	 */
@@ -1302,8 +1343,8 @@
 		var oldPixel = new pxl.ImageDataArray(options.oldPixel);
 		var destPixel = new pxl.Layout.Layer.Pixel(options.oldPixel);
 		destPixel[options.isMix === true ? &quot;mix&quot; : &quot;set&quot;](options.pixel);
-		if (options.start &amp;&amp; options.offset){
-			var indexes = this._layout.indexesAt(options);
+		if ((options.start &amp;&amp; options.offset) || options.indexes){
+			var indexes = options.indexes || this._layout.indexesAt(options);
 			length = indexes.length;
 			for (i = 0; i &lt; length; ++i){
 				pixel.index = indexes[i] &lt;&lt; 2;
@@ -1675,6 +1716,7 @@
 		if (options.start &amp;&amp; options.offset){
 			this._ctx.drawImage(
 				this._buffer.canvas,
+
 				options.start.x, options.start.y, //from
 				options.offset.x, options.offset.y,
 
@@ -1730,12 +1772,9 @@
 		if (this._layoutOwner){
 			if (options.start &amp;&amp; options.offset){
 				this._buffer.putImageData(
-					this._layout.getImageData(
-						options.start.x, options.start.y,
-						options.offset.x, options.offset.y
-					),
-					0, 0,
+					this._layout.getImageData(options),
 					options.start.x, options.start.y,
+					0, 0,
 					options.offset.x, options.offset.y
 				);
 			} else{
@@ -2304,19 +2343,22 @@
 			var _options = {
 				&quot;start&quot;: new pxl.Vector2,
 				&quot;offset&quot;: new pxl.Vector2,
+				&quot;indexes&quot;: null,
 				&quot;pixel&quot;: null,
 				&quot;isMix&quot;: true,
 				&quot;isNotifyView&quot;: true
 			};
 			return function(x, y){
+				var layout = pxl.activeView.getLayout();
 				if (arguments.length){
 					_options.start.set(x, y);
 				} else{
 					_options.start.set(this._settings.current);
 				}
 				_options.offset.set(this._settings.pixelSize);
+				_options.indexes = layout.indexesAt(_options); //trick: compute pixel indexes here
 				_options.pixel = this._settings.pixel;
-				pxl.activeView.getLayout().plot(_options);
+				layout.plot(_options);
 			};
 		})(),
 
@@ -2555,9 +2597,7 @@
 			var session = history.getCurrentSession();
 			if (session){
 				history[_method]();
-				session.layer.getLayout().mergeLayers({}).observer.notify(
-					pxl.PIXELS_CHANGED_EVENT, {}
-				);
+				session.layer.getLayout().mergeLayers({&quot;isNotifyView&quot;: true});
 			}
 			return pxl.Layout.controller;
 		};

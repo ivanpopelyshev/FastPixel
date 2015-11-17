@@ -179,6 +179,8 @@
     };
 
 	/**
+	 * Provide list of indexes within start and offset coordinates.
+	 *
 	 * @method indexesAt
 	 * @param options {Object} [in]
 	 * @param options.start {Vector2}
@@ -190,11 +192,11 @@
 		return function(options){
 			var rContainer = _container; //move reference in current scope
 			var start = options.start;
-			var x = Math.max(0, options.start.x);
-			var y = Math.max(0, options.start.y);
+			var x = Math.max(0, start.x);
+			var y = Math.max(0, start.y);
 			var width = Math.min(this.getWidth() - 1, options.offset.x);
 			var length = width * Math.min(this.getHeight() - 1, options.offset.y);
-			var posWrapper = new pxl.Vector2;
+			var positionTmp = new pxl.Vector2;
 			var indexOffset = 0;
 			var index = this.indexAt(start);
 			rContainer.length = length;
@@ -202,7 +204,7 @@
 				rContainer[i] = index + indexOffset; //take an index relative to coordinates
 				if (++indexOffset >= width){
 					indexOffset = 0;
-					index = this.indexAt(posWrapper.set(x, ++y));
+					index = this.indexAt(positionTmp.set(x, ++y));
 				}
 			}
 			return rContainer;
@@ -233,7 +235,10 @@
 	};
 
 	/**
+	 * Get whole image data or just a part of it (according to options).
+	 *
 	 * @method getImageData
+	 * @param options {Object|undefined} [in]
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
@@ -287,6 +292,18 @@
 			}
 		}
 		return visibleLayers;
+	};
+
+	/**
+	 * @method isWithinLayout
+	 * @param position {Vector2} [in]
+	 * @return {Boolean}
+	 */
+	layoutProto.isWithinLayout = function(position){
+		return (
+			position.x >= 0 && position.x < this.getWidth() &&
+			position.y >= 0 && position.y < this.getHeight()
+		);
 	};
 
 	/**

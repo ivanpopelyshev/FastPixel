@@ -70,4 +70,12 @@ describe("Layout", function(){
 		});
 	});
 
+	describe("point within layout", function(){
+		it("point have to be within layout", function(){
+			var layout = new pxl.Layout(8, 16);
+
+			expect(layout.isWithinLayout(new pxl.Vector2(1, 4))).to.equal(true);
+		});
+	});
+
 });

@@ -59,19 +59,22 @@
 			var _options = {
 				"start": new pxl.Vector2,
 				"offset": new pxl.Vector2,
+				"indexes": null,
 				"pixel": null,
 				"isMix": true,
 				"isNotifyView": true
 			};
 			return function(x, y){
+				var layout = pxl.activeView.getLayout();
 				if (arguments.length){
 					_options.start.set(x, y);
 				} else{
 					_options.start.set(this._settings.current);
 				}
 				_options.offset.set(this._settings.pixelSize);
+				_options.indexes = layout.indexesAt(_options); //trick: compute pixel indexes here
 				_options.pixel = this._settings.pixel;
-				pxl.activeView.getLayout().plot(_options);
+				layout.plot(_options);
 			};
 		})(),
 
