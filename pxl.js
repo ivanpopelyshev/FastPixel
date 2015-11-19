@@ -541,21 +541,26 @@
 	}
 
 	/**
-	 * For performance reason it don't check for types matching during push(),
-	 * so make sure you push same type as you set in constructor;
 	 * Grows up as usual array but this one is better to re-use (GC friendly).
 	 *
 	 * @constructor
 	 * @class GrovingPool
-	 * @param ctor {Function} [in] constructor
+	 * @param constructor {Function} [in]
 	 */
-	var GrovingPool = parent.GrovingPool = function(ctor){
+	var GrovingPool = parent.GrovingPool = function(constructor){
 		/**
 		 * @property _container
 		 * @private
 		 * @type {Array}
 		 */
-		this._container = [ctor()]; //tell interpreter which type we going to store
+		this._container = [new constructor]; //tell interpreter which type we going to store
+
+		/**
+		 * @property _allocator
+		 * @private
+		 * @type {Function}
+		 */
+		this._allocator = constructor;
 
 		/**
 		 * @property _size
@@ -579,17 +584,39 @@
 	};
 
 	/**
-	 * Method don't check for type matching, so be careful!
+	 * Check whenever pool is full.
 	 *
-	 * @method push
-	 * @param object {*} [in]
+	 * @method isFull
+	 * @return {Number}
 	 */
-	poolProto.push = function(object){
+	poolProto.isFull = function(){
+		return this._size === this._container.length;
+	};
+
+	/**
+	 * Check whenever pool is empty.
+	 *
+	 * @method isEmpty
+	 * @return {Number}
+	 */
+	poolProto.isEmpty = function(){
+		return this._container.length === 0;
+	};
+
+	/**
+	 * Expand size and return new top item
+	 *
+	 * @method grow
+	 * @return {*}
+	 */
+	poolProto.expand = function(){
+		var item = null;
 		if (this._size === this._container.length){
-			this._size = this._container.push(object);
-		} else{
-			this._container[this._size++] = object;
+			item = new this._allocator;
+			this._size = this._container.push(item);
+			return item;
 		}
+		return this._container[this._size++];
 	};
 
 	/**
@@ -1100,8 +1127,7 @@
 	 * @return {Boolean}
 	 */
     layerProto.fill = (function(){ //anonymous
-		var _stackX = new pxl.PrimitivePool(Number);
-		var _stackY = new pxl.PrimitivePool(Number);
+		var _stack = new pxl.GrovingPool(pxl.Vector2);
 		return function(options){
 			var startIndex = this._layout.indexAt(options.position);
 			var dataPixel = new pxl.Layout.Layer.Pixel(
@@ -1111,8 +1137,7 @@
 				return false; //don't fill on same colour
 			}
 			var source = new pxl.ImageDataArray(this.pixelFromIndex(startIndex)); //pixel before changes
-			var stackX = _stackX; //store reference in a current scope
-			var stackY = _stackY;
+			var stack = _stack; //store reference in a current scope
 			var history = pxl.Layout.history;
 			var tokenPos = new pxl.Vector2;
 			var layout = this._layout;
@@ -1137,10 +1162,9 @@
 			history.cache(dataPixel); //save before change
 			dataPixel[options.isMix === true ? "mix" : "set"](options.pixel);
 			var seed = this.pixelFromIndex(startIndex); //pixel after changes
-			stackX.push(options.position.x);
-			stackY.push(options.position.y);
+			stack.expand().set(options.position);
 			do{
-				tokenPos.set(stackX.pop(), stackY.pop());
+				tokenPos.set(stack.pop());
 				if (tokenPos.y > boundedTop){ //top
 					tokenPos.y -= 1; //move up
 					_fill();
@@ -1161,10 +1185,9 @@
 					_fill();
 					tokenPos.x += 1;
 				}
-			} while(stackX._size); //god forgive me!
+			} while(stack._size); //god forgive me!
 
-			stackX.reduce();
-			stackY.reduce();
+			stack.reduce();
 
 			return true; //filling completed successfully
 
@@ -1182,9 +1205,8 @@
 					//So, mix source only and then just copy this result!
 					dataPixel.set(seed);
 
-					//expand available memory and set new properties
-					stackX.push(tokenPos.x);
-					stackY.push(tokenPos.y);
+					//expand available memory
+					stack.expand().set(tokenPos);
 				}
 			};
 		};

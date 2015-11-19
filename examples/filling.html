@@ -10,7 +10,7 @@
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
 
-		<script src="../pxl.min.js"></script>
+		<script src="../pxl.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
 			
@@ -20,8 +20,8 @@
 				//create the new View instance, and set it as active:
 				pxl.activeView = pxl.Layout.View.create({
 					canvasSize: {
-						width: 512,
-						height: 512
+						width: 1024,
+						height: 1024
 					},
 					element: canvas
 				});

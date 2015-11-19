@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>PrimitivePool</title>
+    <title>GrovingPool</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -39,12 +39,12 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/controller.html">controller</a></li>
+                                <li><a href="../classes/GrovingPool.html">GrovingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
                                 <li><a href="../classes/Pixel.html">Pixel</a></li>
-                                <li><a href="../classes/PrimitivePool.html">PrimitivePool</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
@@ -86,7 +86,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>PrimitivePool Class</h1>
+<h1>GrovingPool Class</h1>
 <div class="box meta">
 
 
@@ -100,22 +100,19 @@
 
 
 <div class="box intro">
-    <p>Warn: this container is for primitive types only (Boolean, Number, String);
-For performance reason it also don't check for types during push(),
-so make sure you push same type as you set in constructor;
-Grows up as usual array but this one is better to re-use (GC friendly).</p>
+    <p>Grows up as usual array but this one is better to re-use (GC friendly).</p>
 
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_PrimitivePool" class="method item">
-    <h3 class="name"><code>PrimitivePool</code></h3>
+<div id="method_GrovingPool" class="method item">
+    <h3 class="name"><code>GrovingPool</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>ctor</code>
+                        <code>constructor</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -146,8 +143,8 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">ctor</code>
-                        <span class="type">String | Number | Boolean</span>
+                        <code class="param-name">constructor</code>
+                        <span class="type">Function</span>
 
 
                     <div class="param-description">
@@ -193,11 +190,19 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_pop">pop</a>
+                                <a href="#method_grow">grow</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_push">push</a>
+                                <a href="#method_isEmpty">isEmpty</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isFull">isFull</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_pop">pop</a>
 
                             </li>
                             <li class="index-item method">
@@ -219,6 +224,10 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
                     <h3>Properties</h3>
 
                     <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property__allocator">_allocator</a>
+
+                            </li>
                             <li class="index-item property private">
                                 <a href="#property__container">_container</a>
 
@@ -248,7 +257,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">String | Number | Boolean | Null</span>
+            <span class="type"> | Null</span>
         </span>
 
 
@@ -260,7 +269,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l606"><code>pxl.js:606</code></a>
+        <a href="../files/pxl.js.html#l632"><code>pxl.js:632</code></a>
         </p>
 
 
@@ -294,7 +303,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">String | Number | Boolean | Null</span>:
+                        <span class="type"> | Null</span>:
             </div>
         </div>
 
@@ -306,7 +315,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">String | Number | Boolean | Null</span>
+            <span class="type"> | Null</span>
         </span>
 
 
@@ -318,7 +327,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l617"><code>pxl.js:617</code></a>
+        <a href="../files/pxl.js.html#l643"><code>pxl.js:643</code></a>
         </p>
 
 
@@ -335,7 +344,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">String | Number | Boolean | Null</span>:
+                        <span class="type"> | Null</span>:
             </div>
         </div>
 
@@ -356,7 +365,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l645"><code>pxl.js:645</code></a>
+        <a href="../files/pxl.js.html#l671"><code>pxl.js:671</code></a>
         </p>
 
 
@@ -372,13 +381,54 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
 
 
 </div>
-<div id="method_pop" class="method item">
-    <h3 class="name"><code>pop</code></h3>
+<div id="method_grow" class="method item">
+    <h3 class="name"><code>grow</code></h3>
 
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">String | Number | Boolean | Null</span>
+            <span class="type"></span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l606"><code>pxl.js:606</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Expand size and return new top item</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"></span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isEmpty" class="method item">
+    <h3 class="name"><code>isEmpty</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Number</span>
         </span>
 
 
@@ -398,7 +448,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     </div>
 
     <div class="description">
-        <p>Pop the last available element (or null if pool is empty).</p>
+        <p>Check whenever pool is empty.</p>
 
     </div>
 
@@ -407,23 +457,20 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">String | Number | Boolean | Null</span>:
+                        <span class="type">Number</span>:
             </div>
         </div>
 
 
 </div>
-<div id="method_push" class="method item">
-    <h3 class="name"><code>push</code></h3>
+<div id="method_isFull" class="method item">
+    <h3 class="name"><code>isFull</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>primitive</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
+        <span class="returns-inline">
+            <span class="type">Number</span>
+        </span>
 
 
 
@@ -434,7 +481,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l582"><code>pxl.js:582</code></a>
+        <a href="../files/pxl.js.html#l586"><code>pxl.js:586</code></a>
         </p>
 
 
@@ -442,28 +489,59 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     </div>
 
     <div class="description">
-        <p>Method don't check for type matching, so be careful!</p>
+        <p>Check whenever pool is full.</p>
 
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">primitive</code>
-                        <span class="type">String | Number | Boolean</span>
+        <div class="returns">
+            <h4>Returns:</h4>
 
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
+            <div class="returns-description">
+                        <span class="type">Number</span>:
+            </div>
         </div>
 
+
+</div>
+<div id="method_pop" class="method item">
+    <h3 class="name"><code>pop</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type"> | Null</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l622"><code>pxl.js:622</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Pop the last available element (or null if pool is empty).</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"> | Null</span>:
+            </div>
+        </div>
 
 
 </div>
@@ -482,7 +560,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l627"><code>pxl.js:627</code></a>
+        <a href="../files/pxl.js.html#l653"><code>pxl.js:653</code></a>
         </p>
 
 
@@ -513,7 +591,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l636"><code>pxl.js:636</code></a>
+        <a href="../files/pxl.js.html#l662"><code>pxl.js:662</code></a>
         </p>
 
 
@@ -547,7 +625,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l572"><code>pxl.js:572</code></a>
+        <a href="../files/pxl.js.html#l576"><code>pxl.js:576</code></a>
         </p>
 
 
@@ -575,6 +653,31 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+<div id="property__allocator" class="property item private">
+    <h3 class="name"><code>_allocator</code></h3>
+    <span class="type">Function</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l558"><code>pxl.js:558</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+</div>
 <div id="property__container" class="property item private">
     <h3 class="name"><code>_container</code></h3>
     <span class="type">Array</span>
@@ -587,7 +690,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l554"><code>pxl.js:554</code></a>
+        <a href="../files/pxl.js.html#l551"><code>pxl.js:551</code></a>
         </p>
 
 
@@ -612,7 +715,7 @@ Grows up as usual array but this one is better to re-use (GC friendly).</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l561"><code>pxl.js:561</code></a>
+        <a href="../files/pxl.js.html#l565"><code>pxl.js:565</code></a>
         </p>
 
 
