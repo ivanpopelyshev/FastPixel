@@ -541,22 +541,21 @@
 	}
 
 	/**
-	 * Warn: this container is for primitive types only (Boolean, Number, String);
-	 * For performance reason it also don't check for types during push(),
+	 * For performance reason it don't check for types matching during push(),
 	 * so make sure you push same type as you set in constructor;
 	 * Grows up as usual array but this one is better to re-use (GC friendly).
 	 *
 	 * @constructor
-	 * @class PrimitivePool
-	 * @param ctor {String|Number|Boolean} [in]
+	 * @class GrovingPool
+	 * @param ctor {Function} [in] constructor
 	 */
-	var PrimitivePool = parent.PrimitivePool = function(ctor){
+	var GrovingPool = parent.GrovingPool = function(ctor){
 		/**
 		 * @property _container
 		 * @private
 		 * @type {Array}
 		 */
-		this._container = [typeof ctor === "function" ? ctor() : ctor]; //tell interpreter which type we going to use
+		this._container = [ctor()]; //tell interpreter which type we going to store
 
 		/**
 		 * @property _size
@@ -567,7 +566,7 @@
 		this._size = 0;
 	};
 
-	var poolProto = PrimitivePool.prototype;
+	var poolProto = GrovingPool.prototype;
 
 	/**
 	 * Get the current occupied size.
@@ -583,13 +582,13 @@
 	 * Method don't check for type matching, so be careful!
 	 *
 	 * @method push
-	 * @param primitive {String|Number|Boolean} [in]
+	 * @param object {*} [in]
 	 */
-	poolProto.push = function(primitive){
+	poolProto.push = function(object){
 		if (this._size === this._container.length){
-			this._size = this._container.push(primitive);
+			this._size = this._container.push(object);
 		} else{
-			this._container[this._size++] = primitive;
+			this._container[this._size++] = object;
 		}
 	};
 
@@ -597,7 +596,7 @@
 	 * Pop the last available element (or null if pool is empty).
 	 *
 	 * @method pop
-	 * @return {String|Number|Boolean|null}
+	 * @return {*|null}
 	 */
 	poolProto.pop = function(){
 		return (this._size === 0 ? null : this._container[--this._size]);
@@ -608,7 +607,7 @@
 	 *
 	 * @method at
 	 * @param index {Number} [in]
-	 * @return {String|Number|Boolean|null}
+	 * @return {*|null}
 	 */
 	poolProto.at = function(index){
 		return (index < this._size || index < 0 ? this._container[index] : null);
@@ -618,7 +617,7 @@
 	 * Get the last available element (or null if pool is empty).
 	 *
 	 * @method back
-	 * @return {String|Number|Boolean|null}
+	 * @return {*|null}
 	 */
 	poolProto.back = function(){
 		return (this._size === 0 ? null : this._container[this._size - 1]);
