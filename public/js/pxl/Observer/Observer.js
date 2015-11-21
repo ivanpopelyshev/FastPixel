@@ -50,6 +50,9 @@
             var index = list.indexOf(method);
             if (index !== -1){
                 list.splice(index, 1);
+				if (list.length === 0){
+					delete this._eventBook[event];
+				}
             }
         }
     };
