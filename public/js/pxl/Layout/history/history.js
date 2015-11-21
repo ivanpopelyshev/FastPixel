@@ -64,14 +64,16 @@
 		 * @param pixel {Pixel}
 		 */
 		cache: function(pixel){
+			var pixelMap = null;
+			var color = null;
 			if (this._isRecording){
-				var pixelMap = this.lastSession.pixelMap;
-				var color = pixel.toString();
-				if (!(color in pixelMap)){
+				pixelMap = this.lastSession.pixelMap;
+				color = pixel.toString();
+				if (color in pixelMap){
+					pixelMap[color].push(pixel.index);
+				} else{
 					this.lastSession.assoc.push(color);
 					pixelMap[color] = [pixel.index];
-				} else{
-					pixelMap[color].push(pixel.index);
 				}
 			}
 		},
@@ -105,7 +107,7 @@
 		},
 
 		/**
-		 * Stop recording the current Layer and save it's pixels.
+		 * Stop recording the current Layer and save session.
 		 *
 		 * @method stop
 		 */
@@ -113,7 +115,6 @@
 			if (!this.lastSession.assoc.length){
 				return; //empty session (no colours in assoc queue)
 			}
-
 			if (this._pointer < pxl.MAX_HISTORY_SIZE){ //prevent overflow
 				this._container[this._pointer++] = this.lastSession;
 				this._container.splice(this._pointer, this._container.length);
@@ -121,7 +122,6 @@
 				this._container.push(this.lastSession);
 				this._container.shift();
 			}
-
 			this.lastSession = null;
 			this._isRecording = false;
 		},
@@ -148,7 +148,8 @@
 		clean: function(){
 			var container = this._container;
 			var tokenSession = null;
-			for (var i = 0; i < container.length; ++i){
+			var i = 0;
+			while (i < container.length){
 				tokenSession = container[i];
 				if (!tokenSession.layer || tokenSession.layer.data === null){
 					//correctly move pointer:
@@ -162,7 +163,9 @@
 						}
 					}
 					container.splice(i, 1);
+					continue;
 				}
+				++i;
 			}
 		},
 

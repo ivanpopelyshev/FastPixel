@@ -7,7 +7,7 @@ var FILE_LIST = [
 	"./public/js/pxl/pxl.js",
 	"./public/js/pxl/Vector2/Vector2.js",
 	"./public/js/pxl/Observer/Observer.js",
-	"./public/js/pxl/GrovingPool/GrovingPool.js",
+	"./public/js/pxl/GrowingPool/GrowingPool.js",
 	"./public/js/pxl/Layout/Layout.js",
 	"./public/js/pxl/Layout/Layer/Layer.js",
 	"./public/js/pxl/Layout/Layer/Pixel/Pixel.js",

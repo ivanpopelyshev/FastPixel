@@ -157,16 +157,15 @@
 	 * @return {Boolean}
      */
     vector2Proto.cmp = function(param1, param2){
-		var EPSILON = Vector2.EPSILON;
         if (param1 instanceof Vector2){
-            return (Math.abs(this.x - param1.x) < EPSILON &&
-                    Math.abs(this.y - param1.y) < EPSILON);
+            return (Math.abs(this.x - param1.x) < Vector2.EPSILON &&
+                    Math.abs(this.y - param1.y) < Vector2.EPSILON);
         }
         return (
-			Math.abs(this.x - param1) < EPSILON &&
+			Math.abs(this.x - param1) < Vector2.EPSILON &&
 			Math.abs(
 				this.y - (typeof param2 === "number" ? param2 : param1)
-			) < EPSILON
+			) < Vector2.EPSILON
 		);
     };
 

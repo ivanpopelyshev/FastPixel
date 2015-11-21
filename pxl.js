@@ -318,16 +318,15 @@
 	 * @return {Boolean}
      */
     vector2Proto.cmp = function(param1, param2){
-		var EPSILON = Vector2.EPSILON;
         if (param1 instanceof Vector2){
-            return (Math.abs(this.x - param1.x) < EPSILON &&
-                    Math.abs(this.y - param1.y) < EPSILON);
+            return (Math.abs(this.x - param1.x) < Vector2.EPSILON &&
+                    Math.abs(this.y - param1.y) < Vector2.EPSILON);
         }
         return (
-			Math.abs(this.x - param1) < EPSILON &&
+			Math.abs(this.x - param1) < Vector2.EPSILON &&
 			Math.abs(
 				this.y - (typeof param2 === "number" ? param2 : param1)
-			) < EPSILON
+			) < Vector2.EPSILON
 		);
     };
 
@@ -515,6 +514,9 @@
             var index = list.indexOf(method);
             if (index !== -1){
                 list.splice(index, 1);
+				if (list.length === 0){
+					delete this._eventBook[event];
+				}
             }
         }
     };
@@ -544,10 +546,10 @@
 	 * Grows up as usual array but this one is better to re-use (GC friendly).
 	 *
 	 * @constructor
-	 * @class GrovingPool
+	 * @class GrowingPool
 	 * @param constructor {Function} [in]
 	 */
-	var GrovingPool = parent.GrovingPool = function(constructor){
+	var GrowingPool = parent.GrowingPool = function(constructor){
 		/**
 		 * @property _container
 		 * @private
@@ -571,7 +573,7 @@
 		this._size = 0;
 	};
 
-	var poolProto = GrovingPool.prototype;
+	var poolProto = GrowingPool.prototype;
 
 	/**
 	 * Get the current occupied size.
@@ -594,7 +596,7 @@
 	};
 
 	/**
-	 * Check whenever pool is empty.
+	 * Check whenever pool's memory is empty.
 	 *
 	 * @method isEmpty
 	 * @return {Number}
@@ -606,8 +608,8 @@
 	/**
 	 * Expand size and return new top item
 	 *
-	 * @method grow
-	 * @return {*}
+	 * @method expand
+	 * @return {ANY}
 	 */
 	poolProto.expand = function(){
 		var item = null;
@@ -623,7 +625,7 @@
 	 * Pop the last available element (or null if pool is empty).
 	 *
 	 * @method pop
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.pop = function(){
 		return (this._size === 0 ? null : this._container[--this._size]);
@@ -634,7 +636,7 @@
 	 *
 	 * @method at
 	 * @param index {Number} [in]
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.at = function(index){
 		return (index < this._size || index < 0 ? this._container[index] : null);
@@ -644,7 +646,7 @@
 	 * Get the last available element (or null if pool is empty).
 	 *
 	 * @method back
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.back = function(){
 		return (this._size === 0 ? null : this._container[this._size - 1]);
@@ -974,28 +976,15 @@
 	};
 
 	/**
-	 * @method isWithinLayout
-	 * @param position {Vector2} [in]
-	 * @return {Boolean}
-	 */
-	layoutProto.isWithinLayout = function(position){
-		return (
-			position.x >= 0 && position.x < this.getWidth() &&
-			position.y >= 0 && position.y < this.getHeight()
-		);
-	};
-
-	/**
 	 * @destructor
 	 * @method destroy
 	 */
 	layoutProto.destroy = function(){
 		this.dataLayer.destroy();
-		this.dataLayer = this.activeLayer = null;
+		this._imageData = this.dataLayer = this.activeLayer = null;
 		while (this.layerList.length){
 			this.layerList.pop().destroy();
 		}
-		this._imageData = null;
 	};
 })();
 (function(){
@@ -1127,7 +1116,7 @@
 	 * @return {Boolean}
 	 */
     layerProto.fill = (function(){ //anonymous
-		var _stack = new pxl.GrovingPool(pxl.Vector2);
+		var _stack = new pxl.GrowingPool(pxl.Vector2);
 		return function(options){
 			var startIndex = this._layout.indexAt(options.position);
 			var dataPixel = new pxl.Layout.Layer.Pixel(
@@ -1186,8 +1175,6 @@
 					tokenPos.x += 1;
 				}
 			} while(stack._size); //god forgive me!
-
-			stack.reduce();
 
 			return true; //filling completed successfully
 
@@ -2025,14 +2012,16 @@
 		 * @param pixel {Pixel}
 		 */
 		cache: function(pixel){
+			var pixelMap = null;
+			var color = null;
 			if (this._isRecording){
-				var pixelMap = this.lastSession.pixelMap;
-				var color = pixel.toString();
-				if (!(color in pixelMap)){
+				pixelMap = this.lastSession.pixelMap;
+				color = pixel.toString();
+				if (color in pixelMap){
+					pixelMap[color].push(pixel.index);
+				} else{
 					this.lastSession.assoc.push(color);
 					pixelMap[color] = [pixel.index];
-				} else{
-					pixelMap[color].push(pixel.index);
 				}
 			}
 		},
@@ -2066,7 +2055,7 @@
 		},
 
 		/**
-		 * Stop recording the current Layer and save it's pixels.
+		 * Stop recording the current Layer and save session.
 		 *
 		 * @method stop
 		 */
@@ -2074,7 +2063,6 @@
 			if (!this.lastSession.assoc.length){
 				return; //empty session (no colours in assoc queue)
 			}
-
 			if (this._pointer < pxl.MAX_HISTORY_SIZE){ //prevent overflow
 				this._container[this._pointer++] = this.lastSession;
 				this._container.splice(this._pointer, this._container.length);
@@ -2082,7 +2070,6 @@
 				this._container.push(this.lastSession);
 				this._container.shift();
 			}
-
 			this.lastSession = null;
 			this._isRecording = false;
 		},
@@ -2109,7 +2096,8 @@
 		clean: function(){
 			var container = this._container;
 			var tokenSession = null;
-			for (var i = 0; i < container.length; ++i){
+			var i = 0;
+			while (i < container.length){
 				tokenSession = container[i];
 				if (!tokenSession.layer || tokenSession.layer.data === null){
 					//correctly move pointer:
@@ -2123,7 +2111,9 @@
 						}
 					}
 					container.splice(i, 1);
+					continue;
 				}
+				++i;
 			}
 		},
 
@@ -2221,6 +2211,27 @@
 		},
 
 		/**
+		 * Check whenever coordinates are within layout;
+		 * If there are no arguments the position from last user update would be taken.
+		 *
+		 * @method isWithinLayout
+		 * @param x {Number|undefined}
+		 * @param y {Number|undefined}
+		 * @return {Boolean}
+		 */
+		isWithinLayout: function(x, y){
+			var layout = pxl.activeView.getLayout();
+			if (!arguments.length){
+				x = this._settings.current.x;
+				y = this._settings.current.y;
+			}
+			return (
+				x >= 0 && x < layout.getWidth() &&
+				y >= 0 && y < layout.getHeight()
+			);
+		},
+
+		/**
 		 * Put the position where plot the pixel;
 		 * If there are no parameters,
 		 * the position would be taken from last updated user position.
@@ -2314,6 +2325,32 @@
 				"position": position,
 				"pixel": this._settings.pixel,
 				"isMix": true,
+				"isNotifyView": true
+			});
+		},
+
+		/**
+		 * Put the position from which colour to replacement will be taken;
+		 * If there are no parameters,
+		 * the position would be taken from last updated user position.
+		 *
+		 * @see updateUserPosition
+		 * @method colorReplace
+		 * @param x {Number}
+		 * @param y {Number}
+		 */
+		colorReplace: function(x, y){
+			var position = (arguments.length
+				? new pxl.Vector2(x, y)
+				: new pxl.Vector2(this._settings.current)
+			);
+			var layout = pxl.activeView.getLayout();
+			pxl.activeView.fitToTransition(position);
+			layout.colorReplace({
+				"position": position,
+				"oldPixel": layout.dataLayer.pixelFromPosition(position),
+				"pixel": this._settings.pixel,
+				"isMix": false,
 				"isNotifyView": true
 			});
 		},

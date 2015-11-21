@@ -31,6 +31,14 @@
 
 				//draw square:
 				controller.record(function(){
+					this.setColor(
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0
+					).fill(0, 0);
+					this.setColor(0, 0, 0, 255);
+					this.setPixelSize(5);
 					this.plotLine(200, 200, 250, 200);
 					this.plotLine(250, 200, 250, 250);
 					this.plotLine(250, 250, 200, 250);
@@ -61,18 +69,16 @@
 			};
 
 			function fill(x, y){
-				controller.setColor( //pick random colour
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0,
-					(Math.random() * 255) | 0
-				).draw(function(){
-					this.record(function(){
-						this.fill(x, y);
-					});
-				}).setColor(0, 0, 0, 255); //turn to black
+				controller.record(function(){
+					this.setColor(
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0,
+						(Math.random() * 255) | 0
+					).colorReplace(x, y);
+				});
 			}
 		</script>
-		<p>click on different zones to see how invoke "fill" method</p>
+		<p>Replace current main colour on each click</p>
 	</body>
 </html>

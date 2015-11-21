@@ -127,7 +127,7 @@
 	 * @return {Boolean}
 	 */
     layerProto.fill = (function(){ //anonymous
-		var _stack = new pxl.GrovingPool(pxl.Vector2);
+		var _stack = new pxl.GrowingPool(pxl.Vector2);
 		return function(options){
 			var startIndex = this._layout.indexAt(options.position);
 			var dataPixel = new pxl.Layout.Layer.Pixel(
@@ -186,8 +186,6 @@
 					tokenPos.x += 1;
 				}
 			} while(stack._size); //god forgive me!
-
-			stack.reduce();
 
 			return true; //filling completed successfully
 

@@ -1,17 +1,35 @@
 var expect = chai.expect;
 
-describe("GrovingPool", function(){
+describe("GrowingPool", function(){
 	describe("create new instance", function(){
 		it("size should be equal to zero", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			
 			expect(pool.size()).to.equal(0);
 		});
 	});
 
+	describe("full pool", function(){
+		it("pool should be full", function(){
+			var pool = new pxl.GrowingPool(Object);
+			pool.expand();
+
+			expect(pool.isFull()).to.equal(true);
+		});
+	});
+
+	describe("empty pool", function(){
+		it("pool should be empty", function(){
+			var pool = new pxl.GrowingPool(Object);
+			pool.free();
+
+			expect(pool.isEmpty()).to.equal(true);
+		});
+	});
+
 	describe("expand pool", function(){
 		it("size should be expanded", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand();
 
 			expect(pool.size()).to.equal(1);
@@ -20,7 +38,7 @@ describe("GrovingPool", function(){
 
 	describe("pop just added item", function(){
 		it("size should be decreased", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key"] = "value";
 
 			expect(pool.pop().key).to.equal("value");
@@ -30,7 +48,7 @@ describe("GrovingPool", function(){
 
 	describe("pop on empty pool", function(){
 		it("return null if there are no items", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 
 			expect(pool.pop()).to.equal(null);
 			expect(pool.size()).to.equal(0);
@@ -39,7 +57,7 @@ describe("GrovingPool", function(){
 
 	describe("get item by index", function(){
 		it("return desired item if index is correct", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key"] = "value";
 
 			expect(pool.at(0).key).to.equal("value");
@@ -48,7 +66,7 @@ describe("GrovingPool", function(){
 
 	describe("get last item", function(){
 		it("return the item from back", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key1"] = "value1";
 			pool.expand()["key2"] = "value2";
 			pool.expand()["key3"] = "value3";
@@ -59,7 +77,7 @@ describe("GrovingPool", function(){
 
 	describe("get last item on empty pool", function(){
 		it("return null if there are no items", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 
 			expect(pool.back()).to.equal(null);
 		});
@@ -67,7 +85,7 @@ describe("GrovingPool", function(){
 
 	describe("reduce the size", function(){
 		it("size should be completely reduced", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key1"] = "value1";
 			pool.expand()["key2"] = "value2";
 			pool.expand()["key3"] = "value3";
@@ -80,7 +98,7 @@ describe("GrovingPool", function(){
 
 	describe("shrink pool instance to fit", function(){
 		it("pool's content from last usage should be shrunk to the current size", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key1"] = "value1";
 			pool.expand()["key2"] = "value2";
 			pool.expand()["key3"] = "value3";
@@ -95,7 +113,7 @@ describe("GrovingPool", function(){
 
 	describe("free memory", function(){
 		it("size should be completely reduced", function(){
-			var pool = new pxl.GrovingPool(Object);
+			var pool = new pxl.GrowingPool(Object);
 			pool.expand()["key1"] = "value1";
 			pool.expand()["key2"] = "value2";
 			pool.expand()["key3"] = "value3";

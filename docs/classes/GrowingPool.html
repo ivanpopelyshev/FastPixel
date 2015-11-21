@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>GrovingPool</title>
+    <title>GrowingPool</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -39,7 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/controller.html">controller</a></li>
-                                <li><a href="../classes/GrovingPool.html">GrovingPool</a></li>
+                                <li><a href="../classes/GrowingPool.html">GrowingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
@@ -86,12 +86,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>GrovingPool Class</h1>
+<h1>GrowingPool Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l543"><code>pxl.js:543</code></a>
+            Defined in: <a href="../files/pxl.js.html#l545"><code>pxl.js:545</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -106,8 +106,8 @@
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_GrovingPool" class="method item">
-    <h3 class="name"><code>GrovingPool</code></h3>
+<div id="method_GrowingPool" class="method item">
+    <h3 class="name"><code>GrowingPool</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -127,7 +127,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l543"><code>pxl.js:543</code></a>
+        <a href="../files/pxl.js.html#l545"><code>pxl.js:545</code></a>
         </p>
 
 
@@ -186,11 +186,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_free">free</a>
+                                <a href="#method_expand">expand</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_grow">grow</a>
+                                <a href="#method_free">free</a>
 
                             </li>
                             <li class="index-item method">
@@ -257,7 +257,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type"> | Null</span>
+            <span class="type">ANY | Null</span>
         </span>
 
 
@@ -269,7 +269,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l632"><code>pxl.js:632</code></a>
+        <a href="../files/pxl.js.html#l634"><code>pxl.js:634</code></a>
         </p>
 
 
@@ -303,7 +303,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"> | Null</span>:
+                        <span class="type">ANY | Null</span>:
             </div>
         </div>
 
@@ -315,7 +315,7 @@
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"> | Null</span>
+            <span class="type">ANY | Null</span>
         </span>
 
 
@@ -327,7 +327,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l643"><code>pxl.js:643</code></a>
+        <a href="../files/pxl.js.html#l645"><code>pxl.js:645</code></a>
         </p>
 
 
@@ -344,7 +344,48 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"> | Null</span>:
+                        <span class="type">ANY | Null</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_expand" class="method item">
+    <h3 class="name"><code>expand</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">ANY</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l608"><code>pxl.js:608</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Expand size and return new top item</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ANY</span>:
             </div>
         </div>
 
@@ -365,7 +406,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l671"><code>pxl.js:671</code></a>
+        <a href="../files/pxl.js.html#l673"><code>pxl.js:673</code></a>
         </p>
 
 
@@ -378,47 +419,6 @@
     </div>
 
 
-
-
-</div>
-<div id="method_grow" class="method item">
-    <h3 class="name"><code>grow</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type"></span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l606"><code>pxl.js:606</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Expand size and return new top item</p>
-
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type"></span>:
-            </div>
-        </div>
 
 
 </div>
@@ -440,7 +440,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l596"><code>pxl.js:596</code></a>
+        <a href="../files/pxl.js.html#l598"><code>pxl.js:598</code></a>
         </p>
 
 
@@ -448,7 +448,7 @@
     </div>
 
     <div class="description">
-        <p>Check whenever pool is empty.</p>
+        <p>Check whenever pool's memory is empty.</p>
 
     </div>
 
@@ -481,7 +481,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l586"><code>pxl.js:586</code></a>
+        <a href="../files/pxl.js.html#l588"><code>pxl.js:588</code></a>
         </p>
 
 
@@ -510,7 +510,7 @@
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"> | Null</span>
+            <span class="type">ANY | Null</span>
         </span>
 
 
@@ -522,7 +522,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l622"><code>pxl.js:622</code></a>
+        <a href="../files/pxl.js.html#l624"><code>pxl.js:624</code></a>
         </p>
 
 
@@ -539,7 +539,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"> | Null</span>:
+                        <span class="type">ANY | Null</span>:
             </div>
         </div>
 
@@ -560,7 +560,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l653"><code>pxl.js:653</code></a>
+        <a href="../files/pxl.js.html#l655"><code>pxl.js:655</code></a>
         </p>
 
 
@@ -591,7 +591,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l662"><code>pxl.js:662</code></a>
+        <a href="../files/pxl.js.html#l664"><code>pxl.js:664</code></a>
         </p>
 
 
@@ -625,7 +625,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l576"><code>pxl.js:576</code></a>
+        <a href="../files/pxl.js.html#l578"><code>pxl.js:578</code></a>
         </p>
 
 
@@ -665,7 +665,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l558"><code>pxl.js:558</code></a>
+        <a href="../files/pxl.js.html#l560"><code>pxl.js:560</code></a>
         </p>
 
 
@@ -690,7 +690,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l551"><code>pxl.js:551</code></a>
+        <a href="../files/pxl.js.html#l553"><code>pxl.js:553</code></a>
         </p>
 
 
@@ -715,7 +715,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l565"><code>pxl.js:565</code></a>
+        <a href="../files/pxl.js.html#l567"><code>pxl.js:567</code></a>
         </p>
 
 

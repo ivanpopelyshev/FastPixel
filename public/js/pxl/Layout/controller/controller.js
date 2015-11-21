@@ -46,6 +46,27 @@
 		},
 
 		/**
+		 * Check whenever coordinates are within layout;
+		 * If there are no arguments the position from last user update would be taken.
+		 *
+		 * @method isWithinLayout
+		 * @param x {Number|undefined}
+		 * @param y {Number|undefined}
+		 * @return {Boolean}
+		 */
+		isWithinLayout: function(x, y){
+			var layout = pxl.activeView.getLayout();
+			if (!arguments.length){
+				x = this._settings.current.x;
+				y = this._settings.current.y;
+			}
+			return (
+				x >= 0 && x < layout.getWidth() &&
+				y >= 0 && y < layout.getHeight()
+			);
+		},
+
+		/**
 		 * Put the position where plot the pixel;
 		 * If there are no parameters,
 		 * the position would be taken from last updated user position.
@@ -139,6 +160,32 @@
 				"position": position,
 				"pixel": this._settings.pixel,
 				"isMix": true,
+				"isNotifyView": true
+			});
+		},
+
+		/**
+		 * Put the position from which colour to replacement will be taken;
+		 * If there are no parameters,
+		 * the position would be taken from last updated user position.
+		 *
+		 * @see updateUserPosition
+		 * @method colorReplace
+		 * @param x {Number}
+		 * @param y {Number}
+		 */
+		colorReplace: function(x, y){
+			var position = (arguments.length
+				? new pxl.Vector2(x, y)
+				: new pxl.Vector2(this._settings.current)
+			);
+			var layout = pxl.activeView.getLayout();
+			pxl.activeView.fitToTransition(position);
+			layout.colorReplace({
+				"position": position,
+				"oldPixel": layout.dataLayer.pixelFromPosition(position),
+				"pixel": this._settings.pixel,
+				"isMix": false,
 				"isNotifyView": true
 			});
 		},

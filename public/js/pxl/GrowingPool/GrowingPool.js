@@ -9,10 +9,10 @@
 	 * Grows up as usual array but this one is better to re-use (GC friendly).
 	 *
 	 * @constructor
-	 * @class GrovingPool
+	 * @class GrowingPool
 	 * @param constructor {Function} [in]
 	 */
-	var GrovingPool = parent.GrovingPool = function(constructor){
+	var GrowingPool = parent.GrowingPool = function(constructor){
 		/**
 		 * @property _container
 		 * @private
@@ -36,7 +36,7 @@
 		this._size = 0;
 	};
 
-	var poolProto = GrovingPool.prototype;
+	var poolProto = GrowingPool.prototype;
 
 	/**
 	 * Get the current occupied size.
@@ -59,7 +59,7 @@
 	};
 
 	/**
-	 * Check whenever pool is empty.
+	 * Check whenever pool's memory is empty.
 	 *
 	 * @method isEmpty
 	 * @return {Number}
@@ -71,8 +71,8 @@
 	/**
 	 * Expand size and return new top item
 	 *
-	 * @method grow
-	 * @return {*}
+	 * @method expand
+	 * @return {ANY}
 	 */
 	poolProto.expand = function(){
 		var item = null;
@@ -88,7 +88,7 @@
 	 * Pop the last available element (or null if pool is empty).
 	 *
 	 * @method pop
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.pop = function(){
 		return (this._size === 0 ? null : this._container[--this._size]);
@@ -99,7 +99,7 @@
 	 *
 	 * @method at
 	 * @param index {Number} [in]
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.at = function(index){
 		return (index < this._size || index < 0 ? this._container[index] : null);
@@ -109,7 +109,7 @@
 	 * Get the last available element (or null if pool is empty).
 	 *
 	 * @method back
-	 * @return {*|null}
+	 * @return {ANY|null}
 	 */
 	poolProto.back = function(){
 		return (this._size === 0 ? null : this._container[this._size - 1]);

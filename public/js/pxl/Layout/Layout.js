@@ -295,27 +295,14 @@
 	};
 
 	/**
-	 * @method isWithinLayout
-	 * @param position {Vector2} [in]
-	 * @return {Boolean}
-	 */
-	layoutProto.isWithinLayout = function(position){
-		return (
-			position.x >= 0 && position.x < this.getWidth() &&
-			position.y >= 0 && position.y < this.getHeight()
-		);
-	};
-
-	/**
 	 * @destructor
 	 * @method destroy
 	 */
 	layoutProto.destroy = function(){
 		this.dataLayer.destroy();
-		this.dataLayer = this.activeLayer = null;
+		this._imageData = this.dataLayer = this.activeLayer = null;
 		while (this.layerList.length){
 			this.layerList.pop().destroy();
 		}
-		this._imageData = null;
 	};
 })();

@@ -39,7 +39,7 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/controller.html">controller</a></li>
-                                <li><a href="../classes/GrovingPool.html">GrovingPool</a></li>
+                                <li><a href="../classes/GrowingPool.html">GrowingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
@@ -91,7 +91,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l2181"><code>pxl.js:2181</code></a>
+            Defined in: <a href="../files/pxl.js.html#l2171"><code>pxl.js:2171</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -125,11 +125,19 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_colorReplace">colorReplace</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_draw">draw</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_fill">fill</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isWithinLayout">isWithinLayout</a>
 
                             </li>
                             <li class="index-item method">
@@ -232,7 +240,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2321"><code>pxl.js:2321</code></a>
+        <a href="../files/pxl.js.html#l2358"><code>pxl.js:2358</code></a>
         </p>
 
 
@@ -244,6 +252,74 @@
 
     </div>
 
+
+
+
+</div>
+<div id="method_colorReplace" class="method item">
+    <h3 class="name"><code>colorReplace</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2332"><code>pxl.js:2332</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Put the position from which colour to replacement will be taken;
+If there are no parameters,
+the position would be taken from last updated user position.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -270,7 +346,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2452"><code>pxl.js:2452</code></a>
+        <a href="../files/pxl.js.html#l2489"><code>pxl.js:2489</code></a>
         </p>
 
 
@@ -326,7 +402,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2297"><code>pxl.js:2297</code></a>
+        <a href="../files/pxl.js.html#l2308"><code>pxl.js:2308</code></a>
         </p>
 
 
@@ -370,6 +446,83 @@ the position would be taken from last updated user position.</p>
 
 
 </div>
+<div id="method_isWithinLayout" class="method item">
+    <h3 class="name"><code>isWithinLayout</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>x</code>
+                </li>
+                <li class="arg">
+                        <code>y</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2213"><code>pxl.js:2213</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Check whenever coordinates are within layout;
+If there are no arguments the position from last user update would be taken.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">x</code>
+                        <span class="type">Number | Undefined</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y</code>
+                        <span class="type">Number | Undefined</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_moveView" class="method item">
     <h3 class="name"><code>moveView</code></h3>
 
@@ -386,7 +539,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2475"><code>pxl.js:2475</code></a>
+        <a href="../files/pxl.js.html#l2512"><code>pxl.js:2512</code></a>
         </p>
 
 
@@ -431,7 +584,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2256"><code>pxl.js:2256</code></a>
+        <a href="../files/pxl.js.html#l2267"><code>pxl.js:2267</code></a>
         </p>
 
 
@@ -520,7 +673,7 @@ the start and end would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2223"><code>pxl.js:2223</code></a>
+        <a href="../files/pxl.js.html#l2234"><code>pxl.js:2234</code></a>
         </p>
 
 
@@ -582,7 +735,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2213"><code>pxl.js:2213</code></a>
+        <a href="../files/pxl.js.html#l2203"><code>pxl.js:2203</code></a>
         </p>
 
 
@@ -627,7 +780,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2422"><code>pxl.js:2422</code></a>
+        <a href="../files/pxl.js.html#l2459"><code>pxl.js:2459</code></a>
         </p>
 
 
@@ -675,7 +828,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2358"><code>pxl.js:2358</code></a>
+        <a href="../files/pxl.js.html#l2395"><code>pxl.js:2395</code></a>
         </p>
 
 
@@ -706,7 +859,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2464"><code>pxl.js:2464</code></a>
+        <a href="../files/pxl.js.html#l2501"><code>pxl.js:2501</code></a>
         </p>
 
 
@@ -743,7 +896,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2364"><code>pxl.js:2364</code></a>
+        <a href="../files/pxl.js.html#l2401"><code>pxl.js:2401</code></a>
         </p>
 
 
@@ -806,7 +959,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2391"><code>pxl.js:2391</code></a>
+        <a href="../files/pxl.js.html#l2428"><code>pxl.js:2428</code></a>
         </p>
 
 
@@ -889,7 +1042,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2379"><code>pxl.js:2379</code></a>
+        <a href="../files/pxl.js.html#l2416"><code>pxl.js:2416</code></a>
         </p>
 
 
@@ -936,7 +1089,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2434"><code>pxl.js:2434</code></a>
+        <a href="../files/pxl.js.html#l2471"><code>pxl.js:2471</code></a>
         </p>
 
 
@@ -967,7 +1120,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2404"><code>pxl.js:2404</code></a>
+        <a href="../files/pxl.js.html#l2441"><code>pxl.js:2441</code></a>
         </p>
 
 
@@ -998,7 +1151,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2443"><code>pxl.js:2443</code></a>
+        <a href="../files/pxl.js.html#l2480"><code>pxl.js:2480</code></a>
         </p>
 
 
@@ -1029,7 +1182,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2413"><code>pxl.js:2413</code></a>
+        <a href="../files/pxl.js.html#l2450"><code>pxl.js:2450</code></a>
         </p>
 
 
@@ -1060,7 +1213,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2352"><code>pxl.js:2352</code></a>
+        <a href="../files/pxl.js.html#l2389"><code>pxl.js:2389</code></a>
         </p>
 
 
@@ -1100,7 +1253,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2198"><code>pxl.js:2198</code></a>
+        <a href="../files/pxl.js.html#l2188"><code>pxl.js:2188</code></a>
         </p>
 
 
@@ -1158,7 +1311,7 @@ the position would be taken from last updated user position.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2186"><code>pxl.js:2186</code></a>
+        <a href="../files/pxl.js.html#l2176"><code>pxl.js:2176</code></a>
         </p>
 
 
