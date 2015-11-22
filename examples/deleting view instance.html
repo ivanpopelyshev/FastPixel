@@ -64,18 +64,18 @@
 
 			function userDownMouse(e){
 				isMouseDown = true;
-				controller.startRecord().startDraw().plotPixel();
+				controller.startDraw().plotPixel();
 			};
 
 			function userUpMouse(e){
 				isMouseDown = false;
-				controller.stopRecord().stopDraw();
+				controller.stopDraw();
 			};
 
 			function userMove(e){
 				controller.updateUserPosition(e.pageX, e.pageY);
-				if (controller.positionUpdated()){
-					if (isMouseDown && controller.isWithinLayout()){
+				if (controller.positionUpdated() && controller.isWithinLayout()){
+					if (isMouseDown){
 						controller.plotLine();
 					} else {
 						controller.draw(function(){
@@ -91,15 +91,15 @@
 			};
 
 			function userKey(e){
-				if (e.keyCode === 100){
+				if (e.which === 100){
 					controller.removeActiveView();
 					document.removeEventListener("mousedown", userDownMouse);
 					document.removeEventListener("mouseup", userUpMouse);
 					document.removeEventListener("wheel", userWheel);
 					canvas.removeEventListener("mousemove", userMove);
-				} else if (e.keyCode === 121){
+				} else if (e.which === 121){
 					controller.draw(controller.redo);
-				} else if (e.keyCode === 122){
+				} else if (e.which === 122){
 					controller.draw(controller.undo);
 				}
 			};

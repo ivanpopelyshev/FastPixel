@@ -45,8 +45,8 @@
 				document.addEventListener("keypress", function(e){
 					//no time to catch "ctrl + z" or "ctrl + y",
 					//so, just "z" or "y"
-					if (e.keyCode === 121) controller.redo();
-					else if (e.keyCode === 122) controller.undo();
+					if (e.which === 121) controller.redo();
+					else if (e.which === 122) controller.undo();
 				}, false);
 			} else{
 				alert("Not supported!"); //old IE or something like that

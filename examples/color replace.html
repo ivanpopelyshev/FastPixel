@@ -31,18 +31,10 @@
 
 				//draw square:
 				controller.record(function(){
-					this.setColor(
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0
-					).fill(0, 0);
-					this.setColor(0, 0, 0, 255);
 					this.setPixelSize(5);
-					this.plotLine(200, 200, 250, 200);
-					this.plotLine(250, 200, 250, 250);
-					this.plotLine(250, 250, 200, 250);
-					this.plotLine(200, 250, 200, 200);
+					rect(200, 200, 50, 50);
+					rect(400, 150, 50, 50);
+					rect(100, 450, 50, 50);					
 				});
 
 				//listen for some of user movements:
@@ -52,6 +44,13 @@
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
+
+			function rect(x, y, width, height){
+				controller.plotLine(x, y, x + width, y);
+				controller.plotLine(x + width, y, x + width, y + height);
+				controller.plotLine(x + width, y + height, x, y + height);
+				controller.plotLine(x, y + height, x, y);
+			};
 
 			function userDownMouse(e){
 				fill(Math.floor(e.pageX), Math.floor(e.pageY));
@@ -64,8 +63,8 @@
 			function userKey(e){
 				//no time to catch "ctrl + z" or "ctrl + y",
 				//so, just "z" or "y"
-				if (e.keyCode === 121) controller.redo();
-				else if (e.keyCode === 122) controller.undo();
+				if (e.which === 121) controller.redo();
+				else if (e.which === 122) controller.undo();
 			};
 
 			function fill(x, y){

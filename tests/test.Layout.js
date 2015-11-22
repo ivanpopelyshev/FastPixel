@@ -7,7 +7,6 @@ describe("Layout", function(){
 
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
-			expect(layout.getImageData().data.length).to.equal(8 * 16 * 4);
 		});
 	});
 
@@ -17,7 +16,6 @@ describe("Layout", function(){
 
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
-			expect(layout.getImageData().data.length).to.equal(8 * 16 * 4);
 		});
 	});
 
@@ -27,7 +25,6 @@ describe("Layout", function(){
 			layout.appendLayer();
 
 			expect(layout.layerList.length).to.equal(1);
-			expect(layout.activeLayer.data.length).to.equal(8 * 16 * 4);
 		});
 	});
 

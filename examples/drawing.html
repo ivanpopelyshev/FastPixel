@@ -28,6 +28,11 @@
 				});
 
 				var controller = pxl.Layout.controller;
+				
+				controller.plotLine(0, 0, 1023, 0);
+				controller.plotLine(1023, 0, 1023, 1023);
+				controller.plotLine(1023, 1023, 0, 1023);
+				controller.plotLine(0, 1023, 0, 0);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
@@ -77,8 +82,8 @@
 				//no time to catch "ctrl + z" or "ctrl + y",
 				//so, just "z" or "y"
 				controller.draw(function(){
-					if (e.keyCode === 121) controller.redo();
-					else if (e.keyCode === 122) controller.undo();
+					if (e.which === 121) controller.redo();
+					else if (e.which === 122) controller.undo();
 				});
 			};
 		</script>

@@ -42,9 +42,11 @@
 					"pixel": new pxl.ImageDataArray([255, 0, 255, 255]) //magenta
 				});
 
+				pxl.Layout.controller.setPixelSize(5);
+
 				//this method change model, so each view instance,
 				//that subscribed on changes will update them:
-				pxl.Layout.controller.plotLine(60, 50, 68, 50);
+				pxl.Layout.controller.plotLine(60, 50, 88, 50);
 
 			} else{
 				alert("Not supported!"); //old IE or something like that

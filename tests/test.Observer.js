@@ -2,7 +2,7 @@ var expect = chai.expect;
 
 describe("Observer", function(){
 	describe("subscribe", function(){
-		it("new item should be added to the _eventBook property", function(){
+		it("new item should be added to the _eventBook", function(){
 			var observer = new pxl.Observer;
 			observer.subscribe("test", function(eventObject){/*...*/});
 

@@ -249,7 +249,7 @@
 				new pxl.ImageDataArray(imageData.data.buffer)
 			);
 			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
-			var indexes = this.indexesAt(options);
+			var indexes = options.indexes || this.indexesAt(options);
 			var length = indexes.length;
 			for (var i = 0, j = 0; i < length; ++i){
 				dataPixel.index = j;
