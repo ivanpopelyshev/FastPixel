@@ -21,18 +21,16 @@
 	}
 
 	/**
-	 * Main API's "namespace"
-	 *
 	 * @module pxl
 	 * @class pxl
 	 * @main pxl
-	 * @author Kurz Studious
 	 */
 	return {
 		/**
 		 * @property MIN_ZOOM_SCALE
 		 * @type {Number}
 		 * @final
+		 * @default 1
 		 */
 		MIN_ZOOM_SCALE: 1,
 
@@ -40,27 +38,15 @@
 		 * @property MAX_ZOOM_SCALE
 		 * @type {Number}
 		 * @final
+		 * @default 64
 		 */
 		MAX_ZOOM_SCALE: 64,
-
-		/**
-		 * @property MIN_PEN_SIZE
-		 * @type {Number}
-		 * @final
-		 */
-		MIN_PEN_SIZE: 1,
-
-		/**
-		 * @property MAX_PEN_SIZE
-		 * @type {Number}
-		 * @final
-		 */
-		MAX_PEN_SIZE: 5,
 
 		/**
 		 * @property MIN_CANVAS_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 8
 		 */
 		MIN_CANVAS_SIZE: 8,
 
@@ -70,6 +56,7 @@
 		 * @property MAX_CANVAS_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 1024
 		 */
 		MAX_CANVAS_SIZE: 1024,
 
@@ -79,6 +66,7 @@
 		 * @property MAX_LAYER_COUNT
 		 * @type {Number}
 		 * @final
+		 * @default 8
 		 */
 		MAX_LAYER_COUNT: 8,
 
@@ -86,6 +74,7 @@
 		 * @property MAX_HISTORY_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 20
 		 */
 		MAX_HISTORY_SIZE: 20,
 
@@ -95,6 +84,7 @@
 		 * @property PIXELS_CHANGED_EVENT
 		 * @type {String}
 		 * @final
+		 * @default "pixelsChanged"
 		 */
 		PIXELS_CHANGED_EVENT: "pixelsChanged",
 
@@ -116,7 +106,7 @@
 		activeView: null,
 
 		/**
-		 * Is API supported on current browser. Call one before started.
+		 * Is API supported on current browser. Call it before started.
 		 *
 		 * @method isSupported
 		 * @return {Boolean}
@@ -126,7 +116,7 @@
 		},
 
 		/**
-		 * Clamp a destination number to min-max borders.
+		 * Clamp a number according to min-max borders.
 		 *
 		 * @method clamp
 		 * @param dest {Number}
@@ -139,6 +129,8 @@
 		},
 
 		/**
+		 * More safest and fastest method to create ImageData.
+		 *
 		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number}
 		 * @param arguments[1] {undefined|Number}
@@ -210,7 +202,7 @@
 
 	/**
 	 * Add two Vector2 instances;
-	 * or add Vector2 instance and numbers.
+	 * or add Vector2 instance with numbers.
 	 *
 	 * @method add
      * @param param1 {Vector2|Number}
@@ -229,8 +221,8 @@
     };
 
 	/**
-	 * Substrust one Vector2 instance from another;
-	 * or substrust number from Vector2 instance.
+	 * Substract one Vector2 instance from another;
+	 * or substrast number from Vector2 instance.
 	 *
 	 * @method sub
      * @param param1 {Vector2|Number}
@@ -319,14 +311,13 @@
      */
     vector2Proto.cmp = function(param1, param2){
         if (param1 instanceof Vector2){
-            return (Math.abs(this.x - param1.x) < Vector2.EPSILON &&
-                    Math.abs(this.y - param1.y) < Vector2.EPSILON);
+            return (abs(this.x - param1.x) < Vector2.EPSILON &&
+                    abs(this.y - param1.y) < Vector2.EPSILON);
         }
         return (
-			Math.abs(this.x - param1) < Vector2.EPSILON &&
-			Math.abs(
-				this.y - (typeof param2 === "number" ? param2 : param1)
-			) < Vector2.EPSILON
+			abs(this.x - param1) < Vector2.EPSILON &&
+			abs(this.y - (typeof param2 === "number" ? param2 : param1)) <
+			Vector2.EPSILON
 		);
     };
 
@@ -337,12 +328,8 @@
 	 * @chainable
 	 */
 	vector2Proto.abs = function(){
-		if (this.x < 0){
-			this.x = -this.x;
-		}
-		if (this.y < 0){
-			this.y = -this.y;
-		}
+		this.x = abs(this.x);
+		this.y = abs(this.y);
 		return this;
 	};
 
@@ -353,12 +340,8 @@
 	 * @chainable
 	 */
 	vector2Proto.neg = function(){
-		if (this.x >= 0){
-			this.x = -this.x;
-		}
-		if (this.y >= 0){
-			this.y = -this.y;
-		}
+		this.x = -abs(this.x);
+		this.y = -abs(this.y);
 		return this;
 	};
 
@@ -416,17 +399,17 @@
 	};
 
 	/**
-	 * Check for NaN value inside properties.
+	 * Check properties for NaN.
 	 *
 	 * @method hasNaN
 	 * @return {Boolean}
 	 */
 	vector2Proto.hasNaN = function(){
-		return this.x !== this.x || this.y !== this.y;
+		return isNaN(this.x) || isNaN(this.y);
 	};
 
 	/**
-	 * Check for Infinity value inside properties.
+	 * Check properties for Infinity.
 	 *
 	 * @method hasInfinity
 	 * @return {Boolean}
@@ -436,7 +419,7 @@
 	};
 
     /**
-	 * Return new Vector2 instance with same properties.
+	 * Make new Vector2 instance with same properties.
 	 *
 	 * @method clone
      * @return {Vector2}
@@ -460,6 +443,11 @@
 	//
 	function _ceil(n){
 		return (n === (n | 0) ? n : (n | 0) + 1);
+	};
+
+	//faster than Math.abs
+	function abs(n){
+		return n < 0 ? -n : n;
 	};
 })(pxl);
 ;(function(parent){
@@ -506,7 +494,7 @@
     /**
 	 * @method unsubscribe
      * @param event {String} [in] Name of event.
-     * @param method {Function} [in] Have to be same reference as in subscribe method.
+     * @param method {Function} [in] Have to be same reference that passed in subscribe method.
      */
     observerProto.unsubscribe = function(event, method){
         if (event in this._eventBook){
@@ -543,7 +531,8 @@
 	}
 
 	/**
-	 * Grows up as usual array but this one is better to re-use (GC friendly).
+	 * Grows up as usual array but this one is better to re-use (GC friendly);
+	 * For object types only.
 	 *
 	 * @constructor
 	 * @class GrowingPool
@@ -586,7 +575,8 @@
 	};
 
 	/**
-	 * Check whenever pool is full.
+	 * Check whenever pool is full (size reached its top).
+	 * Warn: new instance not full!
 	 *
 	 * @method isFull
 	 * @return {Number}
@@ -597,6 +587,7 @@
 
 	/**
 	 * Check whenever pool's memory is empty.
+	 * Warn: new instance not empty!
 	 *
 	 * @method isEmpty
 	 * @return {Number}
@@ -606,7 +597,7 @@
 	};
 
 	/**
-	 * Expand size and return new top item
+	 * Expand size and return new item at top.
 	 *
 	 * @method expand
 	 * @return {ANY}
@@ -679,12 +670,137 @@
 		this._container.length = this._size = 0;
 	};
 })(pxl);
+;(function(parent){
+	"use strict";
+
+	if (!parent){
+		return;
+	}
+
+	/**
+	 * @see http://members.chello.at/easyfilter/bresenham.js
+	 * @class bresenham
+	 */
+	var bresenham = parent.bresenham = {
+		/**
+		 * @method line
+		 * @param x0 {Number}
+		 * @param y0 {Number}
+		 * @param x1 {Number}
+		 * @param y1 {Number}
+		 * @param callback {Function}
+		 */
+		line: function(x0, y0, x1, y1, callback){
+			var dx = x1 - x0;
+			if (dx < 0){
+				dx = -dx;
+			}
+			var dy = y1 - y0;
+			if (dy >= 0){
+				dy = -dy;
+			}
+			var sx = x0 < x1 ? 1 : -1;
+			var sy = y0 < y1 ? 1 : -1;
+			var err = dx + dy;
+			var e2 = 0;
+			for (;;){
+				callback(x0, y0);
+				if (x0 === x1 && y0 === y1) break;
+				e2 = err + err;
+				if (e2 >= dy){
+					err += dy;
+					x0 += sx;
+				}
+				if (e2 <= dx){
+					err += dx;
+					y0 += sy;
+				}
+			}
+		},
+
+		/**
+		 * @method rectangle
+		 * @param x0 {Number}
+		 * @param y0 {Number}
+		 * @param x1 {Number}
+		 * @param y1 {Number}
+		 * @param callback {Function}
+		 */
+		rectangle: function(x0, y0, x1, y1, callback){
+			//FIXME
+			bresenham.line(x0, y0, x0 + x1, y0, callback);
+			bresenham.line(x0 + x1, y0, x0 + x1, y0 + y1, callback);
+			bresenham.line(x0 + x1, y0 + y1, x0, y0 + y1, callback);
+			bresenham.line(x0, y0 + y1, x0, y0, callback);
+		},
+
+		/**
+		 * Ellipse inside rectangle.
+		 *
+		 * @method ellipse
+		 * @param x0 {Number}
+		 * @param y0 {Number}
+		 * @param x1 {Number}
+		 * @param y1 {Number}
+		 * @param callback {Function}
+		 */
+		ellipse: function(x0, y0, x1, y1, callback){
+			var a = x1 - x0;
+			if (a < 0){
+				a = -a;
+			}
+			var b = y1 - y0;
+			if (b < 0){
+				b = -b;
+			}
+			var b1 = b & 1;
+			var dx = 4 * (1 - a) * b * b;
+			var dy = 4 * (1 + b1) * a * a;
+			var err = dx + dy + b1 * a * a;
+			var e2 = 0;
+			if (x0 > x1){
+				x0 = x1;
+				x1 += a;
+			}
+			if (y0 > y1){
+				y0 = y1;
+			}
+			y0 += (b + 1) >> 1;
+			y1 = y0 - b1;
+			a = 8 * a * a;
+			b1 = 8 * b * b;                               
+			do {
+				callback(x1, y0);
+				callback(x0, y0);
+				callback(x0, y1);
+				callback(x1, y1);
+				e2 = err << 1;
+				if (e2 <= dy){
+					++y0;
+					--y1;
+					err += dy += a;
+				}
+				if (e2 >= dx || (err << 1) > dy){
+					++x0;
+					--x1;
+					err += dx += b1;
+				}
+			} while (x0 <= x1);
+			while (y0-y1 <= b){
+				callback(x0 - 1, y0);
+				callback(x1 + 1, y0++);
+				callback(x0 - 1, y1);
+				callback(x1 + 1, y1--);
+			}
+		}
+	};
+})(pxl);
 (function(){
 	"use strict";
 
 	/**
-	 * Call with width and height parameters
-	 * or with already existing ImageData as source
+	 * Pass width and height parameters;
+	 * or just already existing ImageData as source.
 	 *
 	 * @constructor
 	 * @class Layout
@@ -775,6 +891,7 @@
 
 	/**
 	 * Each visible layer "drawn" to main dataLayer layer (Back-to-front);
+	 * (delegate processing to the activeLayer);
 	 * Notify subscribers.
 	 *
 	 * @param options {Object} [in]
@@ -793,21 +910,14 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
-			//copy bottom layer:
-			if (options.start && options.offset){
-				clonedOpts.start = options.start;
-				clonedOpts.offset = options.offset;
-				clonedOpts.other = visibleLayers[0];
-				clonedOpts.isMix = false;
-				dataLayer.merge(clonedOpts);
-			} else{
-				dataLayer.copy(visibleLayers[0]);
-			}
-			clonedOpts.isMix = !!options.isMix; //pick correct setting after all
-			//process other layers:
-			for (var i = 1; i < layerCount; ++i){
+			clonedOpts.start = options.start;
+			clonedOpts.offset = options.offset;
+			clonedOpts.indexes = options.indexes;
+			clonedOpts.isMix = false; //it's important to set mix to false at first layer
+			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
-				dataLayer.merge(clonedOpts); //mix other layers
+				dataLayer.merge(clonedOpts);
+				clonedOpts.isMix = !!options.isMix; //other layers have processed properly
 			}
 		}
 		if (options.isNotifyView === true){
@@ -831,7 +941,7 @@
 	};
 
     /**
-     * Plot pixel or group of pixels;
+     * Plot pixel or group of pixels (faster then force-fill);
 	 * delegate processing to the activeLayer.
 	 *
 	 * @method plot
@@ -861,6 +971,7 @@
 
 	/**
 	 * Provide list of indexes within start and offset coordinates.
+	 * Warn: don't compute indexes by yourself! Use this method only!
 	 *
 	 * @method indexesAt
 	 * @param options {Object} [in]
@@ -904,7 +1015,7 @@
 	};
 
 	/**
-	 * Provide position according to index.
+	 * Provide position according to index (without offset).
 	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
@@ -991,12 +1102,10 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class Layer
 	 * @param options {Object} [in]
-	 * @param options.source {ArrayBuffer|Number} Specify other buffer or size (without offset) as a source to create data-array 
+	 * @param options.source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param options.layout {Layout}
 	 * @param options.name {String}
 	 */
@@ -1035,7 +1144,7 @@
 	var layerProto = Layer.prototype;
 
 	/**
-	 * Reset the layer to default.
+	 * Reset the data to default.
 	 *
 	 * @method reset
 	 */
@@ -1051,7 +1160,7 @@
 	};
 
 	/**
-	 * Make sure layers have same size.
+	 * Warn: Make sure layers have same size before call this.
 	 *
 	 * @method copy
 	 * @param other {Layer} [in]
@@ -1067,8 +1176,8 @@
 	};
 
 	/**
-	 * Merge layers within start and offset;
-	 * Or pixels by pre-computing indexes;
+	 * Merge pixels within start and offset;
+	 * Or pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method merge
@@ -1093,10 +1202,14 @@
 				thisPixel[method](otherPixel);
 			}
 		} else{
-			length = this.data.length;
-			for (i = 0; i < length; i += 4){
-				thisPixel.index = otherPixel.index = i;
-				thisPixel[method](otherPixel);
+			if (options.isMix === true){
+				length = this.data.length;
+				for (i = 0; i < length; i += 4){
+					thisPixel.index = otherPixel.index = i;
+					thisPixel.mix(otherPixel);
+				}
+			} else{
+				this.copy(options.other, false); //much faster
 			}
 		}
 	};
@@ -1119,9 +1232,8 @@
 		var _stack = new pxl.GrowingPool(pxl.Vector2);
 		return function(options){
 			var startIndex = this._layout.indexAt(options.position);
-			var dataPixel = new pxl.Layout.Layer.Pixel(
-				this.data, startIndex << 2
-			);
+			var data = this.data;
+			var dataPixel = new pxl.Layout.Layer.Pixel(data, startIndex << 2);
 			if (dataPixel.compare(options.pixel)){
 				return false; //don't fill on same colour
 			}
@@ -1181,7 +1293,7 @@
 			//Helper
 			//I hope, this one become inline in a good browser!!
 			function _fill(){ 
-				dataPixel.index = layout.indexAt(tokenPos) << 2;
+				var index = dataPixel.index = layout.indexAt(tokenPos) << 2;
 				if (dataPixel.compare(source)){
 					//cache for undo-redo
 					history.cache(dataPixel);
@@ -1190,7 +1302,10 @@
 					//seed is mixed once and that's enough!
 					//All other near pixels have to be same!
 					//So, mix source only and then just copy this result!
-					dataPixel.set(seed);
+					data[index] = seed[0];
+					data[index + 1] = seed[1];
+					data[index + 2] = seed[2];
+					data[index + 3] = seed[3];
 
 					//expand available memory
 					stack.expand().set(tokenPos);
@@ -1201,7 +1316,7 @@
 
 	/**
 	 * Plot pixel within start and offset;
-	 * Or to pixels by pre-computing indexes;
+	 * Or to pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method plot
@@ -1239,7 +1354,7 @@
 
 	/**
 	 * Replace pixel by new one within start and offset;
-	 * Or according to pre-computing indexes;
+	 * Or according to pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method colorReplace
@@ -1292,6 +1407,8 @@
 	};
 
 	/**
+	 * Warn: index without offset!
+	 *
 	 * @see layerProto.pixelAt
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
@@ -1302,20 +1419,22 @@
 	};
 
 	/**
+	 * Index with offset on pixel size (which equal to 4 (rgba)).
+	 *
+	 * @method pixelAt
+	 * @param index {Number} [in]
+	 * @return {ImageDataArray} Warn: direct reference onto data's property buffer.
+	 */
+	layerProto.pixelAt = function(index){
+		return this.data.subarray(index, index + 4);
+	};
+
+	/**
 	 * @method getLayout
 	 * @return {Layout}
 	 */
 	layerProto.getLayout = function(){
 		return this._layout;
-	};
-
-	/**
-	 * @method pixelAt
-	 * @param index {Number} [in]
-	 * @return {ImageDataArray} warn: direct reference onto data's property buffer
-	 */
-	layerProto.pixelAt = function(index){
-		return this.data.subarray(index, index + 4);
 	};
 
 	/**
@@ -1332,8 +1451,6 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class Pixel
 	 * @param data {ImageDataArray} [out] warn: size of an array have to be at least 4
@@ -1417,8 +1534,6 @@
 	};
 
 	/**
-	 * Mix two colours
-	 *
 	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
 	 * @method mix
 	 * @param other {Pixel|ImageDataArray|Array} [in]
@@ -1456,8 +1571,6 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class View
 	 * @param options {Object} [in]
@@ -1525,6 +1638,11 @@
 	 * @static
 	 * @method create
 	 * @param options {Object} [in]
+	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or other element as parent.
+	 * @param options.source {View|undefined} New instance will listen all changes on source.
+	 * @param options.canvasSize {Object} Size of the model.
+	 * @param options.canvasSize.width {Number}
+	 * @param options.canvasSize.height {Number}
 	 * @return {View}
 	 */
 	View.create = function(options){
@@ -1581,7 +1699,7 @@
 	var viewProto = View.prototype;
  
 	/**
-	 * Update imageData and draw.
+	 * Clear canvas and update imageData and draw.
 	 *
 	 * @method render
 	 * @param options {Object|undefined}
@@ -1620,7 +1738,7 @@
 	};
 
 	/**
-	 * Just redraw from old imageData.
+	 * Just redraw from old/previous imageData condition.
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
@@ -1676,7 +1794,7 @@
 	};
 
 	/**
-	 * Update the buffer from layout.
+	 * Update the buffer from layout (model).
 	 *
 	 * @method update
 	 * @param options {Object} [in]
@@ -1824,6 +1942,8 @@
 	};
 
 	/**
+	 * Transform position according to current scale offset.
+	 *
 	 * @method fitToTransition
 	 * @param position {Vector2} [out]
 	 * @chainable
@@ -1874,7 +1994,7 @@
 	};
 
     /**
-     * Listen for events that fired when layout has been changed.
+     * Listen for events that fired when layout (model) has been changed.
 	 *
 	 * @method _subscribe
 	 * @private
@@ -1891,7 +2011,7 @@
     };
 
     /**
-     * Stop listen the layout changes.
+     * Stop listen the layout (model) changes.
 	 *
 	 * @method _unsubscribe
 	 * @private
@@ -2162,372 +2282,4 @@
 			session.assoc = swappedAssoc;
 		},
 	};
-})();
-(function(){
-	"use strict";
-
-	var history = pxl.Layout.history;
-
-	/**
-	 * @class controller
-	 */
-	pxl.Layout.controller = {
-
-		/**
-		 * @property _settings
-		 * @private
-		 * @type {Object}
-		 */
-		_settings: {
-			"current": new pxl.Vector2,
-			"previous": new pxl.Vector2,
-			"pixel": new pxl.ImageDataArray([0, 0, 0, 255]), //black
-			"pixelSize": pxl.MIN_PEN_SIZE
-		},
-
-		/**
-		 * @method updateUserPosition
-		 * @param x {Number}
-		 * @param y {Number}
-		 * @chainable
-		 */
-		updateUserPosition: function(x, y){
-			this._settings.previous.set(this._settings.current);
-			pxl.activeView.fitToTransition(
-				this._settings.current.set(x, y).abs().floor()
-			);
-			this._settings.current.sub(pxl.activeView.getImagePoint());
-			return this;
-		},
-
-		/**
-		 * Inform: is previous user position not equal to current.
-		 *
-		 * @method positionUpdated
-		 * @return {Boolean}
-		 */
-		positionUpdated: function(){
-			return !this._settings.previous.cmp(this._settings.current);
-		},
-
-		/**
-		 * Check whenever coordinates are within layout;
-		 * If there are no arguments the position from last user update would be taken.
-		 *
-		 * @method isWithinLayout
-		 * @param x {Number|undefined}
-		 * @param y {Number|undefined}
-		 * @return {Boolean}
-		 */
-		isWithinLayout: function(x, y){
-			var layout = pxl.activeView.getLayout();
-			if (!arguments.length){
-				x = this._settings.current.x;
-				y = this._settings.current.y;
-			}
-			return (
-				x >= 0 && x < layout.getWidth() &&
-				y >= 0 && y < layout.getHeight()
-			);
-		},
-
-		/**
-		 * Put the position where plot the pixel;
-		 * If there are no parameters,
-		 * the position would be taken from last updated user position.
-		 *
-		 * @see updateUserPosition
-		 * @method plotPixel
-		 * @param x {Number|undefined}
-		 * @param y {Number|undefined}
-		 */
-		plotPixel: (function(){ //anonymous
-			var _options = {
-				"start": new pxl.Vector2,
-				"offset": new pxl.Vector2,
-				"indexes": null,
-				"pixel": null,
-				"isMix": true,
-				"isNotifyView": true
-			};
-			return function(x, y){
-				var layout = pxl.activeView.getLayout();
-				if (arguments.length){
-					_options.start.set(x, y);
-				} else{
-					_options.start.set(this._settings.current);
-				}
-				_options.offset.set(this._settings.pixelSize);
-				_options.indexes = layout.indexesAt(_options); //trick: compute pixel indexes here
-				_options.pixel = this._settings.pixel;
-				layout.plot(_options);
-			};
-		})(),
-
-		/**
-		 * Bresenham algo: http://members.chello.at/easyfilter/bresenham.js
-		 * Put the start and end positions to plot the line;
-		 * If there are no parameters,
-		 * the start and end would be taken from last updated user position.
-		 *
-		 * @see updateUserPosition()
-		 * @method plotLine
-		 * @param x0 {Number|undefined}
-		 * @param y0 {Number|undefined}
-		 * @param x1 {Number|undefined}
-		 * @param y1 {Number|undefined}
-		 */
-		plotLine: function(x0, y0, x1, y1){
-			if (!arguments.length){
-				x0 = this._settings.current.x;
-				y0 = this._settings.current.y;
-				x1 = this._settings.previous.x;
-				y1 = this._settings.previous.y;
-			}
-			var dx = Math.abs(x1 - x0);
-			var dy = -Math.abs(y1 - y0);
-			var sx = x0 < x1 ? 1 : -1;
-			var sy = y0 < y1 ? 1 : -1;
-			var err = dx + dy;
-			var e2 = 0;
-			for (;;){
-				this.plotPixel(x0, y0);
-				if (x0 === x1 && y0 === y1) break;
-				e2 = err + err;
-				if (e2 >= dy){
-					err += dy;
-					x0 += sx;
-				}
-				if (e2 <= dx){
-					err += dx;
-					y0 += sy;
-				}
-			}
-		},
-
-		/**
-		 * Put the position where you are going to fill;
-		 * If there are no parameters,
-		 * the position would be taken from last updated user position.
-		 *
-		 * @see updateUserPosition
-		 * @method fill
-		 * @param x {Number}
-		 * @param y {Number}
-		 */
-		fill: function(x, y){
-			var position = (arguments.length
-				? new pxl.Vector2(x, y)
-				: new pxl.Vector2(this._settings.current)
-			);
-			pxl.activeView.fitToTransition(position);
-			pxl.activeView.getLayout().fill({
-				"position": position,
-				"pixel": this._settings.pixel,
-				"isMix": true,
-				"isNotifyView": true
-			});
-		},
-
-		/**
-		 * Put the position from which colour to replacement will be taken;
-		 * If there are no parameters,
-		 * the position would be taken from last updated user position.
-		 *
-		 * @see updateUserPosition
-		 * @method colorReplace
-		 * @param x {Number}
-		 * @param y {Number}
-		 */
-		colorReplace: function(x, y){
-			var position = (arguments.length
-				? new pxl.Vector2(x, y)
-				: new pxl.Vector2(this._settings.current)
-			);
-			var layout = pxl.activeView.getLayout();
-			pxl.activeView.fitToTransition(position);
-			layout.colorReplace({
-				"position": position,
-				"oldPixel": layout.dataLayer.pixelFromPosition(position),
-				"pixel": this._settings.pixel,
-				"isMix": false,
-				"isNotifyView": true
-			});
-		},
-
-		/**
-		 * Carry the current pixel according to last updated user position.
-		 *
-		 * @method carryPixel
-		 * @chainable
-		 */
-		carryPixel: (function(){ //anonymous
-			var _options = {
-				"start": new pxl.Vector2,
-				"offset": new pxl.Vector2(pxl.MIN_PEN_SIZE),
-				"pixel": null
-			};
-			return function(){
-				var activeView = pxl.activeView;
-				var scaleOffset = activeView.getScaleOffset();
-				var scale = activeView.getScale();
-
-				_options.start.set(this._settings.previous);
-
-				activeView.clear(_options).redraw(_options);
-
-				_options.offset.set(this._settings.pixelSize); //update offset
-				_options.start.set(this._settings.current);
-
-				_options.pixel = this._settings.pixel;
-				activeView.drawRect(_options);
-
-				return this;
-			}
-		})(),
-
-		/**
-		 * @method undo
-		 * @chainable
-		 */
-		undo: _undo_redo("undo"),
-
-		/**
-		 * @method redo
-		 * @chainable
-		 */
-		redo: _undo_redo("redo"),
-
-		/**
-		 * @method rescale
-		 * @param ds {Number} deltascale
-		 * @chainable
-		 */
-		rescale: function(ds){
-			var options = {};
-			pxl.activeView.clear(options)
-			.setScale(pxl.activeView.getScale() + ds)
-			.begin()
-			.redraw(options)
-			.end();
-			return this;
-		},
-
-		/**
-		 * @method setPixelSize
-		 * @param newSize {Number}
-		 * @chainable
-		 */
-		setPixelSize: function(newSize){
-			this._settings.pixelSize = pxl.clamp(
-				newSize, pxl.MIN_PEN_SIZE, pxl.MAX_PEN_SIZE
-			);
-			return this;
-		},
-
-		/**
-		 * @method setColor
-		 * @param r {Number}
-		 * @param g {Number}
-		 * @param b {Number}
-		 * @param a {Number}
-		 * @chainable
-		 */
-		setColor: function(r, g, b, a){
-			this._settings.pixel.set(Array.prototype.slice.call(arguments));
-			return this;
-		},
-
-		/**
-		 * @method startRecord
-		 * @chainable
-		 */
-		startRecord: function(){
-			history.record(pxl.activeView.getLayout().activeLayer);
-			return this;
-		},
-
-		/**
-		 * @method stopRecord
-		 * @chainable
-		 */
-		stopRecord: function(){
-			history.stop();
-			return this;
-		},
-
-		/**
-		 * Using startRecord and stopRecord inside.
-		 *
-		 * @method record
-		 * @param callback {Function}
-		 * @chainable
-		 */
-		record: function(callback){
-			callback.call(this.startRecord());
-			return this.stopRecord();
-		},
-
-		/**
-		 * @method startDraw
-		 * @chainable
-		 */
-		startDraw: function(){
-			pxl.activeView.begin();
-			return this;
-		},
-
-		/**
-		 * @method stopDraw
-		 * @chainable
-		 */
-		stopDraw: function(){
-			pxl.activeView.end();
-			return this;
-		},
-
-		/**
-         * Using startDraw and stopDraw inside.
-         *
-		 * @method draw
-		 * @param callback {Function}
-		 * @chainable
-		 */
-		draw: function(callback){
-			callback.call(this.startDraw());
-			return this.stopDraw();
-		},
-
-		/**
-		 * @method removeActiveView
-		 * @chainable
-		 */
-		removeActiveView: function(){
-			pxl.activeView.clear({});
-			pxl.activeView.destroy();
-			pxl.activeView = null;
-			return this;
-		},
-
-		/**
-		 * @method moveView
-		 * @chainable
-		 */
-		moveView: function(x, y){
-			pxl.activeView.setImagePoint(x, y).redraw({});
-			return this;
-		}
-	};
-
-	//Helper:
-	function _undo_redo(_method){ //anonymous
-		return function(){
-			var session = history.getCurrentSession();
-			if (session){
-				history[_method]();
-				session.layer.getLayout().mergeLayers({"isNotifyView": true});
-			}
-			return pxl.Layout.controller;
-		};
-	}
 })();

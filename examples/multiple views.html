@@ -12,6 +12,7 @@
 		<canvas width="256" height="256"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 
 			//make sure that the current browser is cool:
@@ -42,11 +43,11 @@
 					"pixel": new pxl.ImageDataArray([255, 0, 255, 255]) //magenta
 				});
 
-				pxl.Layout.controller.setPixelSize(5);
+				common.setPixelSize(5);
 
 				//this method change model, so each view instance,
 				//that subscribed on changes will update them:
-				pxl.Layout.controller.plotLine(60, 50, 88, 50);
+				pxl.bresenham.line(60, 50, 88, 50, common.plotPixel);
 
 			} else{
 				alert("Not supported!"); //old IE or something like that

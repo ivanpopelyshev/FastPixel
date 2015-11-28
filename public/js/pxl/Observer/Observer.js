@@ -42,7 +42,7 @@
     /**
 	 * @method unsubscribe
      * @param event {String} [in] Name of event.
-     * @param method {Function} [in] Have to be same reference as in subscribe method.
+     * @param method {Function} [in] Have to be same reference that passed in subscribe method.
      */
     observerProto.unsubscribe = function(event, method){
         if (event in this._eventBook){

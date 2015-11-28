@@ -2,8 +2,6 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class Pixel
 	 * @param data {ImageDataArray} [out] warn: size of an array have to be at least 4
@@ -87,8 +85,6 @@
 	};
 
 	/**
-	 * Mix two colours
-	 *
 	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
 	 * @method mix
 	 * @param other {Pixel|ImageDataArray|Array} [in]

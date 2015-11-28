@@ -49,7 +49,7 @@
 
 	/**
 	 * Add two Vector2 instances;
-	 * or add Vector2 instance and numbers.
+	 * or add Vector2 instance with numbers.
 	 *
 	 * @method add
      * @param param1 {Vector2|Number}
@@ -68,8 +68,8 @@
     };
 
 	/**
-	 * Substrust one Vector2 instance from another;
-	 * or substrust number from Vector2 instance.
+	 * Substract one Vector2 instance from another;
+	 * or substrast number from Vector2 instance.
 	 *
 	 * @method sub
      * @param param1 {Vector2|Number}
@@ -158,14 +158,13 @@
      */
     vector2Proto.cmp = function(param1, param2){
         if (param1 instanceof Vector2){
-            return (Math.abs(this.x - param1.x) < Vector2.EPSILON &&
-                    Math.abs(this.y - param1.y) < Vector2.EPSILON);
+            return (abs(this.x - param1.x) < Vector2.EPSILON &&
+                    abs(this.y - param1.y) < Vector2.EPSILON);
         }
         return (
-			Math.abs(this.x - param1) < Vector2.EPSILON &&
-			Math.abs(
-				this.y - (typeof param2 === "number" ? param2 : param1)
-			) < Vector2.EPSILON
+			abs(this.x - param1) < Vector2.EPSILON &&
+			abs(this.y - (typeof param2 === "number" ? param2 : param1)) <
+			Vector2.EPSILON
 		);
     };
 
@@ -176,12 +175,8 @@
 	 * @chainable
 	 */
 	vector2Proto.abs = function(){
-		if (this.x < 0){
-			this.x = -this.x;
-		}
-		if (this.y < 0){
-			this.y = -this.y;
-		}
+		this.x = abs(this.x);
+		this.y = abs(this.y);
 		return this;
 	};
 
@@ -192,12 +187,8 @@
 	 * @chainable
 	 */
 	vector2Proto.neg = function(){
-		if (this.x >= 0){
-			this.x = -this.x;
-		}
-		if (this.y >= 0){
-			this.y = -this.y;
-		}
+		this.x = -abs(this.x);
+		this.y = -abs(this.y);
 		return this;
 	};
 
@@ -255,17 +246,17 @@
 	};
 
 	/**
-	 * Check for NaN value inside properties.
+	 * Check properties for NaN.
 	 *
 	 * @method hasNaN
 	 * @return {Boolean}
 	 */
 	vector2Proto.hasNaN = function(){
-		return this.x !== this.x || this.y !== this.y;
+		return isNaN(this.x) || isNaN(this.y);
 	};
 
 	/**
-	 * Check for Infinity value inside properties.
+	 * Check properties for Infinity.
 	 *
 	 * @method hasInfinity
 	 * @return {Boolean}
@@ -275,7 +266,7 @@
 	};
 
     /**
-	 * Return new Vector2 instance with same properties.
+	 * Make new Vector2 instance with same properties.
 	 *
 	 * @method clone
      * @return {Vector2}
@@ -299,5 +290,10 @@
 	//
 	function _ceil(n){
 		return (n === (n | 0) ? n : (n | 0) + 1);
+	};
+
+	//faster than Math.abs
+	function abs(n){
+		return n < 0 ? -n : n;
 	};
 })(pxl);

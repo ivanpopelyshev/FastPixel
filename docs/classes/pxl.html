@@ -38,7 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
-                                <li><a href="../classes/controller.html">controller</a></li>
+                                <li><a href="../classes/bresenham.html">bresenham</a></li>
                                 <li><a href="../classes/GrowingPool.html">GrowingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
@@ -100,8 +100,7 @@
 
 
 <div class="box intro">
-    <p>Main API's &quot;namespace&quot;</p>
-
+    
 </div>
 
 
@@ -165,19 +164,11 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_MAX_PEN_SIZE">MAX_PEN_SIZE</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_MAX_ZOOM_SCALE">MAX_ZOOM_SCALE</a>
 
                             </li>
                             <li class="index-item property">
                                 <a href="#property_MIN_CANVAS_SIZE">MIN_CANVAS_SIZE</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_MIN_PEN_SIZE">MIN_PEN_SIZE</a>
 
                             </li>
                             <li class="index-item property">
@@ -227,7 +218,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l128"><code>pxl.js:128</code></a>
+        <a href="../files/pxl.js.html#l118"><code>pxl.js:118</code></a>
         </p>
 
 
@@ -235,7 +226,7 @@
     </div>
 
     <div class="description">
-        <p>Clamp a destination number to min-max borders.</p>
+        <p>Clamp a number according to min-max borders.</p>
 
     </div>
 
@@ -304,7 +295,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l151"><code>pxl.js:151</code></a>
+        <a href="../files/pxl.js.html#l143"><code>pxl.js:143</code></a>
         </p>
 
 
@@ -354,7 +345,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l141"><code>pxl.js:141</code></a>
+        <a href="../files/pxl.js.html#l131"><code>pxl.js:131</code></a>
         </p>
 
 
@@ -362,7 +353,8 @@
     </div>
 
     <div class="description">
-        
+        <p>More safest and fastest method to create ImageData.</p>
+
     </div>
 
         <div class="params">
@@ -420,7 +412,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l118"><code>pxl.js:118</code></a>
+        <a href="../files/pxl.js.html#l108"><code>pxl.js:108</code></a>
         </p>
 
 
@@ -428,7 +420,7 @@
     </div>
 
     <div class="description">
-        <p>Is API supported on current browser. Call one before started.</p>
+        <p>Is API supported on current browser. Call it before started.</p>
 
     </div>
 
@@ -459,7 +451,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l109"><code>pxl.js:109</code></a>
+        <a href="../files/pxl.js.html#l99"><code>pxl.js:99</code></a>
         </p>
 
 
@@ -485,7 +477,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l101"><code>pxl.js:101</code></a>
+        <a href="../files/pxl.js.html#l91"><code>pxl.js:91</code></a>
         </p>
 
 
@@ -511,7 +503,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l67"><code>pxl.js:67</code></a>
+        <a href="../files/pxl.js.html#l53"><code>pxl.js:53</code></a>
         </p>
 
 
@@ -522,6 +514,7 @@
 
     </div>
 
+        <p><strong>Default:</strong> 1024</p>
 
 
 </div>
@@ -537,7 +530,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l85"><code>pxl.js:85</code></a>
+        <a href="../files/pxl.js.html#l73"><code>pxl.js:73</code></a>
         </p>
 
 
@@ -547,6 +540,7 @@
         
     </div>
 
+        <p><strong>Default:</strong> 20</p>
 
 
 </div>
@@ -562,7 +556,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l76"><code>pxl.js:76</code></a>
+        <a href="../files/pxl.js.html#l63"><code>pxl.js:63</code></a>
         </p>
 
 
@@ -573,31 +567,7 @@
 
     </div>
 
-
-
-</div>
-<div id="property_MAX_PEN_SIZE" class="property item">
-    <h3 class="name"><code>MAX_PEN_SIZE</code></h3>
-    <span class="type">Number</span>
-
-
-
-        <span class="flag final">final</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l53"><code>pxl.js:53</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
+        <p><strong>Default:</strong> 8</p>
 
 
 </div>
@@ -613,7 +583,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l39"><code>pxl.js:39</code></a>
+        <a href="../files/pxl.js.html#l37"><code>pxl.js:37</code></a>
         </p>
 
 
@@ -623,6 +593,7 @@
         
     </div>
 
+        <p><strong>Default:</strong> 64</p>
 
 
 </div>
@@ -638,7 +609,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l60"><code>pxl.js:60</code></a>
+        <a href="../files/pxl.js.html#l45"><code>pxl.js:45</code></a>
         </p>
 
 
@@ -648,31 +619,7 @@
         
     </div>
 
-
-
-</div>
-<div id="property_MIN_PEN_SIZE" class="property item">
-    <h3 class="name"><code>MIN_PEN_SIZE</code></h3>
-    <span class="type">Number</span>
-
-
-
-        <span class="flag final">final</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l46"><code>pxl.js:46</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
+        <p><strong>Default:</strong> 8</p>
 
 
 </div>
@@ -688,7 +635,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l32"><code>pxl.js:32</code></a>
+        <a href="../files/pxl.js.html#l29"><code>pxl.js:29</code></a>
         </p>
 
 
@@ -698,6 +645,7 @@
         
     </div>
 
+        <p><strong>Default:</strong> 1</p>
 
 
 </div>
@@ -713,7 +661,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l92"><code>pxl.js:92</code></a>
+        <a href="../files/pxl.js.html#l81"><code>pxl.js:81</code></a>
         </p>
 
 
@@ -724,6 +672,7 @@
 
     </div>
 
+        <p><strong>Default:</strong> &quot;pixelsChanged&quot;</p>
 
 
 </div>

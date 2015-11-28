@@ -6,7 +6,8 @@
 	}
 
 	/**
-	 * Grows up as usual array but this one is better to re-use (GC friendly).
+	 * Grows up as usual array but this one is better to re-use (GC friendly);
+	 * For object types only.
 	 *
 	 * @constructor
 	 * @class GrowingPool
@@ -49,7 +50,8 @@
 	};
 
 	/**
-	 * Check whenever pool is full.
+	 * Check whenever pool is full (size reached its top).
+	 * Warn: new instance not full!
 	 *
 	 * @method isFull
 	 * @return {Number}
@@ -60,6 +62,7 @@
 
 	/**
 	 * Check whenever pool's memory is empty.
+	 * Warn: new instance not empty!
 	 *
 	 * @method isEmpty
 	 * @return {Number}
@@ -69,7 +72,7 @@
 	};
 
 	/**
-	 * Expand size and return new top item
+	 * Expand size and return new item at top.
 	 *
 	 * @method expand
 	 * @return {ANY}

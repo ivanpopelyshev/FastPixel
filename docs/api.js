@@ -8,7 +8,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Pixel",
         "Vector2",
         "View",
-        "controller",
+        "bresenham",
         "history",
         "pxl"
     ],
@@ -18,8 +18,7 @@ YUI.add("yuidoc-meta", function(Y) {
     "allModules": [
         {
             "displayName": "pxl",
-            "name": "pxl",
-            "description": "Main API's \"namespace\""
+            "name": "pxl"
         }
     ],
     "elements": []

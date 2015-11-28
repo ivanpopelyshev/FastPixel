@@ -39,6 +39,30 @@ describe("Layout", function(){
 		});
 	});
 
+	describe("indexes from area", function(){
+		it("should be equal to [5, 6, 9, 10]", function(){
+			var layout = new pxl.Layout(4, 4);
+			
+			/*
+				0  1  2  3
+				4  5  6  7
+				8  9  10 11
+				12 13 14 15
+			*/
+			
+			var expectedIndexes = [5, 6, 9, 10];
+			var indexes = layout.indexesAt({
+				"start": new pxl.Vector2(1, 1),
+				"offset": new pxl.Vector2(1, 1)
+			});
+
+			for (var i = 0; i < indexes.length; ++i){
+				expect(indexes[i]).to.equal(expectedIndexes[i]);
+			}
+			
+		});
+	});
+
 	describe("index from position", function(){
 		it("should be equal to 9", function(){
 			var layout = new pxl.Layout(8, 16);

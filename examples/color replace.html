@@ -11,6 +11,7 @@
 		<canvas id="canvas" width="1024" height="1024"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
 			
@@ -26,15 +27,12 @@
 					element: canvas
 				});
 
-				//controller for easy model-view manipulations:
-				var controller = pxl.Layout.controller;
-
 				//draw square:
-				controller.record(function(){
+				common.record(function(){
 					this.setPixelSize(5);
-					rect(200, 200, 50, 50);
-					rect(400, 150, 50, 50);
-					rect(100, 450, 50, 50);					
+					pxl.bresenham.rectangle(200, 200, 50, 50, common.plotPixel);
+					pxl.bresenham.rectangle(400, 150, 50, 50, common.plotPixel);
+					pxl.bresenham.rectangle(100, 450, 50, 50, common.plotPixel);					
 				});
 
 				//listen for some of user movements:
@@ -44,13 +42,6 @@
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
-
-			function rect(x, y, width, height){
-				controller.plotLine(x, y, x + width, y);
-				controller.plotLine(x + width, y, x + width, y + height);
-				controller.plotLine(x + width, y + height, x, y + height);
-				controller.plotLine(x, y + height, x, y);
-			};
 
 			function userDownMouse(e){
 				fill(Math.floor(e.pageX), Math.floor(e.pageY));
@@ -63,18 +54,18 @@
 			function userKey(e){
 				//no time to catch "ctrl + z" or "ctrl + y",
 				//so, just "z" or "y"
-				if (e.which === 121) controller.redo();
-				else if (e.which === 122) controller.undo();
+				if (e.which === 121) common.redo();
+				else if (e.which === 122) common.undo();
 			};
 
 			function fill(x, y){
-				controller.record(function(){
-					this.setColor(
+				common.record(function(){
+					this.setColor([
 						(Math.random() * 255) | 0,
 						(Math.random() * 255) | 0,
 						(Math.random() * 255) | 0,
 						(Math.random() * 255) | 0
-					).colorReplace(x, y);
+					]).colorReplace(x, y);
 				});
 			}
 		</script>

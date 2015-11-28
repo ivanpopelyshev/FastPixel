@@ -11,6 +11,7 @@
 		<canvas id="canvas" width="512" height="512"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
@@ -27,30 +28,19 @@
 				//move it to the center
 				view.setImagePoint(240, 240);
 
-				//controller for easy model-view manipulations:
-				var controller = pxl.Layout.controller;
-
 				//change colour (rgba):
-				controller.setColor(66, 66, 66, 255);
+				common.setColor([66, 66, 66, 255]);
 
-				//coin:
-				controller.plotLine(10, 15, 10, 17);
-				controller.plotPixel(11, 14);
-				controller.plotLine(12, 13, 14, 13);
-				controller.plotPixel(15, 14);
-				controller.plotLine(16, 15, 16, 17);
-				controller.plotPixel(15, 18);
-				controller.plotLine(12, 19, 14, 19);
-				controller.plotPixel(11, 18);
+				pxl.bresenham.ellipse(10, 10, 17, 17, common.plotPixel)
 
 				//fill coin:
-				controller.setColor(255, 200, 150, 255).fill(15, 15);
+				common.setColor([255, 200, 150, 255]).fill(15, 15);
 
 				//fill everything else
-				controller.setColor(222, 222, 222, 255).fill(0, 0);
+				common.setColor([222, 222, 222, 255]).fill(0, 0);
 
 				//scale up 5 times
-				controller.rescale(5);
+				common.rescale(5);
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}

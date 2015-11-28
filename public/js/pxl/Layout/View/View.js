@@ -2,8 +2,6 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class View
 	 * @param options {Object} [in]
@@ -71,6 +69,11 @@
 	 * @static
 	 * @method create
 	 * @param options {Object} [in]
+	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or other element as parent.
+	 * @param options.source {View|undefined} New instance will listen all changes on source.
+	 * @param options.canvasSize {Object} Size of the model.
+	 * @param options.canvasSize.width {Number}
+	 * @param options.canvasSize.height {Number}
 	 * @return {View}
 	 */
 	View.create = function(options){
@@ -127,7 +130,7 @@
 	var viewProto = View.prototype;
  
 	/**
-	 * Update imageData and draw.
+	 * Clear canvas and update imageData and draw.
 	 *
 	 * @method render
 	 * @param options {Object|undefined}
@@ -166,7 +169,7 @@
 	};
 
 	/**
-	 * Just redraw from old imageData.
+	 * Just redraw from old/previous imageData condition.
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
@@ -222,7 +225,7 @@
 	};
 
 	/**
-	 * Update the buffer from layout.
+	 * Update the buffer from layout (model).
 	 *
 	 * @method update
 	 * @param options {Object} [in]
@@ -370,6 +373,8 @@
 	};
 
 	/**
+	 * Transform position according to current scale offset.
+	 *
 	 * @method fitToTransition
 	 * @param position {Vector2} [out]
 	 * @chainable
@@ -420,7 +425,7 @@
 	};
 
     /**
-     * Listen for events that fired when layout has been changed.
+     * Listen for events that fired when layout (model) has been changed.
 	 *
 	 * @method _subscribe
 	 * @private
@@ -437,7 +442,7 @@
     };
 
     /**
-     * Stop listen the layout changes.
+     * Stop listen the layout (model) changes.
 	 *
 	 * @method _unsubscribe
 	 * @private

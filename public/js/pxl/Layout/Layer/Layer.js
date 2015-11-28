@@ -2,12 +2,10 @@
 	"use strict";
 
 	/**
-	 * 
-	 *
 	 * @constructor
 	 * @class Layer
 	 * @param options {Object} [in]
-	 * @param options.source {ArrayBuffer|Number} Specify other buffer or size (without offset) as a source to create data-array 
+	 * @param options.source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param options.layout {Layout}
 	 * @param options.name {String}
 	 */
@@ -46,7 +44,7 @@
 	var layerProto = Layer.prototype;
 
 	/**
-	 * Reset the layer to default.
+	 * Reset the data to default.
 	 *
 	 * @method reset
 	 */
@@ -62,7 +60,7 @@
 	};
 
 	/**
-	 * Make sure layers have same size.
+	 * Warn: Make sure layers have same size before call this.
 	 *
 	 * @method copy
 	 * @param other {Layer} [in]
@@ -78,8 +76,8 @@
 	};
 
 	/**
-	 * Merge layers within start and offset;
-	 * Or pixels by pre-computing indexes;
+	 * Merge pixels within start and offset;
+	 * Or pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method merge
@@ -104,10 +102,14 @@
 				thisPixel[method](otherPixel);
 			}
 		} else{
-			length = this.data.length;
-			for (i = 0; i < length; i += 4){
-				thisPixel.index = otherPixel.index = i;
-				thisPixel[method](otherPixel);
+			if (options.isMix === true){
+				length = this.data.length;
+				for (i = 0; i < length; i += 4){
+					thisPixel.index = otherPixel.index = i;
+					thisPixel.mix(otherPixel);
+				}
+			} else{
+				this.copy(options.other, false); //much faster
 			}
 		}
 	};
@@ -130,9 +132,8 @@
 		var _stack = new pxl.GrowingPool(pxl.Vector2);
 		return function(options){
 			var startIndex = this._layout.indexAt(options.position);
-			var dataPixel = new pxl.Layout.Layer.Pixel(
-				this.data, startIndex << 2
-			);
+			var data = this.data;
+			var dataPixel = new pxl.Layout.Layer.Pixel(data, startIndex << 2);
 			if (dataPixel.compare(options.pixel)){
 				return false; //don't fill on same colour
 			}
@@ -192,7 +193,7 @@
 			//Helper
 			//I hope, this one become inline in a good browser!!
 			function _fill(){ 
-				dataPixel.index = layout.indexAt(tokenPos) << 2;
+				var index = dataPixel.index = layout.indexAt(tokenPos) << 2;
 				if (dataPixel.compare(source)){
 					//cache for undo-redo
 					history.cache(dataPixel);
@@ -201,7 +202,10 @@
 					//seed is mixed once and that's enough!
 					//All other near pixels have to be same!
 					//So, mix source only and then just copy this result!
-					dataPixel.set(seed);
+					data[index] = seed[0];
+					data[index + 1] = seed[1];
+					data[index + 2] = seed[2];
+					data[index + 3] = seed[3];
 
 					//expand available memory
 					stack.expand().set(tokenPos);
@@ -212,7 +216,7 @@
 
 	/**
 	 * Plot pixel within start and offset;
-	 * Or to pixels by pre-computing indexes;
+	 * Or to pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method plot
@@ -250,7 +254,7 @@
 
 	/**
 	 * Replace pixel by new one within start and offset;
-	 * Or according to pre-computing indexes;
+	 * Or according to pre-computing indexes (Warn: use layout.indexesAt(options));
 	 * Delegate pixel processing to Pixel local instance.
 	 *
 	 * @method colorReplace
@@ -303,6 +307,8 @@
 	};
 
 	/**
+	 * Warn: index without offset!
+	 *
 	 * @see layerProto.pixelAt
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
@@ -313,20 +319,22 @@
 	};
 
 	/**
+	 * Index with offset on pixel size (which equal to 4 (rgba)).
+	 *
+	 * @method pixelAt
+	 * @param index {Number} [in]
+	 * @return {ImageDataArray} Warn: direct reference onto data's property buffer.
+	 */
+	layerProto.pixelAt = function(index){
+		return this.data.subarray(index, index + 4);
+	};
+
+	/**
 	 * @method getLayout
 	 * @return {Layout}
 	 */
 	layerProto.getLayout = function(){
 		return this._layout;
-	};
-
-	/**
-	 * @method pixelAt
-	 * @param index {Number} [in]
-	 * @return {ImageDataArray} warn: direct reference onto data's property buffer
-	 */
-	layerProto.pixelAt = function(index){
-		return this.data.subarray(index, index + 4);
 	};
 
 	/**

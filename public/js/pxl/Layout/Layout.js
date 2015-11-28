@@ -2,8 +2,8 @@
 	"use strict";
 
 	/**
-	 * Call with width and height parameters
-	 * or with already existing ImageData as source
+	 * Pass width and height parameters;
+	 * or just already existing ImageData as source.
 	 *
 	 * @constructor
 	 * @class Layout
@@ -94,6 +94,7 @@
 
 	/**
 	 * Each visible layer "drawn" to main dataLayer layer (Back-to-front);
+	 * (delegate processing to the activeLayer);
 	 * Notify subscribers.
 	 *
 	 * @param options {Object} [in]
@@ -112,21 +113,14 @@
 		if (!layerCount){
 			dataLayer.reset();
 		} else{
-			//copy bottom layer:
-			if (options.start && options.offset){
-				clonedOpts.start = options.start;
-				clonedOpts.offset = options.offset;
-				clonedOpts.other = visibleLayers[0];
-				clonedOpts.isMix = false;
-				dataLayer.merge(clonedOpts);
-			} else{
-				dataLayer.copy(visibleLayers[0]);
-			}
-			clonedOpts.isMix = !!options.isMix; //pick correct setting after all
-			//process other layers:
-			for (var i = 1; i < layerCount; ++i){
+			clonedOpts.start = options.start;
+			clonedOpts.offset = options.offset;
+			clonedOpts.indexes = options.indexes;
+			clonedOpts.isMix = false; //it's important to set mix to false at first layer
+			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
-				dataLayer.merge(clonedOpts); //mix other layers
+				dataLayer.merge(clonedOpts);
+				clonedOpts.isMix = !!options.isMix; //other layers have processed properly
 			}
 		}
 		if (options.isNotifyView === true){
@@ -150,7 +144,7 @@
 	};
 
     /**
-     * Plot pixel or group of pixels;
+     * Plot pixel or group of pixels (faster then force-fill);
 	 * delegate processing to the activeLayer.
 	 *
 	 * @method plot
@@ -180,6 +174,7 @@
 
 	/**
 	 * Provide list of indexes within start and offset coordinates.
+	 * Warn: don't compute indexes by yourself! Use this method only!
 	 *
 	 * @method indexesAt
 	 * @param options {Object} [in]
@@ -223,7 +218,7 @@
 	};
 
 	/**
-	 * Provide position according to index.
+	 * Provide position according to index (without offset).
 	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]

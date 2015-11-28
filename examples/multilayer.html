@@ -11,6 +11,7 @@
 		<canvas id="canvas" width="512" height="512"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
 			
@@ -26,23 +27,21 @@
 					element: canvas
 				});
 
-				//controller for easy model-view manipulations:
-				var controller = pxl.Layout.controller;
-
 				pxl.activeView.setImagePoint(255, 255);
 
-				controller.plotLine(0, 0, 7, 7);
+				//plot line on bottom layer
+				pxl.bresenham.line(0, 0, 7, 7, common.plotPixel);
 
-				//layers added to model (Layout):
+				//active layer became top:
 				pxl.activeView.getLayout().appendLayer();
 
 				//make top layer red and a little bit transparent:
-				controller.setColor(255, 0, 0, 100);
+				common.setColor([255, 0, 0, 100]);
 
-				controller.fill(0, 0);
+				common.fill(0, 0);
 
 				//up scale:
-				controller.rescale(10);
+				common.rescale(10);
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}

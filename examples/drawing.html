@@ -11,6 +11,7 @@
 		<canvas id="canvas" width="1024" height="1024"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 			var canvas = document.querySelector("#canvas");
 			var isMouseDown = false;
@@ -27,12 +28,7 @@
 					element: canvas
 				});
 
-				var controller = pxl.Layout.controller;
-				
-				controller.plotLine(0, 0, 1023, 0);
-				controller.plotLine(1023, 0, 1023, 1023);
-				controller.plotLine(1023, 1023, 0, 1023);
-				controller.plotLine(0, 1023, 0, 0);
+				pxl.bresenham.rectangle(0, 0, 1023, 1023, common.plotPixel);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
@@ -46,27 +42,31 @@
 
 			function userDownMouse(e){
 				isMouseDown = true;
-				controller.startRecord().startDraw();
+				common.startRecord().startDraw();
 			};
 
 			function userUpMouse(e){
 				isMouseDown = false;
-				controller.stopRecord().stopDraw();
+				common.stopRecord().stopDraw();
 			};
 
 			function userMove(e){
-				controller.updateUserPosition(e.pageX, e.pageY);
-				if (controller.positionUpdated()){
+				common.updateUserPosition(e.pageX, e.pageY);
+				if (common.positionUpdated()){
 					if (isMouseDown){
-						controller.setColor( //pick random colour
+						common.setColor([ //pick random colour
 							(Math.random() * 255) | 0,
 							(Math.random() * 255) | 0,
 							(Math.random() * 255) | 0,
 							(Math.random() * 255) | 0
-						).plotLine();
-						controller.setColor(0, 0, 0, 255); //turn back to black
-					} else {
-						controller.draw(function(){
+						]);
+						pxl.bresenham.line(
+							common.settings.current.x, common.settings.current.y,
+							common.settings.previous.x, common.settings.previous.y,
+							common.plotPixel
+						);
+					} else{
+						common.draw(function(){
 							this.carryPixel(); //draw pixel under cursor
 						});
 					}
@@ -75,15 +75,15 @@
 
 			function userWheel(e){
 				var dt = e.deltaY || e.detail || e.wheelDelta;
-				controller.rescale(dt > 0 ? -1 : 1); //change scale by mouse wheel
+				common.rescale(dt > 0 ? -1 : 1); //change scale by mouse wheel
 			};
 
 			function userKey(e){
 				//no time to catch "ctrl + z" or "ctrl + y",
 				//so, just "z" or "y"
-				controller.draw(function(){
-					if (e.which === 121) controller.redo();
-					else if (e.which === 122) controller.undo();
+				common.draw(function(){
+					if (e.which === 121) common.redo();
+					else if (e.which === 122) common.undo();
 				});
 			};
 		</script>

@@ -18,6 +18,7 @@
 		<canvas id="duplicate" width="128" height="128"></canvas>
 
 		<script src="../pxl.js"></script>
+		<script src="common.js"></script>
 		<script>
 			var canvas = document.querySelectorAll("CANVAS")[0];
 			var isMouseDown = false;
@@ -39,18 +40,13 @@
 					element: document.querySelectorAll("CANVAS")[1]
 				});
 
-				var controller = pxl.Layout.controller;
+				pxl.bresenham.rectangle(0, 0, 127, 127, common.plotPixel);
 
-				controller.plotLine(0, 0, 127, 0);
-				controller.plotLine(127, 0, 127, 127);
-				controller.plotLine(127, 127, 0, 127);
-				controller.plotLine(0, 127, 0, 0);
-
-				controller.setColor(0, 0, 255, 255);
+				common.setColor([0, 0, 255, 255]);
 
 				activeView.setImagePoint(190, 190);
 
-				controller.rescale(2);
+				common.rescale(2);
 
 				//listen for some of user movements:
 				document.addEventListener("mousedown", userDownMouse, false);
@@ -64,21 +60,27 @@
 
 			function userDownMouse(e){
 				isMouseDown = true;
-				controller.startDraw().plotPixel();
+				common.startDraw().plotPixel();
 			};
 
 			function userUpMouse(e){
 				isMouseDown = false;
-				controller.stopDraw();
+				common.stopDraw();
 			};
 
 			function userMove(e){
-				controller.updateUserPosition(e.pageX, e.pageY);
-				if (controller.positionUpdated() && controller.isWithinLayout()){
+				common.updateUserPosition(e.pageX, e.pageY);
+				if (common.positionUpdated() && common.isWithinLayout()){
 					if (isMouseDown){
-						controller.plotLine();
+						pxl.bresenham.line(
+							common.settings.current.x,
+							common.settings.current.y,
+							common.settings.previous.x,
+							common.settings.previous.y,
+							common.plotPixel
+						);
 					} else {
-						controller.draw(function(){
+						common.draw(function(){
 							this.carryPixel(); //draw pixel under cursor
 						});
 					}
@@ -87,20 +89,20 @@
 
 			function userWheel(e){
 				var dt = e.deltaY || e.detail || e.wheelDelta;
-				controller.rescale(dt > 0 ? -1 : 1); //change scale by mouse wheel
+				common.rescale(dt > 0 ? -1 : 1); //change scale by mouse wheel
 			};
 
 			function userKey(e){
 				if (e.which === 100){
-					controller.removeActiveView();
+					common.removeActiveView();
 					document.removeEventListener("mousedown", userDownMouse);
 					document.removeEventListener("mouseup", userUpMouse);
 					document.removeEventListener("wheel", userWheel);
 					canvas.removeEventListener("mousemove", userMove);
 				} else if (e.which === 121){
-					controller.draw(controller.redo);
+					common.draw(common.redo);
 				} else if (e.which === 122){
-					controller.draw(controller.undo);
+					common.draw(common.undo);
 				}
 			};
 		</script>

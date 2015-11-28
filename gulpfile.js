@@ -8,12 +8,12 @@ var FILE_LIST = [
 	"./public/js/pxl/Vector2/Vector2.js",
 	"./public/js/pxl/Observer/Observer.js",
 	"./public/js/pxl/GrowingPool/GrowingPool.js",
+	"./public/js/pxl/bresenham/bresenham.js",
 	"./public/js/pxl/Layout/Layout.js",
 	"./public/js/pxl/Layout/Layer/Layer.js",
 	"./public/js/pxl/Layout/Layer/Pixel/Pixel.js",
 	"./public/js/pxl/Layout/View/View.js",
-	"./public/js/pxl/Layout/history/history.js",
-	"./public/js/pxl/Layout/controller/controller.js"
+	"./public/js/pxl/Layout/history/history.js"
 ];
 
 var APP_NAME = "pxl";

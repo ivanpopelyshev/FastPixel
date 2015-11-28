@@ -11,6 +11,7 @@
 		<canvas id="canvas" width="512" height="512"></canvas>
 
 		<script src="../pxl.min.js"></script>
+		<script src="common.js"></script>
 		<script>
 			//make sure that the current browser is cool:
 			if (pxl.isSupported()){
@@ -24,29 +25,26 @@
 					element: document.querySelector("#canvas")
 				});
 
-				//controller for easy model-view manipulations:
-				var controller = pxl.Layout.controller;
-
 				//draw square:
-				controller.record(function(){
-					this.plotLine(200, 200, 250, 200);
+				common.record(function(){
+					pxl.bresenham.line(200, 200, 250, 200, common.plotPixel);
 				});
-				controller.record(function(){
-					this.plotLine(250, 200, 250, 250);
+				common.record(function(){
+					pxl.bresenham.line(250, 200, 250, 250, common.plotPixel);
 				});
-				controller.record(function(){
-					this.plotLine(250, 250, 200, 250);
+				common.record(function(){
+					pxl.bresenham.line(250, 250, 200, 250, common.plotPixel);
 				});
-				controller.record(function(){
-					this.plotLine(200, 250, 200, 200);
+				common.record(function(){
+					pxl.bresenham.line(200, 250, 200, 200, common.plotPixel);
 				});
 
 				//listen for some of user movements:
 				document.addEventListener("keypress", function(e){
 					//no time to catch "ctrl + z" or "ctrl + y",
 					//so, just "z" or "y"
-					if (e.which === 121) controller.redo();
-					else if (e.which === 122) controller.undo();
+					if (e.which === 121) common.redo();
+					else if (e.which === 122) common.undo();
 				}, false);
 			} else{
 				alert("Not supported!"); //old IE or something like that

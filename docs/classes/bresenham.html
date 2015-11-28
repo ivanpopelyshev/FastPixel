@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Observer</title>
+    <title>bresenham</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -86,12 +86,12 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Observer Class</h1>
+<h1>bresenham Class</h1>
 <div class="box meta">
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l460"><code>pxl.js:460</code></a>
+            Defined in: <a href="../files/pxl.js.html#l680"><code>pxl.js:680</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -100,50 +100,15 @@
 
 
 <div class="box intro">
-    <p>Simple observer-pattern implementation.</p>
-
+    
 </div>
 
-    <div class="constructor">
-        <h2>Constructor</h2>
-<div id="method_Observer" class="method item">
-    <h3 class="name"><code>Observer</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l460"><code>pxl.js:460</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-
-
-</div>
-    </div>
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
-            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -155,30 +120,20 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_notify">notify</a>
+                                <a href="#method_ellipse">ellipse</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_subscribe">subscribe</a>
+                                <a href="#method_line">line</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_unsubscribe">unsubscribe</a>
+                                <a href="#method_rectangle">rectangle</a>
 
                             </li>
                     </ul>
                 </div>
 
-                <div class="index-section properties">
-                    <h3>Properties</h3>
-
-                    <ul class="index-list properties">
-                            <li class="index-item property private">
-                                <a href="#property__eventBook">_eventBook</a>
-
-                            </li>
-                    </ul>
-                </div>
 
 
         </div>
@@ -186,16 +141,25 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_notify" class="method item">
-    <h3 class="name"><code>notify</code></h3>
+<div id="method_ellipse" class="method item">
+    <h3 class="name"><code>ellipse</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
+                        <code>x0</code>
                 </li>
                 <li class="arg">
-                        <code>eventObj</code>
+                        <code>y0</code>
+                </li>
+                <li class="arg">
+                        <code>x1</code>
+                </li>
+                <li class="arg">
+                        <code>y1</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -210,7 +174,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l512"><code>pxl.js:512</code></a>
+        <a href="../files/pxl.js.html#l737"><code>pxl.js:737</code></a>
         </p>
 
 
@@ -218,7 +182,8 @@
     </div>
 
     <div class="description">
-        
+        <p>Ellipse inside rectangle.</p>
+
     </div>
 
         <div class="params">
@@ -226,24 +191,52 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
+                        <code class="param-name">x0</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
-                        <p>[in] Name of event.</p>
-
+                         
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">eventObj</code>
-                        <span class="type">Object</span>
+                        <code class="param-name">y0</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
-                        <p>[in/out] Special event data.</p>
+                         
+                    </div>
 
+                </li>
+                <li class="param">
+                        <code class="param-name">x1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
                     </div>
 
                 </li>
@@ -253,16 +246,25 @@
 
 
 </div>
-<div id="method_subscribe" class="method item">
-    <h3 class="name"><code>subscribe</code></h3>
+<div id="method_line" class="method item">
+    <h3 class="name"><code>line</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
+                        <code>x0</code>
                 </li>
                 <li class="arg">
-                        <code>method</code>
+                        <code>y0</code>
+                </li>
+                <li class="arg">
+                        <code>x1</code>
+                </li>
+                <li class="arg">
+                        <code>y1</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -277,7 +279,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l478"><code>pxl.js:478</code></a>
+        <a href="../files/pxl.js.html#l685"><code>pxl.js:685</code></a>
         </p>
 
 
@@ -293,24 +295,52 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
+                        <code class="param-name">x0</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
-                        <p>[in] Name of event.</p>
-
+                         
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">method</code>
+                        <code class="param-name">y0</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">x1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
                         <span class="type">Function</span>
 
 
                     <div class="param-description">
-                        <p>[out] The method to execute when event is fired.</p>
-
+                         
                     </div>
 
                 </li>
@@ -320,16 +350,25 @@
 
 
 </div>
-<div id="method_unsubscribe" class="method item">
-    <h3 class="name"><code>unsubscribe</code></h3>
+<div id="method_rectangle" class="method item">
+    <h3 class="name"><code>rectangle</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
+                        <code>x0</code>
                 </li>
                 <li class="arg">
-                        <code>method</code>
+                        <code>y0</code>
+                </li>
+                <li class="arg">
+                        <code>x1</code>
+                </li>
+                <li class="arg">
+                        <code>y1</code>
+                </li>
+                <li class="arg">
+                        <code>callback</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -344,7 +383,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l494"><code>pxl.js:494</code></a>
+        <a href="../files/pxl.js.html#l721"><code>pxl.js:721</code></a>
         </p>
 
 
@@ -360,24 +399,52 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
+                        <code class="param-name">x0</code>
+                        <span class="type">Number</span>
 
 
                     <div class="param-description">
-                        <p>[in] Name of event.</p>
-
+                         
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">method</code>
+                        <code class="param-name">y0</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">x1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">y1</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">callback</code>
                         <span class="type">Function</span>
 
 
                     <div class="param-description">
-                        <p>[in] Have to be same reference that passed in subscribe method.</p>
-
+                         
                     </div>
 
                 </li>
@@ -389,36 +456,6 @@
 </div>
             </div>
 
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property__eventBook" class="property item private">
-    <h3 class="name"><code>_eventBook</code></h3>
-    <span class="type">Object</span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l467"><code>pxl.js:467</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> {}</p>
-
-
-</div>
-            </div>
 
 
     </div>

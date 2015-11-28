@@ -21,18 +21,16 @@
 	}
 
 	/**
-	 * Main API's "namespace"
-	 *
 	 * @module pxl
 	 * @class pxl
 	 * @main pxl
-	 * @author Kurz Studious
 	 */
 	return {
 		/**
 		 * @property MIN_ZOOM_SCALE
 		 * @type {Number}
 		 * @final
+		 * @default 1
 		 */
 		MIN_ZOOM_SCALE: 1,
 
@@ -40,27 +38,15 @@
 		 * @property MAX_ZOOM_SCALE
 		 * @type {Number}
 		 * @final
+		 * @default 64
 		 */
 		MAX_ZOOM_SCALE: 64,
-
-		/**
-		 * @property MIN_PEN_SIZE
-		 * @type {Number}
-		 * @final
-		 */
-		MIN_PEN_SIZE: 1,
-
-		/**
-		 * @property MAX_PEN_SIZE
-		 * @type {Number}
-		 * @final
-		 */
-		MAX_PEN_SIZE: 5,
 
 		/**
 		 * @property MIN_CANVAS_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 8
 		 */
 		MIN_CANVAS_SIZE: 8,
 
@@ -70,6 +56,7 @@
 		 * @property MAX_CANVAS_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 1024
 		 */
 		MAX_CANVAS_SIZE: 1024,
 
@@ -79,6 +66,7 @@
 		 * @property MAX_LAYER_COUNT
 		 * @type {Number}
 		 * @final
+		 * @default 8
 		 */
 		MAX_LAYER_COUNT: 8,
 
@@ -86,6 +74,7 @@
 		 * @property MAX_HISTORY_SIZE
 		 * @type {Number}
 		 * @final
+		 * @default 20
 		 */
 		MAX_HISTORY_SIZE: 20,
 
@@ -95,6 +84,7 @@
 		 * @property PIXELS_CHANGED_EVENT
 		 * @type {String}
 		 * @final
+		 * @default "pixelsChanged"
 		 */
 		PIXELS_CHANGED_EVENT: "pixelsChanged",
 
@@ -116,7 +106,7 @@
 		activeView: null,
 
 		/**
-		 * Is API supported on current browser. Call one before started.
+		 * Is API supported on current browser. Call it before started.
 		 *
 		 * @method isSupported
 		 * @return {Boolean}
@@ -126,7 +116,7 @@
 		},
 
 		/**
-		 * Clamp a destination number to min-max borders.
+		 * Clamp a number according to min-max borders.
 		 *
 		 * @method clamp
 		 * @param dest {Number}
@@ -139,6 +129,8 @@
 		},
 
 		/**
+		 * More safest and fastest method to create ImageData.
+		 *
 		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number}
 		 * @param arguments[1] {undefined|Number}
