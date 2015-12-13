@@ -56,10 +56,14 @@
 		 */
 		rectangle: function(x0, y0, x1, y1, callback){
 			//FIXME
-			bresenham.line(x0, y0, x0 + x1, y0, callback);
-			bresenham.line(x0 + x1, y0, x0 + x1, y0 + y1, callback);
-			bresenham.line(x0 + x1, y0 + y1, x0, y0 + y1, callback);
-			bresenham.line(x0, y0 + y1, x0, y0, callback);
+			if (x0 === x1 || y0 === y1){
+				bresenham.line(x0, y0, x1, y0, callback);
+			} else{
+				bresenham.line(x0, y0, x1, y0, callback);
+				bresenham.line(x1, y0, x1, y1, callback);
+				bresenham.line(x1, y1, x0, y1, callback);
+				bresenham.line(x0, y1, x0, y0, callback);
+			}
 		},
 
 		/**

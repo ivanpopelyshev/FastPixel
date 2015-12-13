@@ -39,13 +39,12 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/bresenham.html">bresenham</a></li>
-                                <li><a href="../classes/GrowingPool.html">GrowingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
-                                <li><a href="../classes/Pixel.html">Pixel</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
+                                <li><a href="../classes/Session.html">Session</a></li>
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
@@ -91,7 +90,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l1111"><code>pxl.js:1111</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1435"><code>pxl.js:1435</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -126,7 +125,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1111"><code>pxl.js:1111</code></a>
+        <a href="../files/pxl.js.html#l1435"><code>pxl.js:1435</code></a>
         </p>
 
 
@@ -186,6 +185,15 @@
         </div>
 
 
+        <div class="throws">
+            <h4>Throws:</h4>
+
+            <div class="throws-description">
+                        <span class="type">Error</span>:
+                    <p>Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.</p>
+
+            </div>
+        </div>
 
 </div>
     </div>
@@ -207,7 +215,15 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
+                                <a href="#method_cloneData">cloneData</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_colorReplace">colorReplace</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_compareAt">compareAt</a>
 
                             </li>
                             <li class="index-item method">
@@ -223,11 +239,19 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_generateImageData">generateImageData</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getLayout">getLayout</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_merge">merge</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_mixAt">mixAt</a>
 
                             </li>
                             <li class="index-item method">
@@ -243,11 +267,19 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_plot">plot</a>
+                                <a href="#method_reset">reset</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_reset">reset</a>
+                                <a href="#method_set">set</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setAt">setAt</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_setChannel">setChannel</a>
 
                             </li>
                     </ul>
@@ -270,6 +302,11 @@
 
                             </li>
                             <li class="index-item property">
+                                <a href="#property_MAX_BUFFER_SIZE">MAX_BUFFER_SIZE</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property">
                                 <a href="#property_name">name</a>
 
                             </li>
@@ -282,6 +319,89 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method_cloneData" class="method item">
+    <h3 class="name"><code>cloneData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">ImageDataArray</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1864"><code>pxl.js:1864</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">start</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ImageDataArray</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_colorReplace" class="method item">
     <h3 class="name"><code>colorReplace</code></h3>
 
@@ -303,7 +423,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1356"><code>pxl.js:1356</code></a>
+        <a href="../files/pxl.js.html#l1557"><code>pxl.js:1557</code></a>
         </p>
 
 
@@ -311,9 +431,8 @@
     </div>
 
     <div class="description">
-        <p>Replace pixel by new one within start and offset;
-Or according to pre-computing indexes (Warn: use layout.indexesAt(options));
-Delegate pixel processing to Pixel local instance.</p>
+        <p>Replace specific color from position with new one on whole layer;
+Or just on area within start and offset options.</p>
 
     </div>
 
@@ -333,15 +452,6 @@ Delegate pixel processing to Pixel local instance.</p>
 
                         <ul class="params-list">
                             <li class="param">
-                                    <code class="param-name">oldPixel</code>
-                                    <span class="type">ImageDataArray | Array</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
                                     <code class="param-name">pixel</code>
                                     <span class="type">ImageDataArray | Array</span>
 
@@ -360,8 +470,8 @@ Delegate pixel processing to Pixel local instance.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array | Undefined</span>
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -369,8 +479,8 @@ Delegate pixel processing to Pixel local instance.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+                                    <code class="param-name">position</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
 
                                 <div class="param-description">
                                     
@@ -391,6 +501,121 @@ Delegate pixel processing to Pixel local instance.</p>
             </ul>
         </div>
 
+
+
+</div>
+<div id="method_compareAt" class="method item">
+    <h3 class="name"><code>compareAt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>i</code>
+                </li>
+                <li class="arg">
+                        <code>r</code>
+                </li>
+                <li class="arg">
+                        <code>g</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>a</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1780"><code>pxl.js:1780</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">i</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>index where to apply.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">r</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">g</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
 
 
 </div>
@@ -418,7 +643,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1169"><code>pxl.js:1169</code></a>
+        <a href="../files/pxl.js.html#l1510"><code>pxl.js:1510</code></a>
         </p>
 
 
@@ -477,7 +702,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1441"><code>pxl.js:1441</code></a>
+        <a href="../files/pxl.js.html#l1891"><code>pxl.js:1891</code></a>
         </p>
 
 
@@ -485,7 +710,8 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
     <div class="description">
-        
+        <p>Destructor.</p>
+
     </div>
 
 
@@ -516,7 +742,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1220"><code>pxl.js:1220</code></a>
+        <a href="../files/pxl.js.html#l1652"><code>pxl.js:1652</code></a>
         </p>
 
 
@@ -525,8 +751,7 @@ Delegate pixel processing to Pixel local instance.</p>
 
     <div class="description">
         <p>Flood fill (no recursion, custom stack);
-Delegate pixel processing to Pixel local instance;
-Warn: there are possible freezes on sizes more than 512x512</p>
+Can be applyed for area within start and offset options.</p>
 
     </div>
 
@@ -605,6 +830,89 @@ Warn: there are possible freezes on sizes more than 512x512</p>
 
 
 </div>
+<div id="method_generateImageData" class="method item">
+    <h3 class="name"><code>generateImageData</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">ImageData</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1829"><code>pxl.js:1829</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">start</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ImageData</span>:
+            </div>
+        </div>
+
+
+</div>
 <div id="method_getLayout" class="method item">
     <h3 class="name"><code>getLayout</code></h3>
 
@@ -623,7 +931,7 @@ Warn: there are possible freezes on sizes more than 512x512</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1433"><code>pxl.js:1433</code></a>
+        <a href="../files/pxl.js.html#l1856"><code>pxl.js:1856</code></a>
         </p>
 
 
@@ -666,7 +974,7 @@ Warn: there are possible freezes on sizes more than 512x512</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1185"><code>pxl.js:1185</code></a>
+        <a href="../files/pxl.js.html#l1526"><code>pxl.js:1526</code></a>
         </p>
 
 
@@ -674,9 +982,8 @@ Warn: there are possible freezes on sizes more than 512x512</p>
     </div>
 
     <div class="description">
-        <p>Merge pixels within start and offset;
-Or pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
-Delegate pixel processing to Pixel local instance.</p>
+        <p>Merge each pixel of two layers;
+Or apply merging to pixels within start and offset options.</p>
 
     </div>
 
@@ -748,6 +1055,111 @@ Delegate pixel processing to Pixel local instance.</p>
 
 
 </div>
+<div id="method_mixAt" class="method item">
+    <h3 class="name"><code>mixAt</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>i</code>
+                </li>
+                <li class="arg">
+                        <code>r</code>
+                </li>
+                <li class="arg">
+                        <code>g</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>a</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1750"><code>pxl.js:1750</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">i</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>index where to apply.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">r</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">g</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method_pixelAt" class="method item">
     <h3 class="name"><code>pixelAt</code></h3>
 
@@ -772,7 +1184,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1422"><code>pxl.js:1422</code></a>
+        <a href="../files/pxl.js.html#l1818"><code>pxl.js:1818</code></a>
         </p>
 
 
@@ -780,7 +1192,7 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
     <div class="description">
-        <p>Index with offset on pixel size (which equal to 4 (rgba)).</p>
+        <p>Index with color-offset (which equal to x4 (rgba)).</p>
 
     </div>
 
@@ -807,8 +1219,6 @@ Delegate pixel processing to Pixel local instance.</p>
 
             <div class="returns-description">
                         <span class="type">ImageDataArray</span>:
-                    <p>Warn: direct reference onto data's property buffer.</p>
-
             </div>
         </div>
 
@@ -838,7 +1248,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1410"><code>pxl.js:1410</code></a>
+        <a href="../files/pxl.js.html#l1806"><code>pxl.js:1806</code></a>
         </p>
 
 
@@ -846,7 +1256,7 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
     <div class="description">
-        <p>Warn: index without offset!</p>
+        <p>Warn: index without color-offset!</p>
 
     </div>
 
@@ -902,7 +1312,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1400"><code>pxl.js:1400</code></a>
+        <a href="../files/pxl.js.html#l1797"><code>pxl.js:1797</code></a>
         </p>
 
 
@@ -941,8 +1351,39 @@ Delegate pixel processing to Pixel local instance.</p>
 
 
 </div>
-<div id="method_plot" class="method item">
-    <h3 class="name"><code>plot</code></h3>
+<div id="method_reset" class="method item">
+    <h3 class="name"><code>reset</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1494"><code>pxl.js:1494</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Reset the data to default.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_set" class="method item">
+    <h3 class="name"><code>set</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -962,7 +1403,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1318"><code>pxl.js:1318</code></a>
+        <a href="../files/pxl.js.html#l1592"><code>pxl.js:1592</code></a>
         </p>
 
 
@@ -970,9 +1411,8 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
     <div class="description">
-        <p>Plot pixel within start and offset;
-Or to pixels by pre-computing indexes (Warn: use layout.indexesAt(options));
-Delegate pixel processing to Pixel local instance.</p>
+        <p>Set new color for layer;
+Or just for area within start and offset options.</p>
 
     </div>
 
@@ -1019,15 +1459,6 @@ Delegate pixel processing to Pixel local instance.</p>
 
                             </li>
                             <li class="param">
-                                    <code class="param-name">indexes</code>
-                                    <span class="type">Array | Undefined</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
                                     <code class="param-name">isMix</code>
                                     <span class="type">Boolean</span>
 
@@ -1044,10 +1475,28 @@ Delegate pixel processing to Pixel local instance.</p>
 
 
 </div>
-<div id="method_reset" class="method item">
-    <h3 class="name"><code>reset</code></h3>
+<div id="method_setAt" class="method item">
+    <h3 class="name"><code>setAt</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>i</code>
+                </li>
+                <li class="arg">
+                        <code>r</code>
+                </li>
+                <li class="arg">
+                        <code>g</code>
+                </li>
+                <li class="arg">
+                        <code>b</code>
+                </li>
+                <li class="arg">
+                        <code>a</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
 
@@ -1059,7 +1508,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1153"><code>pxl.js:1153</code></a>
+        <a href="../files/pxl.js.html#l1734"><code>pxl.js:1734</code></a>
         </p>
 
 
@@ -1067,10 +1516,161 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
     <div class="description">
-        <p>Reset the data to default.</p>
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">i</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>index where to apply.</p>
+
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">r</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">g</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">b</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">a</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setChannel" class="method item">
+    <h3 class="name"><code>setChannel</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1624"><code>pxl.js:1624</code></a>
+        </p>
+
+
 
     </div>
 
+    <div class="description">
+        <p>Change specific channel for layer;
+Or channel for area within start and offset options.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">channelOffset</code>
+                                    <span class="type">Number</span>
+
+                                <div class="param-description">
+                                    <p>0-3 (rgba)</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">value</code>
+                                    <span class="type">Number</span>
+
+                                <div class="param-description">
+                                    <p>0-255</p>
+
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">start</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -1092,7 +1692,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1143"><code>pxl.js:1143</code></a>
+        <a href="../files/pxl.js.html#l1473"><code>pxl.js:1473</code></a>
         </p>
 
 
@@ -1116,7 +1716,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1120"><code>pxl.js:1120</code></a>
+        <a href="../files/pxl.js.html#l1445"><code>pxl.js:1445</code></a>
         </p>
 
 
@@ -1140,7 +1740,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1136"><code>pxl.js:1136</code></a>
+        <a href="../files/pxl.js.html#l1466"><code>pxl.js:1466</code></a>
         </p>
 
 
@@ -1151,6 +1751,34 @@ Delegate pixel processing to Pixel local instance.</p>
     </div>
 
         <p><strong>Default:</strong> true</p>
+
+
+</div>
+<div id="property_MAX_BUFFER_SIZE" class="property item">
+    <h3 class="name"><code>MAX_BUFFER_SIZE</code></h3>
+    <span class="type">Number</span>
+
+
+
+        <span class="flag final">final</span>
+
+        <span class="flag static">static</span>
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1481"><code>pxl.js:1481</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Strict limitation, but that's enough for pixel-art</p>
+
+    </div>
+
+        <p><strong>Default:</strong> 1024*1024*4</p>
 
 
 </div>
@@ -1165,7 +1793,7 @@ Delegate pixel processing to Pixel local instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1129"><code>pxl.js:1129</code></a>
+        <a href="../files/pxl.js.html#l1459"><code>pxl.js:1459</code></a>
         </p>
 
 

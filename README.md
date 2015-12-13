@@ -2,13 +2,13 @@
 
 Fast &amp; flexible API for creating awesome pixel-art tool
 
-Currently in progress (unstable beta).
+Currently in progress (stable beta).
 
 ## It is just works!
 
 ```javascript
 //create view instance and make it active:
-pxl.activeView = pxl.Layout.View.create({
+pxl.View.activeView = pxl.View.create({
 	canvasSize: {
 		width: 128,
 		height: 128
@@ -16,8 +16,16 @@ pxl.activeView = pxl.Layout.View.create({
 	element: document.querySelector("CANVAS")
 });
 
-//draw line from 25:25 to 50:100
-pxl.Layout.controller.plotLine(25, 25, 50, 100);
+//draws line from 25:25 to 50:100
+pxl.bresenham.line(25, 25, 50, 100, function(x, y){
+	pxl.View.activeView.getLayout().set({
+		"start": new pxl.Vector2(x, y), //position where to apply
+		"offset": new pxl.Vector2(1), //size of the pixel
+		"pixel": new pxl.ImageDataArray([0, 0, 0, 255]), //pixel's color (black)
+		"isMix": true, //ability to mix colors
+		"isNotifyView": true //update view
+	});
+});
 ```
 
 Look at [examples][] to see more!
@@ -28,15 +36,15 @@ No! At all! Everything is you need is just a one file: [pxl.js][] or [pxl.min.js
 
 ## Modules
 
-API is completely synchronous & single thread.
+API is completely synchronous & single thread (no timers and no workers).
 Based on different modules, separated by files (thanks to gulp).
-There are three absolutely independence modules:
+There are few absolutely independence modules:
 - [Vector2][]
 - [Observer][]
-- [PrimitivePool][]
+- [brezenham][]
 
-Other have different types of dependencies
-(Layout can't work without Layer and Layer can't work without Pixel)
+Other have different kinds of dependencies
+(Layout can't work without Layer and Layer can't work without history)
 
 Main logic is based on MVC design pattern.
 So, it is possible to create few view instances that will listen for changes in one model, too example.
@@ -50,4 +58,4 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [pxl.min.js]: ./pxl.min.js
 [Vector2]: ./public/js/pxl/Vector2/Vector2.js
 [Observer]: ./public/js/pxl/Observer/Observer.js
-[PrimitivePool]: ./public/js/pxl/PrimitivePool/PrimitivePool.js
+[brezenham]: ./public/js/pxl/brezenham/brezenham.js

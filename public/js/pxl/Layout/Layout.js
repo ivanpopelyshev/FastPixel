@@ -24,7 +24,8 @@
 		 * @type {Layer}
 		 */
 		this.dataLayer = new pxl.Layout.Layer({
-			"source": this._imageData.data.buffer, "layout": this
+			"source": this._imageData.data.buffer,
+			"layout": this
 		});
 
 		/**
@@ -48,6 +49,28 @@
 		this.observer = new pxl.Observer;
 	};
 
+	/**
+	 * Maximum number of layers per layout.
+	 *
+	 * @property MAX_LAYER_COUNT
+	 * @type {Number}
+	 * @static
+	 * @final
+	 * @default 8
+	 */
+	Layout.MAX_LAYER_COUNT = 8;
+
+	/**
+	 * Model event name.
+	 *
+	 * @property PIXELS_CHANGED_EVENT
+	 * @type {String}
+	 * @final
+	 * @static
+	 * @default "pixelsChanged"
+	 */
+	Layout.PIXELS_CHANGED_EVENT = "pixelsChanged";
+
 	var layoutProto = Layout.prototype;
 
 	/**
@@ -58,7 +81,7 @@
 	 * @chainable
 	 */
 	layoutProto.appendLayer = function(){
-		if (this.layerList.length < pxl.MAX_LAYER_COUNT){
+		if (this.layerList.length < Layout.MAX_LAYER_COUNT){
 			this.activeLayer = new Layout.Layer({
 				"source": this.getWidth() * this.getHeight(),
 				"layout": this,
@@ -77,14 +100,13 @@
 	 */
 	layoutProto.deleteLayer = function(){
 		var layerList = this.layerList;
-		var length = layerList.length;
-		for (var i = 0; i < length; ++i){
+		for (var i = 0; i < layerList.length; ++i){
 			if (layerList[i] === this.activeLayer){
 				layerList.splice(i, 1);
-				this.activeLayer.destroy(); //don't forget to destroy one!
+				this.activeLayer.destroy();
 				this.activeLayer = (layerList.length === 0
 					? null
-					: layerList[length - 1] //top layer become active
+					: layerList[layerList.length - 1] //top layer become active
 				);
 				break;
 			}
@@ -94,15 +116,14 @@
 
 	/**
 	 * Each visible layer "drawn" to main dataLayer layer (Back-to-front);
-	 * (delegate processing to the activeLayer);
 	 * Notify subscribers.
 	 *
+	 * @method mergeLayers
 	 * @param options {Object} [in]
 	 * @param options.isMix {Boolean}
 	 * @param options.start {Vector2}
 	 * @param options.offset {Vector2}
 	 * @param options.isNotifyView {Boolean}
-	 * @method mergeLayers
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options){
@@ -115,8 +136,7 @@
 		} else{
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.indexes = options.indexes;
-			clonedOpts.isMix = false; //it's important to set mix to false at first layer
+			clonedOpts.isMix = false; //it's important to disable mix first time!
 			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = visibleLayers[i];
 				dataLayer.merge(clonedOpts);
@@ -124,7 +144,7 @@
 			}
 		}
 		if (options.isNotifyView === true){
-			this.observer.notify(pxl.PIXELS_CHANGED_EVENT, options);
+			this.observer.notify(Layout.PIXELS_CHANGED_EVENT, options);
 		}
 		return this;
 	};
@@ -133,6 +153,7 @@
      * Replace old colour by new one;
 	 * delegate processing to the activeLayer.
 	 *
+	 * @see pxl.Layout.Layer.colorReplace
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @chainable
@@ -144,15 +165,31 @@
 	};
 
     /**
-     * Plot pixel or group of pixels (faster then force-fill);
+     * Set pixel or group of pixels (force-fill);
 	 * delegate processing to the activeLayer.
 	 *
-	 * @method plot
+	 * @see pxl.Layout.Layer.set
+	 * @method set
 	 * @param options {Object} [in]
 	 * @chainable
      */
-	layoutProto.plot = function(options){
-		this.activeLayer.plot(options);
+	layoutProto.set = function(options){
+		this.activeLayer.set(options);
+		this.mergeLayers(options);
+		return this;
+	};
+
+    /**
+     * Setting the value for specific channel;
+	 * delegate processing to the activeLayer.
+	 *
+	 * @see pxl.Layout.Layer.setChannel
+	 * @method setChannel
+	 * @param options {Object} [in]
+	 * @chainable
+     */
+	layoutProto.setChannel = function(options){
+		this.activeLayer.setChannel(options);
 		this.mergeLayers(options);
 		return this;
 	};
@@ -161,50 +198,16 @@
      * Flood fill;
 	 * delegate processing to the activeLayer.
 	 *
+	 * @see pxl.Layout.Layer.fill
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @chainable
      */
     layoutProto.fill = function(options){
-		if (this.activeLayer.fill(options)){
-			this.mergeLayers(options);
-		}
+		this.activeLayer.fill(options);
+		this.mergeLayers(options);
 		return this;
     };
-
-	/**
-	 * Provide list of indexes within start and offset coordinates.
-	 * Warn: don't compute indexes by yourself! Use this method only!
-	 *
-	 * @method indexesAt
-	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
-	 * @return {Array} warn: static array(read-only)
-	 */
-	layoutProto.indexesAt = (function(){ //anonymous
-		var _container = [0];
-		return function(options){
-			var rContainer = _container; //move reference in current scope
-			var start = options.start;
-			var x = Math.max(0, start.x);
-			var y = Math.max(0, start.y);
-			var width = Math.min(this.getWidth() - 1, options.offset.x);
-			var length = width * Math.min(this.getHeight() - 1, options.offset.y);
-			var positionTmp = new pxl.Vector2;
-			var indexOffset = 0;
-			var index = this.indexAt(start);
-			rContainer.length = length;
-			for (var i = 0; i < length; ++i){
-				rContainer[i] = index + indexOffset; //take an index relative to coordinates
-				if (++indexOffset >= width){
-					indexOffset = 0;
-					index = this.indexAt(positionTmp.set(x, ++y));
-				}
-			}
-			return rContainer;
-		}
-	})();
 
 	/**
 	 * Provide an index from position.
@@ -237,25 +240,10 @@
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
-		var imageData = null;
-		if (options){
-			imageData = pxl.createImageData(options.offset.x, options.offset.y);
-			var dataPixel = new pxl.Layout.Layer.Pixel(
-				new pxl.ImageDataArray(imageData.data.buffer)
-			);
-			var otherPixel = new pxl.Layout.Layer.Pixel(this.dataLayer.data);
-			var indexes = options.indexes || this.indexesAt(options);
-			var length = indexes.length;
-			for (var i = 0, j = 0; i < length; ++i){
-				dataPixel.index = j;
-				otherPixel.index = indexes[i] << 2;
-				dataPixel.set(otherPixel);
-				j += 4;
-			}
-		} else{
-			imageData = this._imageData;
-		}
-		return imageData;
+		return (options.start && options.offset
+			? this.dataLayer.generateImageData(options)
+			: this._imageData
+		);
 	};
 
 	/**
@@ -290,7 +278,41 @@
 	};
 
 	/**
-	 * @destructor
+	 * Warn: for internal usage only!
+	 *
+	 * @method __process
+	 * @param options {Object} [in]
+	 * @param options.start {Vector2|undefined}
+	 * @param options.offset {Vector2|undefined}
+	 * @param callback {Function}
+	 * @private
+	 */
+	layoutProto.__process = function(options, callback){
+		if (options.start && options.offset){
+			var length = 0;
+			var width = this.getWidth();
+			var wideOffset = options.offset.x;
+			var high = options.offset.y;
+			var index = this.indexAt(options.start) << 2;
+			if (wideOffset >= width){
+				wideOffset = width <<= 2;
+			} else{
+				wideOffset <<= 2;
+				width <<= 2;
+			}
+			for (var i = 0; i < high; ++i){
+				length = index + wideOffset;
+				callback(index, length);
+				index += width;
+			}
+		} else{
+			callback(0, this.dataLayer.data.length);
+		}
+	};
+
+	/**
+	 * Destructor.
+	 *
 	 * @method destroy
 	 */
 	layoutProto.destroy = function(){

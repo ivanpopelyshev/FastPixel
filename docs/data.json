@@ -10,13 +10,12 @@
                 "pxl": 1,
                 "Vector2": 1,
                 "Observer": 1,
-                "GrowingPool": 1,
                 "bresenham": 1,
+                "View": 1,
                 "Layout": 1,
                 "Layer": 1,
-                "Pixel": 1,
-                "View": 1,
-                "history": 1
+                "history": 1,
+                "Session": 1
             },
             "fors": {},
             "namespaces": {}
@@ -31,20 +30,18 @@
                 "pxl": 1,
                 "Vector2": 1,
                 "Observer": 1,
-                "GrowingPool": 1,
                 "bresenham": 1,
+                "View": 1,
                 "Layout": 1,
                 "Layer": 1,
-                "Pixel": 1,
-                "View": 1,
-                "history": 1
+                "history": 1,
+                "Session": 1
             },
             "fors": {},
             "namespaces": {},
-            "tag": "main",
+            "tag": "module",
             "file": "pxl.js",
-            "line": 2073,
-            "itemtype": "main"
+            "line": 2064
         }
     },
     "classes": {
@@ -57,9 +54,12 @@
             "plugin_for": [],
             "extension_for": [],
             "module": "pxl",
-            "namespace": "",
             "file": "pxl.js",
-            "line": 23
+            "line": 22,
+            "mainName": "",
+            "tag": "main",
+            "itemtype": "main",
+            "_main": true
         },
         "Vector2": {
             "name": "Vector2",
@@ -72,7 +72,7 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 161,
+            "line": 94,
             "is_constructor": 1,
             "params": [
                 {
@@ -98,31 +98,9 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 460,
+            "line": 393,
             "description": "Simple observer-pattern implementation.",
             "is_constructor": 1
-        },
-        "GrowingPool": {
-            "name": "GrowingPool",
-            "shortname": "GrowingPool",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "pxl",
-            "namespace": "",
-            "file": "pxl.js",
-            "line": 533,
-            "description": "Grows up as usual array but this one is better to re-use (GC friendly);\nFor object types only.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "constructor",
-                    "description": "[in]",
-                    "type": "Function"
-                }
-            ]
         },
         "bresenham": {
             "name": "bresenham",
@@ -135,105 +113,9 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 680,
+            "line": 466,
             "see": [
                 "http://members.chello.at/easyfilter/bresenham.js"
-            ]
-        },
-        "Layout": {
-            "name": "Layout",
-            "shortname": "Layout",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "pxl",
-            "namespace": "",
-            "file": "pxl.js",
-            "line": 801,
-            "description": "Pass width and height parameters;\nor just already existing ImageData as source.",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "ImageData",
-                    "description": "[in]",
-                    "type": "Object"
-                },
-                {
-                    "name": "width",
-                    "description": "",
-                    "type": "Number"
-                },
-                {
-                    "name": "height",
-                    "description": "",
-                    "type": "Number"
-                }
-            ]
-        },
-        "Layer": {
-            "name": "Layer",
-            "shortname": "Layer",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "pxl",
-            "namespace": "",
-            "file": "pxl.js",
-            "line": 1111,
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "source",
-                            "description": "Specify other buffer or a size (without offset)",
-                            "type": "ArrayBuffer|Number"
-                        },
-                        {
-                            "name": "layout",
-                            "description": "",
-                            "type": "Layout"
-                        },
-                        {
-                            "name": "name",
-                            "description": "",
-                            "type": "String"
-                        }
-                    ]
-                }
-            ]
-        },
-        "Pixel": {
-            "name": "Pixel",
-            "shortname": "Pixel",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "module": "pxl",
-            "namespace": "",
-            "file": "pxl.js",
-            "line": 1454,
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "data",
-                    "description": "[out] warn: size of an array have to be at least 4",
-                    "type": "ImageDataArray"
-                },
-                {
-                    "name": "index",
-                    "description": "[in]",
-                    "type": "Number|undefined"
-                }
             ]
         },
         "View": {
@@ -247,7 +129,7 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 1574,
+            "line": 591,
             "is_constructor": 1,
             "params": [
                 {
@@ -279,6 +161,80 @@
                 }
             ]
         },
+        "Layout": {
+            "name": "Layout",
+            "shortname": "Layout",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "pxl",
+            "namespace": "",
+            "file": "pxl.js",
+            "line": 1110,
+            "description": "Pass width and height parameters;\nor just already existing ImageData as source.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "ImageData",
+                    "description": "[in]",
+                    "type": "Object"
+                },
+                {
+                    "name": "width",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "height",
+                    "description": "",
+                    "type": "Number"
+                }
+            ]
+        },
+        "Layer": {
+            "name": "Layer",
+            "shortname": "Layer",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "pxl",
+            "namespace": "",
+            "file": "pxl.js",
+            "line": 1435,
+            "is_constructor": 1,
+            "throws": {
+                "description": "Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.",
+                "type": "Error"
+            },
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "source",
+                            "description": "Specify other buffer or a size (without offset)",
+                            "type": "ArrayBuffer|Number"
+                        },
+                        {
+                            "name": "layout",
+                            "description": "",
+                            "type": "Layout"
+                        },
+                        {
+                            "name": "name",
+                            "description": "",
+                            "type": "String"
+                        }
+                    ]
+                }
+            ]
+        },
         "history": {
             "name": "history",
             "shortname": "history",
@@ -290,94 +246,35 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 2073
+            "line": 1905
+        },
+        "Session": {
+            "name": "Session",
+            "shortname": "Session",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "pxl",
+            "namespace": "",
+            "file": "pxl.js",
+            "line": 2064,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "layer",
+                    "description": "",
+                    "type": "Layer"
+                }
+            ]
         }
     },
     "elements": {},
     "classitems": [
         {
             "file": "pxl.js",
-            "line": 29,
-            "itemtype": "property",
-            "name": "MIN_ZOOM_SCALE",
-            "type": "{Number}",
-            "final": 1,
-            "default": "1",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 37,
-            "itemtype": "property",
-            "name": "MAX_ZOOM_SCALE",
-            "type": "{Number}",
-            "final": 1,
-            "default": "64",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 45,
-            "itemtype": "property",
-            "name": "MIN_CANVAS_SIZE",
-            "type": "{Number}",
-            "final": 1,
-            "default": "8",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 53,
-            "description": "Strict limitation, but that's enough for pixel-art",
-            "itemtype": "property",
-            "name": "MAX_CANVAS_SIZE",
-            "type": "{Number}",
-            "final": 1,
-            "default": "1024",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 63,
-            "description": "Maximum number of layers per layout",
-            "itemtype": "property",
-            "name": "MAX_LAYER_COUNT",
-            "type": "{Number}",
-            "final": 1,
-            "default": "8",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 73,
-            "itemtype": "property",
-            "name": "MAX_HISTORY_SIZE",
-            "type": "{Number}",
-            "final": 1,
-            "default": "20",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 81,
-            "description": "View-model event name.",
-            "itemtype": "property",
-            "name": "PIXELS_CHANGED_EVENT",
-            "type": "{String}",
-            "final": 1,
-            "default": "\"pixelsChanged\"",
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 91,
+            "line": 35,
             "description": "Type of an array that uses by ImageData. Depends on browser.",
             "itemtype": "property",
             "name": "ImageDataArray",
@@ -387,31 +284,42 @@
         },
         {
             "file": "pxl.js",
-            "line": 99,
-            "description": "Reference onto the currently active view instance.",
+            "line": 43,
+            "description": "Is API supported on current browser.",
             "itemtype": "property",
-            "name": "activeView",
-            "type": "{View|null}",
-            "default": "null",
+            "name": "isSupported",
+            "type": "{Boolean}",
             "class": "pxl",
             "module": "pxl"
         },
         {
             "file": "pxl.js",
-            "line": 108,
-            "description": "Is API supported on current browser. Call it before started.",
-            "itemtype": "method",
-            "name": "isSupported",
+            "line": 51,
+            "description": "More safest and fastest method to create ImageData.",
+            "itemtype": "property",
+            "name": "createImageData",
             "return": {
                 "description": "",
-                "type": "Boolean"
+                "type": "ImageData"
             },
             "class": "pxl",
-            "module": "pxl"
+            "module": "pxl",
+            "subprops": [
+                {
+                    "name": "arguments[0]",
+                    "description": "[in]",
+                    "type": "ImageData|Number"
+                },
+                {
+                    "name": "arguments[1]",
+                    "description": "[in]",
+                    "type": "Undefined|Number"
+                }
+            ]
         },
         {
             "file": "pxl.js",
-            "line": 118,
+            "line": 63,
             "description": "Clamp a number according to min-max borders.",
             "itemtype": "method",
             "name": "clamp",
@@ -441,32 +349,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 131,
-            "description": "More safest and fastest method to create ImageData.",
-            "itemtype": "method",
-            "name": "createImageData",
-            "params": [
-                {
-                    "name": "arguments[0]",
-                    "description": "",
-                    "type": "ImageData|Number"
-                },
-                {
-                    "name": "arguments[1]",
-                    "description": "",
-                    "type": "Undefined|Number"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "ImageData"
-            },
-            "class": "pxl",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 143,
+            "line": 76,
             "description": "More safest and fastest method to create canvas elements.",
             "itemtype": "method",
             "name": "createCanvas",
@@ -479,7 +362,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 170,
+            "line": 103,
             "itemtype": "property",
             "name": "x",
             "type": "{Number}",
@@ -489,7 +372,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 176,
+            "line": 109,
             "itemtype": "property",
             "name": "y",
             "type": "{Number}",
@@ -499,7 +382,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 183,
+            "line": 116,
             "description": "Floating point error for comparison method.",
             "static": 1,
             "type": "{Number}",
@@ -508,7 +391,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 193,
+            "line": 126,
             "description": "Return string is JSON format.",
             "itemtype": "method",
             "name": "toString",
@@ -521,7 +404,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 203,
+            "line": 136,
             "description": "Add two Vector2 instances;\nor add Vector2 instance with numbers.",
             "itemtype": "method",
             "name": "add",
@@ -543,7 +426,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 223,
+            "line": 156,
             "description": "Substract one Vector2 instance from another;\nor substrast number from Vector2 instance.",
             "itemtype": "method",
             "name": "sub",
@@ -565,7 +448,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 243,
+            "line": 176,
             "description": "Multiply two Vector2 instances;\nor multiply Vector2 instance by numbers.",
             "itemtype": "method",
             "name": "mul",
@@ -587,7 +470,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 263,
+            "line": 196,
             "description": "Divide one Vector2 instance by another;\nor divide Vector2 instance by numbers.",
             "itemtype": "method",
             "name": "div",
@@ -609,7 +492,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 283,
+            "line": 216,
             "description": "Copy Vector2 instance;\nor set new values for Vector2 instance.",
             "itemtype": "method",
             "name": "set",
@@ -631,7 +514,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 303,
+            "line": 236,
             "description": "Compare two Vector2 instances\nor compare Vector2 instance properties with numbers.",
             "itemtype": "method",
             "name": "cmp",
@@ -656,7 +539,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 324,
+            "line": 257,
             "description": "Make Vector2 instance properties absolute.",
             "itemtype": "method",
             "name": "abs",
@@ -666,7 +549,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 336,
+            "line": 269,
             "description": "Make Vector2 instance properties negative.",
             "itemtype": "method",
             "name": "neg",
@@ -676,7 +559,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 348,
+            "line": 281,
             "description": "Swap properties between Vector2 instances.",
             "itemtype": "method",
             "name": "swap",
@@ -693,7 +576,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 365,
+            "line": 298,
             "description": "Round down Vector2 instance properties.",
             "itemtype": "method",
             "name": "floor",
@@ -703,7 +586,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 377,
+            "line": 310,
             "description": "Round up Vector2 instance properties.",
             "itemtype": "method",
             "name": "ceil",
@@ -713,7 +596,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 389,
+            "line": 322,
             "description": "Round Vector2 instance properties.",
             "itemtype": "method",
             "name": "round",
@@ -723,7 +606,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 401,
+            "line": 334,
             "description": "Check properties for NaN.",
             "itemtype": "method",
             "name": "hasNaN",
@@ -736,7 +619,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 411,
+            "line": 344,
             "description": "Check properties for Infinity.",
             "itemtype": "method",
             "name": "hasInfinity",
@@ -749,7 +632,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 421,
+            "line": 354,
             "description": "Make new Vector2 instance with same properties.",
             "itemtype": "method",
             "name": "clone",
@@ -762,7 +645,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 467,
+            "line": 400,
             "itemtype": "property",
             "name": "_eventBook",
             "access": "private",
@@ -774,7 +657,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 478,
+            "line": 411,
             "itemtype": "method",
             "name": "subscribe",
             "params": [
@@ -794,7 +677,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 494,
+            "line": 427,
             "itemtype": "method",
             "name": "unsubscribe",
             "params": [
@@ -814,7 +697,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 512,
+            "line": 445,
             "itemtype": "method",
             "name": "notify",
             "params": [
@@ -834,166 +717,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 542,
-            "itemtype": "property",
-            "name": "_container",
-            "access": "private",
-            "tagname": "",
-            "type": "{Array}",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 549,
-            "itemtype": "property",
-            "name": "_allocator",
-            "access": "private",
-            "tagname": "",
-            "type": "{Function}",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 556,
-            "itemtype": "property",
-            "name": "_size",
-            "access": "private",
-            "tagname": "",
-            "type": "{Number}",
-            "default": "0",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 567,
-            "description": "Get the current occupied size.",
-            "itemtype": "method",
-            "name": "size",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 577,
-            "description": "Check whenever pool is full (size reached its top).\nWarn: new instance not full!",
-            "itemtype": "method",
-            "name": "isFull",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 588,
-            "description": "Check whenever pool's memory is empty.\nWarn: new instance not empty!",
-            "itemtype": "method",
-            "name": "isEmpty",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 599,
-            "description": "Expand size and return new item at top.",
-            "itemtype": "method",
-            "name": "expand",
-            "return": {
-                "description": "",
-                "type": "ANY"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 615,
-            "description": "Pop the last available element (or null if pool is empty).",
-            "itemtype": "method",
-            "name": "pop",
-            "return": {
-                "description": "",
-                "type": "ANY|null"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 625,
-            "description": "Get available element by index (or null if index is out of size).",
-            "itemtype": "method",
-            "name": "at",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "[in]",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "ANY|null"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 636,
-            "description": "Get the last available element (or null if pool is empty).",
-            "itemtype": "method",
-            "name": "back",
-            "return": {
-                "description": "",
-                "type": "ANY|null"
-            },
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 646,
-            "description": "Completely reduce size (memory is still occupied).",
-            "itemtype": "method",
-            "name": "reduce",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 655,
-            "description": "Reduce unused memory.",
-            "itemtype": "method",
-            "name": "shrink",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 664,
-            "description": "Deallocate whole data.",
-            "itemtype": "method",
-            "name": "free",
-            "class": "GrowingPool",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 685,
+            "line": 471,
             "itemtype": "method",
             "name": "line",
             "params": [
@@ -1028,7 +752,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 721,
+            "line": 507,
             "itemtype": "method",
             "name": "rectangle",
             "params": [
@@ -1063,7 +787,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 737,
+            "line": 527,
             "description": "Ellipse inside rectangle.",
             "itemtype": "method",
             "name": "ellipse",
@@ -1099,747 +823,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 812,
-            "itemtype": "property",
-            "name": "_imageData",
-            "access": "private",
-            "tagname": "",
-            "type": "{ImageData}",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 819,
-            "itemtype": "property",
-            "name": "dataLayer",
-            "type": "{Layer}",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 827,
-            "itemtype": "property",
-            "name": "layerList",
-            "type": "{Array}",
-            "default": "[]",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 834,
-            "itemtype": "property",
-            "name": "activeLayer",
-            "type": "{Layer}",
-            "default": "null",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 841,
-            "itemtype": "property",
-            "name": "observer",
-            "type": "{Observer}",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 850,
-            "description": "Append new Layer instance into the layerList (if possible);\nactiveLayer point on new instance.",
-            "itemtype": "method",
-            "name": "appendLayer",
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 869,
-            "description": "Delete an active layer.",
-            "itemtype": "method",
-            "name": "deleteLayer",
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 892,
-            "description": "Each visible layer \"drawn\" to main dataLayer layer (Back-to-front);\n(delegate processing to the activeLayer);\nNotify subscribers.",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "isMix",
-                            "description": "",
-                            "type": "Boolean"
-                        },
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2"
-                        },
-                        {
-                            "name": "isNotifyView",
-                            "description": "",
-                            "type": "Boolean"
-                        }
-                    ]
-                }
-            ],
-            "itemtype": "method",
-            "name": "mergeLayers",
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 936,
-            "description": "Replace old colour by new one;\ndelegate processing to the activeLayer.",
-            "itemtype": "method",
-            "name": "colorReplace",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object"
-                }
-            ],
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 950,
-            "description": "Plot pixel or group of pixels (faster then force-fill);\ndelegate processing to the activeLayer.",
-            "itemtype": "method",
-            "name": "plot",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object"
-                }
-            ],
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 964,
-            "description": "Flood fill;\ndelegate processing to the activeLayer.",
-            "itemtype": "method",
-            "name": "fill",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object"
-                }
-            ],
-            "chainable": 1,
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 979,
-            "description": "Provide list of indexes within start and offset coordinates.\nWarn: don't compute indexes by yourself! Use this method only!",
-            "itemtype": "method",
-            "name": "indexesAt",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2"
-                        }
-                    ]
-                }
-            ],
-            "return": {
-                "description": "warn: static array(read-only)",
-                "type": "Array"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1013,
-            "description": "Provide an index from position.",
-            "itemtype": "method",
-            "name": "indexAt",
-            "params": [
-                {
-                    "name": "position",
-                    "description": "[in]",
-                    "type": "Vector2"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1024,
-            "description": "Provide position according to index (without offset).",
-            "itemtype": "method",
-            "name": "positionFrom",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "[in]",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Vector2"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1036,
-            "description": "Get whole image data or just a part of it (according to options).",
-            "itemtype": "method",
-            "name": "getImageData",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object|undefined"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "ImageData"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1065,
-            "itemtype": "method",
-            "name": "getWidth",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1073,
-            "itemtype": "method",
-            "name": "getHeight",
-            "return": {
-                "description": "",
-                "type": "Number"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1081,
-            "itemtype": "method",
-            "name": "visibleLayers",
-            "return": {
-                "description": "",
-                "type": "Array"
-            },
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1096,
-            "destructor": "",
-            "itemtype": "method",
-            "name": "destroy",
-            "class": "Layout",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1120,
-            "itemtype": "property",
-            "name": "data",
-            "type": "{ImageDataArray}",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1129,
-            "itemtype": "property",
-            "name": "name",
-            "type": "{String}",
-            "default": "\"\"",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1136,
-            "itemtype": "property",
-            "name": "isVisible",
-            "type": "{Boolean}",
-            "default": "true",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1143,
-            "itemtype": "property",
-            "name": "_layout",
-            "access": "private",
-            "tagname": "",
-            "type": "{Layout}",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1153,
-            "description": "Reset the data to default.",
-            "itemtype": "method",
-            "name": "reset",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1169,
-            "description": "Warn: Make sure layers have same size before call this.",
-            "itemtype": "method",
-            "name": "copy",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[in]",
-                    "type": "Layer"
-                },
-                {
-                    "name": "fullCopy",
-                    "description": "[in]",
-                    "type": "Boolean|undefined"
-                }
-            ],
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1185,
-            "description": "Merge pixels within start and offset;\nOr pixels by pre-computing indexes (Warn: use layout.indexesAt(options));\nDelegate pixel processing to Pixel local instance.",
-            "itemtype": "method",
-            "name": "merge",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "isMix",
-                            "description": "",
-                            "type": "Boolean"
-                        },
-                        {
-                            "name": "other",
-                            "description": "",
-                            "type": "Layer"
-                        },
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "indexes",
-                            "description": "",
-                            "type": "Array|undefined"
-                        }
-                    ]
-                }
-            ],
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1220,
-            "description": "Flood fill (no recursion, custom stack);\nDelegate pixel processing to Pixel local instance;\nWarn: there are possible freezes on sizes more than 512x512",
-            "itemtype": "method",
-            "name": "fill",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "position",
-                            "description": "",
-                            "type": "Vector2"
-                        },
-                        {
-                            "name": "pixel",
-                            "description": "",
-                            "type": "ImageDataArray|Array"
-                        },
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "isMix",
-                            "description": "",
-                            "type": "Boolean|undefined"
-                        }
-                    ]
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1318,
-            "description": "Plot pixel within start and offset;\nOr to pixels by pre-computing indexes (Warn: use layout.indexesAt(options));\nDelegate pixel processing to Pixel local instance.",
-            "itemtype": "method",
-            "name": "plot",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "pixel",
-                            "description": "",
-                            "type": "ImageDataArray"
-                        },
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "indexes",
-                            "description": "",
-                            "type": "Array|undefined"
-                        },
-                        {
-                            "name": "isMix",
-                            "description": "",
-                            "type": "Boolean"
-                        }
-                    ]
-                }
-            ],
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1356,
-            "description": "Replace pixel by new one within start and offset;\nOr according to pre-computing indexes (Warn: use layout.indexesAt(options));\nDelegate pixel processing to Pixel local instance.",
-            "itemtype": "method",
-            "name": "colorReplace",
-            "params": [
-                {
-                    "name": "options",
-                    "description": "[in]",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "oldPixel",
-                            "description": "",
-                            "type": "ImageDataArray|Array"
-                        },
-                        {
-                            "name": "pixel",
-                            "description": "",
-                            "type": "ImageDataArray|Array"
-                        },
-                        {
-                            "name": "start",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "indexes",
-                            "description": "",
-                            "type": "Array|undefined"
-                        },
-                        {
-                            "name": "offset",
-                            "description": "",
-                            "type": "Vector2|undefined"
-                        },
-                        {
-                            "name": "isMix",
-                            "description": "",
-                            "type": "Boolean"
-                        }
-                    ]
-                }
-            ],
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1400,
-            "see": [
-                "layerProto.pixelAt"
-            ],
-            "itemtype": "method",
-            "name": "pixelFromPosition",
-            "params": [
-                {
-                    "name": "position",
-                    "description": "[in]",
-                    "type": "Vector2"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "ImageDataArray"
-            },
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1410,
-            "description": "Warn: index without offset!",
-            "see": [
-                "layerProto.pixelAt"
-            ],
-            "itemtype": "method",
-            "name": "pixelFromIndex",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "[in]",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "ImageDataArray"
-            },
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1422,
-            "description": "Index with offset on pixel size (which equal to 4 (rgba)).",
-            "itemtype": "method",
-            "name": "pixelAt",
-            "params": [
-                {
-                    "name": "index",
-                    "description": "[in]",
-                    "type": "Number"
-                }
-            ],
-            "return": {
-                "description": "Warn: direct reference onto data's property buffer.",
-                "type": "ImageDataArray"
-            },
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1433,
-            "itemtype": "method",
-            "name": "getLayout",
-            "return": {
-                "description": "",
-                "type": "Layout"
-            },
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1441,
-            "destructor": "",
-            "itemtype": "method",
-            "name": "destroy",
-            "class": "Layer",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1461,
-            "itemtype": "property",
-            "name": "data",
-            "type": "{ImageDataArray}",
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1467,
-            "itemtype": "property",
-            "name": "index",
-            "type": "{Number}",
-            "default": "0",
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1477,
-            "itemtype": "method",
-            "name": "toString",
-            "return": {
-                "description": "\"r,g,b,a\"-like format",
-                "type": "String"
-            },
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1490,
-            "itemtype": "method",
-            "name": "compare",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[in]",
-                    "type": "Pixel|ImageDataArray|Array"
-                }
-            ],
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1506,
-            "itemtype": "method",
-            "name": "isOpaque",
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1514,
-            "itemtype": "method",
-            "name": "isTransparent",
-            "return": {
-                "description": "",
-                "type": "Boolean"
-            },
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1522,
-            "itemtype": "method",
-            "name": "set",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[in]",
-                    "type": "Pixel|ImageDataArray|Array"
-                }
-            ],
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1537,
-            "see": [
-                "http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending"
-            ],
-            "itemtype": "method",
-            "name": "mix",
-            "params": [
-                {
-                    "name": "other",
-                    "description": "[in]",
-                    "type": "Pixel|ImageDataArray|Array"
-                }
-            ],
-            "class": "Pixel",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 1584,
+            "line": 601,
             "itemtype": "property",
             "name": "_buffer",
             "access": "private",
@@ -1850,7 +834,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1591,
+            "line": 608,
             "itemtype": "property",
             "name": "_ctx",
             "access": "private",
@@ -1861,7 +845,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1598,
+            "line": 615,
             "itemtype": "property",
             "name": "_layoutOwner",
             "access": "private",
@@ -1872,7 +856,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1605,
+            "line": 622,
             "itemtype": "property",
             "name": "_imagePoint",
             "access": "private",
@@ -1883,7 +867,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1612,
+            "line": 629,
             "itemtype": "property",
             "name": "_scale",
             "access": "private",
@@ -1894,7 +878,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1619,
+            "line": 636,
             "itemtype": "property",
             "name": "_layout",
             "access": "private",
@@ -1905,7 +889,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1626,
+            "line": 643,
             "itemtype": "property",
             "name": "_boundedRender",
             "access": "private",
@@ -1916,7 +900,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1634,
+            "line": 651,
             "description": "Simple factory-like method\nTake care about view creating and DOM manipulations\nAlso put new instance into static \"instances\" list",
             "static": 1,
             "itemtype": "method",
@@ -1966,19 +950,61 @@
         },
         {
             "file": "pxl.js",
-            "line": 1691,
-            "description": "List of all existing View instances",
+            "line": 700,
+            "description": "List of all existing View instances.",
             "itemtype": "property",
             "name": "instances",
             "static": 1,
             "type": "{Array}",
+            "default": "[]",
             "class": "View",
             "module": "pxl"
         },
         {
             "file": "pxl.js",
-            "line": 1702,
+            "line": 710,
+            "itemtype": "property",
+            "name": "MIN_SCALE_RATE",
+            "static": 1,
+            "final": 1,
+            "type": "{Number}",
+            "default": "1",
+            "class": "View",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 719,
+            "itemtype": "property",
+            "name": "MAX_SCALE_RATE",
+            "static": 1,
+            "final": 1,
+            "type": "{Number}",
+            "default": "128",
+            "class": "View",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 728,
+            "description": "Reference onto the currently active view instance.",
+            "itemtype": "property",
+            "name": "activeView",
+            "type": "{View|null}",
+            "static": 1,
+            "default": "null",
+            "class": "View",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 740,
             "description": "Clear canvas and update imageData and draw.",
+            "see": [
+                "clear",
+                "update",
+                "redraw"
+            ],
             "itemtype": "method",
             "name": "render",
             "params": [
@@ -1994,7 +1020,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1714,
+            "line": 754,
             "description": "Draw rectangle at canvas element directly.",
             "itemtype": "method",
             "name": "drawRect",
@@ -2028,7 +1054,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1741,
+            "line": 781,
             "description": "Just redraw from old/previous imageData condition.",
             "itemtype": "method",
             "name": "redraw",
@@ -2057,7 +1083,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1772,
+            "line": 810,
             "description": "Clear canvas element directly.",
             "itemtype": "method",
             "name": "clear",
@@ -2086,7 +1112,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1797,
+            "line": 834,
             "description": "Update the buffer from layout (model).",
             "itemtype": "method",
             "name": "update",
@@ -2115,7 +1141,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1822,
+            "line": 860,
             "description": "Transform canvas according to scale & translate.",
             "itemtype": "method",
             "name": "begin",
@@ -2125,7 +1151,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1840,
+            "line": 878,
             "description": "Restore context.",
             "itemtype": "method",
             "name": "end",
@@ -2135,7 +1161,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1851,
+            "line": 889,
             "itemtype": "method",
             "name": "getBufferContext",
             "return": {
@@ -2147,7 +1173,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1859,
+            "line": 897,
             "itemtype": "method",
             "name": "getScale",
             "return": {
@@ -2159,7 +1185,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1867,
+            "line": 905,
             "itemtype": "method",
             "name": "getElement",
             "return": {
@@ -2171,7 +1197,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1875,
+            "line": 913,
             "itemtype": "method",
             "name": "getLayout",
             "return": {
@@ -2183,7 +1209,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1883,
+            "line": 921,
             "itemtype": "method",
             "name": "getImagePoint",
             "return": {
@@ -2195,7 +1221,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1891,
+            "line": 929,
             "itemtype": "method",
             "name": "getScaleOffset",
             "return": {
@@ -2207,7 +1233,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1902,
+            "line": 940,
             "description": "Change current scale rate value.",
             "itemtype": "method",
             "name": "setScale",
@@ -2224,7 +1250,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1914,
+            "line": 953,
             "itemtype": "method",
             "name": "setLayout",
             "params": [
@@ -2240,7 +1266,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1935,
+            "line": 974,
             "itemtype": "method",
             "name": "setImagePoint",
             "params": [
@@ -2261,8 +1287,8 @@
         },
         {
             "file": "pxl.js",
-            "line": 1945,
-            "description": "Transform position according to current scale offset.",
+            "line": 984,
+            "description": "Transform position according to the current scale offset.",
             "itemtype": "method",
             "name": "fitToTransition",
             "params": [
@@ -2278,7 +1304,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1959,
+            "line": 998,
             "description": "Resize and redraw.",
             "itemtype": "method",
             "name": "resizeElement",
@@ -2300,7 +1326,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1976,
+            "line": 1015,
             "itemtype": "method",
             "name": "deleteLayout",
             "chainable": 1,
@@ -2309,7 +1335,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 1997,
+            "line": 1036,
             "description": "Listen for events that fired when layout (model) has been changed.",
             "itemtype": "method",
             "name": "_subscribe",
@@ -2321,7 +1347,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2014,
+            "line": 1052,
             "description": "Stop listen the layout (model) changes.",
             "itemtype": "method",
             "name": "_unsubscribe",
@@ -2333,8 +1359,8 @@
         },
         {
             "file": "pxl.js",
-            "line": 2029,
-            "destructor": "",
+            "line": 1066,
+            "description": "Destructor.",
             "itemtype": "method",
             "name": "destroy",
             "class": "View",
@@ -2342,18 +1368,933 @@
         },
         {
             "file": "pxl.js",
-            "line": 2077,
+            "line": 1121,
             "itemtype": "property",
-            "name": "_container",
+            "name": "_imageData",
             "access": "private",
             "tagname": "",
+            "type": "{ImageData}",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1128,
+            "itemtype": "property",
+            "name": "dataLayer",
+            "type": "{Layer}",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1137,
+            "itemtype": "property",
+            "name": "layerList",
             "type": "{Array}",
+            "default": "[]",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1144,
+            "itemtype": "property",
+            "name": "activeLayer",
+            "type": "{Layer}",
+            "default": "null",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1151,
+            "itemtype": "property",
+            "name": "observer",
+            "type": "{Observer}",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1158,
+            "description": "Maximum number of layers per layout.",
+            "itemtype": "property",
+            "name": "MAX_LAYER_COUNT",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "default": "8",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1169,
+            "description": "Model event name.",
+            "itemtype": "property",
+            "name": "PIXELS_CHANGED_EVENT",
+            "type": "{String}",
+            "final": 1,
+            "static": 1,
+            "default": "\"pixelsChanged\"",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1182,
+            "description": "Append new Layer instance into the layerList (if possible);\nactiveLayer point on new instance.",
+            "itemtype": "method",
+            "name": "appendLayer",
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1201,
+            "description": "Delete an active layer.",
+            "itemtype": "method",
+            "name": "deleteLayer",
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1223,
+            "description": "Each visible layer \"drawn\" to main dataLayer layer (Back-to-front);\nNotify subscribers.",
+            "itemtype": "method",
+            "name": "mergeLayers",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "isMix",
+                            "description": "",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2"
+                        },
+                        {
+                            "name": "isNotifyView",
+                            "description": "",
+                            "type": "Boolean"
+                        }
+                    ]
+                }
+            ],
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1258,
+            "description": "Replace old colour by new one;\ndelegate processing to the activeLayer.",
+            "see": [
+                "pxl.Layout.Layer.colorReplace"
+            ],
+            "itemtype": "method",
+            "name": "colorReplace",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1273,
+            "description": "Set pixel or group of pixels (force-fill);\ndelegate processing to the activeLayer.",
+            "see": [
+                "pxl.Layout.Layer.set"
+            ],
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1288,
+            "description": "Setting the value for specific channel;\ndelegate processing to the activeLayer.",
+            "see": [
+                "pxl.Layout.Layer.setChannel"
+            ],
+            "itemtype": "method",
+            "name": "setChannel",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1303,
+            "description": "Flood fill;\ndelegate processing to the activeLayer.",
+            "see": [
+                "pxl.Layout.Layer.fill"
+            ],
+            "itemtype": "method",
+            "name": "fill",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object"
+                }
+            ],
+            "chainable": 1,
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1318,
+            "description": "Provide an index from position.",
+            "itemtype": "method",
+            "name": "indexAt",
+            "params": [
+                {
+                    "name": "position",
+                    "description": "[in]",
+                    "type": "Vector2"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1329,
+            "description": "Provide position according to index (without offset).",
+            "itemtype": "method",
+            "name": "positionFrom",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "[in]",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Vector2"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1341,
+            "description": "Get whole image data or just a part of it (according to options).",
+            "itemtype": "method",
+            "name": "getImageData",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object|undefined"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageData"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1355,
+            "itemtype": "method",
+            "name": "getWidth",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1363,
+            "itemtype": "method",
+            "name": "getHeight",
+            "return": {
+                "description": "",
+                "type": "Number"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1371,
+            "itemtype": "method",
+            "name": "visibleLayers",
+            "return": {
+                "description": "",
+                "type": "Array"
+            },
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1386,
+            "description": "Warn: for internal usage only!",
+            "itemtype": "method",
+            "name": "__process",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        }
+                    ]
+                },
+                {
+                    "name": "callback",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "access": "private",
+            "tagname": "",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1419,
+            "description": "Destructor.",
+            "itemtype": "method",
+            "name": "destroy",
+            "class": "Layout",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1445,
+            "itemtype": "property",
+            "name": "data",
+            "type": "{ImageDataArray}",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1459,
+            "itemtype": "property",
+            "name": "name",
+            "type": "{String}",
+            "default": "\"\"",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1466,
+            "itemtype": "property",
+            "name": "isVisible",
+            "type": "{Boolean}",
+            "default": "true",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1473,
+            "itemtype": "property",
+            "name": "_layout",
+            "access": "private",
+            "tagname": "",
+            "type": "{Layout}",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1481,
+            "description": "Strict limitation, but that's enough for pixel-art",
+            "itemtype": "property",
+            "name": "MAX_BUFFER_SIZE",
+            "type": "{Number}",
+            "static": 1,
+            "final": 1,
+            "default": "1024*1024*4",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1494,
+            "description": "Reset the data to default.",
+            "itemtype": "method",
+            "name": "reset",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1510,
+            "description": "Warn: Make sure layers have same size before call this.",
+            "itemtype": "method",
+            "name": "copy",
+            "params": [
+                {
+                    "name": "other",
+                    "description": "[in]",
+                    "type": "Layer"
+                },
+                {
+                    "name": "fullCopy",
+                    "description": "[in]",
+                    "type": "Boolean|undefined"
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1526,
+            "description": "Merge each pixel of two layers;\nOr apply merging to pixels within start and offset options.",
+            "itemtype": "method",
+            "name": "merge",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "isMix",
+                            "description": "",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "other",
+                            "description": "",
+                            "type": "Layer"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "indexes",
+                            "description": "",
+                            "type": "Array|undefined"
+                        }
+                    ]
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1557,
+            "description": "Replace specific color from position with new one on whole layer;\nOr just on area within start and offset options.",
+            "itemtype": "method",
+            "name": "colorReplace",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "pixel",
+                            "description": "",
+                            "type": "ImageDataArray|Array"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "position",
+                            "description": "",
+                            "type": "Vector2"
+                        },
+                        {
+                            "name": "isMix",
+                            "description": "",
+                            "type": "Boolean"
+                        }
+                    ]
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1592,
+            "description": "Set new color for layer;\nOr just for area within start and offset options.",
+            "itemtype": "method",
+            "name": "set",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "pixel",
+                            "description": "",
+                            "type": "ImageDataArray"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "isMix",
+                            "description": "",
+                            "type": "Boolean"
+                        }
+                    ]
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1624,
+            "description": "Change specific channel for layer;\nOr channel for area within start and offset options.",
+            "itemtype": "method",
+            "name": "setChannel",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "channelOffset",
+                            "description": "0-3 (rgba)",
+                            "type": "Number"
+                        },
+                        {
+                            "name": "value",
+                            "description": "0-255",
+                            "type": "Number"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        }
+                    ]
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1652,
+            "description": "Flood fill (no recursion, custom stack);\nCan be applyed for area within start and offset options.",
+            "itemtype": "method",
+            "name": "fill",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "position",
+                            "description": "",
+                            "type": "Vector2"
+                        },
+                        {
+                            "name": "pixel",
+                            "description": "",
+                            "type": "ImageDataArray|Array"
+                        },
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "isMix",
+                            "description": "",
+                            "type": "Boolean|undefined"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1734,
+            "itemtype": "method",
+            "name": "setAt",
+            "params": [
+                {
+                    "name": "i",
+                    "description": "index where to apply.",
+                    "type": "Number"
+                },
+                {
+                    "name": "r",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "g",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1750,
+            "see": [
+                "http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending"
+            ],
+            "itemtype": "method",
+            "name": "mixAt",
+            "params": [
+                {
+                    "name": "i",
+                    "description": "index where to apply.",
+                    "type": "Number"
+                },
+                {
+                    "name": "r",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "g",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1780,
+            "itemtype": "method",
+            "name": "compareAt",
+            "params": [
+                {
+                    "name": "i",
+                    "description": "index where to apply.",
+                    "type": "Number"
+                },
+                {
+                    "name": "r",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "g",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1797,
+            "itemtype": "method",
+            "name": "pixelFromPosition",
+            "params": [
+                {
+                    "name": "position",
+                    "description": "[in]",
+                    "type": "Vector2"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageDataArray"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1806,
+            "description": "Warn: index without color-offset!",
+            "see": [
+                "layerProto.pixelAt"
+            ],
+            "itemtype": "method",
+            "name": "pixelFromIndex",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "[in]",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageDataArray"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1818,
+            "description": "Index with color-offset (which equal to x4 (rgba)).",
+            "itemtype": "method",
+            "name": "pixelAt",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "[in]",
+                    "type": "Number"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageDataArray"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1829,
+            "itemtype": "method",
+            "name": "generateImageData",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageData"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1856,
+            "itemtype": "method",
+            "name": "getLayout",
+            "return": {
+                "description": "",
+                "type": "Layout"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1864,
+            "itemtype": "method",
+            "name": "cloneData",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "[in]",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "start",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        },
+                        {
+                            "name": "offset",
+                            "description": "",
+                            "type": "Vector2|undefined"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "ImageDataArray"
+            },
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1891,
+            "description": "Destructor.",
+            "itemtype": "method",
+            "name": "destroy",
+            "class": "Layer",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1909,
+            "itemtype": "property",
+            "name": "MAX_HISTORY_SIZE",
+            "type": "{Number}",
+            "final": 1,
+            "default": "20",
             "class": "history",
             "module": "pxl"
         },
         {
             "file": "pxl.js",
-            "line": 2084,
+            "line": 1917,
+            "itemtype": "property",
+            "name": "_stack",
+            "access": "private",
+            "tagname": "",
+            "type": "{Array}",
+            "default": "[]",
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1925,
             "description": "Point on the current index in container",
             "itemtype": "property",
             "name": "_pointer",
@@ -2366,21 +2307,9 @@
         },
         {
             "file": "pxl.js",
-            "line": 2094,
+            "line": 1935,
             "itemtype": "property",
-            "name": "_isRecording",
-            "access": "private",
-            "tagname": "",
-            "type": "{Boolean}",
-            "default": "false",
-            "class": "history",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 2102,
-            "itemtype": "property",
-            "name": "lastSession",
+            "name": "_lastSession",
             "access": "private",
             "tagname": "",
             "type": "{Object|null}",
@@ -2390,41 +2319,21 @@
         },
         {
             "file": "pxl.js",
-            "line": 2110,
-            "itemtype": "method",
-            "name": "undo",
+            "line": 1943,
+            "itemtype": "property",
+            "name": "isRecording",
+            "access": "private",
+            "tagname": "",
+            "type": "{Boolean}",
+            "default": "false",
             "class": "history",
             "module": "pxl"
         },
         {
             "file": "pxl.js",
-            "line": 2119,
+            "line": 1951,
             "itemtype": "method",
-            "name": "redo",
-            "class": "history",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 2128,
-            "description": "Take pixel colour from layer (lastSession's member);\nSave in history.",
-            "itemtype": "method",
-            "name": "cache",
-            "params": [
-                {
-                    "name": "pixel",
-                    "description": "",
-                    "type": "Pixel"
-                }
-            ],
-            "class": "history",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 2150,
-            "itemtype": "method",
-            "name": "isEmptySession",
+            "name": "isHistoryEmpty",
             "return": {
                 "description": "",
                 "type": "Boolean"
@@ -2434,10 +2343,57 @@
         },
         {
             "file": "pxl.js",
-            "line": 2161,
-            "description": "Start recording the Layer.",
+            "line": 1959,
+            "itemtype": "method",
+            "name": "isHistoryFull",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1967,
+            "itemtype": "method",
+            "name": "undo",
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1976,
+            "itemtype": "method",
+            "name": "redo",
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1985,
+            "itemtype": "method",
+            "name": "getSession",
+            "params": [
+                {
+                    "name": "layer",
+                    "description": "",
+                    "type": "Layer"
+                }
+            ],
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 1996,
+            "description": "Start Layer recording.",
             "itemtype": "method",
             "name": "rec",
+            "throws": {
+                "description": "Raise an error if already is under recording.",
+                "type": "Error"
+            },
             "params": [
                 {
                     "name": "layer",
@@ -2450,8 +2406,8 @@
         },
         {
             "file": "pxl.js",
-            "line": 2178,
-            "description": "Stop recording the current Layer and save session.",
+            "line": 2010,
+            "description": "Stop recording and save session.",
             "itemtype": "method",
             "name": "stop",
             "class": "history",
@@ -2459,19 +2415,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2198,
-            "itemtype": "method",
-            "name": "getCurrentSession",
-            "return": {
-                "description": "",
-                "type": "Object|null"
-            },
-            "class": "history",
-            "module": "pxl"
-        },
-        {
-            "file": "pxl.js",
-            "line": 2212,
+            "line": 2029,
             "description": "Remove sessions with deleted/empty layers.",
             "itemtype": "method",
             "name": "clean",
@@ -2480,39 +2424,112 @@
         },
         {
             "file": "pxl.js",
-            "line": 2241,
-            "description": "Used by undo and redo methods.",
+            "line": 2077,
             "itemtype": "method",
-            "name": "_rewrite",
-            "access": "private",
-            "tagname": "",
+            "name": "isEmpty",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "Session",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 2085,
+            "description": "Have to be called once, before started color processing;\nOnly for operations with single color.",
+            "itemtype": "method",
+            "name": "initColor",
             "params": [
                 {
-                    "name": "session",
+                    "name": "r",
                     "description": "",
-                    "type": "Object"
+                    "type": "Number"
+                },
+                {
+                    "name": "g",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "Number"
                 }
             ],
-            "class": "history",
+            "class": "Session",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 2101,
+            "description": "It is recommended to use this during processing multiple colors.",
+            "itemtype": "method",
+            "name": "pushPixel",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "r",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "g",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "b",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "a",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Session",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 2123,
+            "description": "Only for operations with single color. Used only after initColor() method.",
+            "itemtype": "method",
+            "name": "pushIndex",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": "Session",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 2135,
+            "itemtype": "method",
+            "name": "rewrite",
+            "class": "Session",
             "module": "pxl"
         }
     ],
     "warnings": [
         {
-            "message": "unknown tag: destructor",
-            "line": " pxl.js:1096"
-        },
-        {
-            "message": "unknown tag: destructor",
-            "line": " pxl.js:1441"
-        },
-        {
-            "message": "unknown tag: destructor",
-            "line": " pxl.js:2029"
-        },
-        {
             "message": "Missing item type\nFloating point error for comparison method.",
-            "line": " pxl.js:183"
+            "line": " pxl.js:116"
         }
     ]
 }

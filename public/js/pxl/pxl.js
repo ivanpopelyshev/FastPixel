@@ -1,8 +1,8 @@
 ;var pxl = (function(document){
 	"use strict";
 
-	var _imgDataCtor = null;
 	var _isSupported = true;
+	var _imgDataCtor = null;
 	var _canvas = null;
 	var _ctx = null;
 
@@ -11,8 +11,7 @@
 		_canvas.width = _canvas.height = 1; //reduce the amount of memory
 		_ctx = _canvas.getContext("2d");
 		_imgDataCtor = Object.getPrototypeOf( //ES5
-			_ctx.getImageData(0, 0, 1, 1).data
-		).constructor;
+			_ctx.getImageData(0, 0, 1, 1).data).constructor;
 		if (!((new _imgDataCtor).buffer)){
 			throw new Error; //Array or CanvasPixelArray doesn't have a buffer
 		}
@@ -21,72 +20,17 @@
 	}
 
 	/**
-	 * @module pxl
 	 * @class pxl
-	 * @main pxl
+	 * @module pxl
+	 * @main
 	 */
 	return {
-		/**
-		 * @property MIN_ZOOM_SCALE
-		 * @type {Number}
-		 * @final
-		 * @default 1
-		 */
-		MIN_ZOOM_SCALE: 1,
-
-		/**
-		 * @property MAX_ZOOM_SCALE
-		 * @type {Number}
-		 * @final
-		 * @default 64
-		 */
-		MAX_ZOOM_SCALE: 64,
-
-		/**
-		 * @property MIN_CANVAS_SIZE
-		 * @type {Number}
-		 * @final
-		 * @default 8
-		 */
-		MIN_CANVAS_SIZE: 8,
-
-		/**
-		 * Strict limitation, but that's enough for pixel-art
-		 *
-		 * @property MAX_CANVAS_SIZE
-		 * @type {Number}
-		 * @final
-		 * @default 1024
-		 */
-		MAX_CANVAS_SIZE: 1024,
-
-		/**
-		 * Maximum number of layers per layout
-		 *
-		 * @property MAX_LAYER_COUNT
-		 * @type {Number}
-		 * @final
-		 * @default 8
-		 */
-		MAX_LAYER_COUNT: 8,
-
-		/**
-		 * @property MAX_HISTORY_SIZE
-		 * @type {Number}
-		 * @final
-		 * @default 20
-		 */
-		MAX_HISTORY_SIZE: 20,
-
-		/**
-		 * View-model event name.
-		 *
-		 * @property PIXELS_CHANGED_EVENT
-		 * @type {String}
-		 * @final
-		 * @default "pixelsChanged"
-		 */
-		PIXELS_CHANGED_EVENT: "pixelsChanged",
+		//Not "linked" yet objects:
+		Layout: null,
+		View: null,
+		Vector2: null,
+		Observer: null,
+		bresenham: null,
 
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
@@ -97,22 +41,23 @@
 		ImageDataArray: _imgDataCtor,
 
 		/**
-		 * Reference onto the currently active view instance.
+		 * Is API supported on current browser.
 		 *
-		 * @property activeView
-		 * @type {View|null}
-		 * @default null
+		 * @property isSupported
+		 * @type {Boolean}
 		 */
-		activeView: null,
+		isSupported: _isSupported,
 
 		/**
-		 * Is API supported on current browser. Call it before started.
+		 * More safest and fastest method to create ImageData.
 		 *
-		 * @method isSupported
-		 * @return {Boolean}
+		 * @property createImageData
+		 * @param arguments[0] {ImageData|Number} [in]
+		 * @param arguments[1] {undefined|Number} [in]
+		 * @return {ImageData}
 		 */
-		isSupported: function(){
-			return _isSupported;
+		createImageData: function(){
+			return _ctx.createImageData.apply(_ctx, arguments);
 		},
 
 		/**
@@ -126,18 +71,6 @@
 		 */
 		clamp: function(dest, min, max){
 			return (dest > max ? max : (dest < min ? min : dest));
-		},
-
-		/**
-		 * More safest and fastest method to create ImageData.
-		 *
-		 * @method createImageData
-		 * @param arguments[0] {ImageData|Number}
-		 * @param arguments[1] {undefined|Number}
-		 * @return {ImageData}
-		 */
-		createImageData: function(){
-			return _ctx.createImageData.apply(_ctx, arguments);
 		},
 
 		/**

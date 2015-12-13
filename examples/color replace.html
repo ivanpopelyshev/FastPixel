@@ -11,64 +11,85 @@
 		<canvas id="canvas" width="1024" height="1024"></canvas>
 
 		<script src="../pxl.js"></script>
-		<script src="common.js"></script>
 		<script>
-			var canvas = document.querySelector("#canvas");
-			
-			//make sure that the current browser is cool:
-			if (pxl.isSupported()){
+			(function(){
+				//make sure that the current browser is cool:
+				if (pxl.isSupported){
 
-				//create the new View instance, and set it as active:
-				pxl.activeView = pxl.Layout.View.create({
-					canvasSize: {
-						width: 1024,
-						height: 1024
-					},
-					element: canvas
-				});
+					var history = pxl.Layout.Layer.history;
+					var View = pxl.View;
 
-				//draw square:
-				common.record(function(){
-					this.setPixelSize(5);
-					pxl.bresenham.rectangle(200, 200, 50, 50, common.plotPixel);
-					pxl.bresenham.rectangle(400, 150, 50, 50, common.plotPixel);
-					pxl.bresenham.rectangle(100, 450, 50, 50, common.plotPixel);					
-				});
+					//create the new View instance, and set it as active:
+					View.activeView = View.create({
+						canvasSize: {
+							width: 1024,
+							height: 1024
+						},
+						element: document.querySelector("#canvas")
+					});
+					var layout = View.activeView.getLayout().appendLayer();
 
-				//listen for some of user movements:
-				document.addEventListener("mousedown", userDownMouse, false);
-				document.addEventListener("touchstart", userDownTouch, false);
-				document.addEventListener("keypress", userKey, false);
-			} else{
-				alert("Not supported!"); //old IE or something like that
-			}
+					pxl.bresenham.rectangle(0, 0, 1024 - 1, 1024 - 1, setPixel);
+					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
 
-			function userDownMouse(e){
-				fill(Math.floor(e.pageX), Math.floor(e.pageY));
-			};
+					//listen for some of user movements:
+					document.addEventListener("mousedown", userDownMouse, false);
+					document.addEventListener("touchstart", userDownTouch, false);
+					document.addEventListener("keypress", userKey, false);
+				} else{
+					alert("Not supported!"); //old IE or something like that
+				}
 
-			function userDownTouch(e){ //in case you open this demo on your device
-				fill(Math.floor(e.pageX), Math.floor(e.pageY));
-			};
+				function userDownMouse(e){
+					colorReplace(Math.floor(e.pageX), Math.floor(e.pageY));
+				};
 
-			function userKey(e){
-				//no time to catch "ctrl + z" or "ctrl + y",
-				//so, just "z" or "y"
-				if (e.which === 121) common.redo();
-				else if (e.which === 122) common.undo();
-			};
+				function userDownTouch(e){
+					colorReplace(Math.floor(e.pageX), Math.floor(e.pageY));
+				};
 
-			function fill(x, y){
-				common.record(function(){
-					this.setColor([
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0,
-						(Math.random() * 255) | 0
-					]).colorReplace(x, y);
-				});
-			}
+				function userKey(e){
+					if (e.which === 121) history.redo();
+					else if (e.which === 122) history.undo();
+					layout.mergeLayers({
+						"isNotifyView": true
+					});
+				};
+
+				function colorReplace(x, y){
+					if (x >= 0 && x < layout.getWidth() &&
+						y >= 0 && y < layout.getHeight()){
+						var position = new pxl.Vector2(x, y);
+						history.record(layout.activeLayer);
+						layout.colorReplace({
+							/*"start": new pxl.Vector2(50, 50),
+							"offset": new pxl.Vector2(250, 250),*/
+							"position": position,
+							"oldPixel": layout.activeLayer.pixelFromPosition(position),
+							"pixel": new pxl.ImageDataArray([
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0,
+								(Math.random() * 255) | 0
+							]),
+							"isMix": true,
+							"isNotifyView": true
+						});
+						history.stop();
+					}
+				}
+
+				function setPixel(x, y){
+					layout.set({
+						"start": new pxl.Vector2(x, y),
+						"offset": new pxl.Vector2(1),
+						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
+						"isMix": false,
+						"isNotifyView": true
+					});
+				}
+			})();
 		</script>
-		<p>Replace current main colour on each click</p>
+		<p class="noselect">click on different zones to see how invoke "fill" method</p>
 	</body>
 </html>

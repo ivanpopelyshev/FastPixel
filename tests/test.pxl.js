@@ -3,13 +3,13 @@ var expect = chai.expect;
 describe("pxl", function(){
 	describe("support", function(){
 		it("should be supported by your browser!", function(){
-			expect(pxl.isSupported()).to.equal(true);
+			expect(pxl.isSupported).to.equal(true);
 		});
 	});
 
 	describe("ImagaDataArray constructor", function(){
 		it("typed arrays should have buffer", function(){
-			var typedArray = new pxl.ImageDataArray([0, 1, 2, 3]);
+			var typedArray = new pxl.ImageDataArray([255, 255, 255, 255]);
 
 			expect(typeof typedArray.buffer).to.equal("object");
 		});
@@ -33,7 +33,7 @@ describe("pxl", function(){
 	});
 
 	describe("create canvas element", function(){
-		it("each DOM object have nodeName property", function(){
+		it("each DOM object has nodeName property", function(){
 			var canvas = pxl.createCanvas();
 
 			expect(canvas.nodeName.toLowerCase()).to.equal("canvas");

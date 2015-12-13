@@ -9,6 +9,9 @@
 	</head>
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
+		<br>
+		<input type="range" min="0" max="255" step="1" value="0" oninput="setChannel(this.value)">
+		<p class="noselect">simple change green channel by dragging the range bar</p>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -16,19 +19,18 @@
 			if (pxl.isSupported){
 
 				var View = pxl.View;
-				
+
 				//create the new View instance, and set it as active:
 				View.activeView = View.create({
 					canvasSize: {
-						width: 512,
-						height: 512
+						width: 128,
+						height: 128
 					},
 					element: document.querySelector("#canvas")
 				});
 				var layout = View.activeView.getLayout().appendLayer();
 
-				//set line on bottom layer
-				pxl.bresenham.line(0, 0, 512 - 1, 512 - 1, function(x, y){
+				function setPixel(x, y){
 					layout.set({
 						"start": new pxl.Vector2(x, y),
 						"offset": new pxl.Vector2(1),
@@ -36,35 +38,27 @@
 						"isMix": false,
 						"isNotifyView": true
 					});
-				});
+				};
 
-				//active layer became top:
-				layout.appendLayer();
+				function setChannel(value){
+					layout.setChannel({
+						"channelOffset": 1, //0 - red, 1 - green, 2 - blue, 3 - alpha
+						"value": value,
+						"isNotifyView": true
+					});
+				};
 
-				layout.set({
-					"pixel": new pxl.ImageDataArray([255, 0, 0, 127]),
-					"isMix": true,
-					"isNotifyView": true
-				});
-				layout.appendLayer();
+				View.activeView.setImagePoint(new pxl.Vector2(200, 200));
 
-				layout.set({
-					"pixel": new pxl.ImageDataArray([0, 255, 0, 127]),
-					"isMix": true,
-					"isNotifyView": true
-				});
-				layout.appendLayer();
+				//set line on bottom layer
+				pxl.bresenham.line(0, 0, 128 - 1, 128 - 1, setPixel);
+				pxl.bresenham.ellipse(100, 100, 25, 25, setPixel);
 
-				layout.set({
-					"pixel": new pxl.ImageDataArray([0, 0, 255, 127]),
-					"isMix": true,
-					"isNotifyView": true
-				});
+				View.activeView.setScale(5).clear({}).begin().redraw({});
 
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
 		</script>
-		<p class="noselect">simple layering example (black diagonal line under red, green and blue transparent layers)</p>
 	</body>
 </html>

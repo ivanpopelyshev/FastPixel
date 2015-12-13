@@ -11,40 +11,46 @@
 		<canvas id="canvas" width="512" height="512"></canvas>
 
 		<script src="../pxl.js"></script>
-		<script src="common.js"></script>
 		<script>
 			//make sure that the current browser is cool:
-			if (pxl.isSupported()){
+			if (pxl.isSupported){
+
+				var View = pxl.View;
 
 				//create the new View instance, and set it as active:
-				var view = pxl.activeView = pxl.Layout.View.create({
+				View.activeView = View.create({
 					canvasSize: { //size (in pixels) of your "off-screen" canvas
 						width: 32,
 						height: 32
 					},
 					element: document.querySelector("CANVAS")
 				});
+				var layout = View.activeView.getLayout().appendLayer();
 
-				//move it to the center
-				view.setImagePoint(240, 240);
+				//move image point somewhere in of the canvas element
+				View.activeView.setImagePoint(230, 230);
 
-				//change colour (rgba):
-				common.setColor([66, 66, 66, 255]);
+				pxl.bresenham.ellipse(12, 12, 25, 25, function(x, y){
+					layout.set({
+						"start": new pxl.Vector2(x, y),
+						"offset": new pxl.Vector2(1),
+						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
+						"isMix": false,
+						"isNotifyView": true
+					});
+				});
 
-				pxl.bresenham.ellipse(10, 10, 17, 17, common.plotPixel)
+				View.activeView
+					.setScale(5) //specify new scale
+					.clear({}) //clear old state
+					.begin() //begin view transformation according to new scale
+					.redraw({}) //redraw everything
+					.end(); //turn view transfromation back
 
-				//fill coin:
-				common.setColor([255, 200, 150, 255]).fill(15, 15);
-
-				//fill everything else
-				common.setColor([222, 222, 222, 255]).fill(0, 0);
-
-				//scale up 5 times
-				common.rescale(5);
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
 		</script>
-		<p>this example simulate possible painting of the user</p>
+		<p class="noselect">just a circle with up scale demo</p>
 	</body>
 </html>

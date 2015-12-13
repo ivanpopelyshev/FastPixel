@@ -39,13 +39,12 @@
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
                                 <li><a href="../classes/bresenham.html">bresenham</a></li>
-                                <li><a href="../classes/GrowingPool.html">GrowingPool</a></li>
                                 <li><a href="../classes/history.html">history</a></li>
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
-                                <li><a href="../classes/Pixel.html">Pixel</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
+                                <li><a href="../classes/Session.html">Session</a></li>
                                 <li><a href="../classes/Vector2.html">Vector2</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
@@ -91,7 +90,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l2073"><code>pxl.js:2073</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1905"><code>pxl.js:1905</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -120,24 +119,20 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods">
-                            <li class="index-item method private">
-                                <a href="#method__rewrite">_rewrite</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_cache">cache</a>
-
-                            </li>
                             <li class="index-item method">
                                 <a href="#method_clean">clean</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getCurrentSession">getCurrentSession</a>
+                                <a href="#method_getSession">getSession</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_isEmptySession">isEmptySession</a>
+                                <a href="#method_isHistoryEmpty">isHistoryEmpty</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isHistoryFull">isHistoryFull</a>
 
                             </li>
                             <li class="index-item method">
@@ -164,11 +159,7 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property private">
-                                <a href="#property__container">_container</a>
-
-                            </li>
-                            <li class="index-item property private">
-                                <a href="#property__isRecording">_isRecording</a>
+                                <a href="#property__lastSession">_lastSession</a>
 
                             </li>
                             <li class="index-item property private">
@@ -176,7 +167,15 @@
 
                             </li>
                             <li class="index-item property private">
-                                <a href="#property_lastSession">lastSession</a>
+                                <a href="#property__stack">_stack</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property_isRecording">isRecording</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_MAX_HISTORY_SIZE">MAX_HISTORY_SIZE</a>
 
                             </li>
                     </ul>
@@ -188,114 +187,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method__rewrite" class="method item private">
-    <h3 class="name"><code>_rewrite</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>session</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-        <span class="flag private">private</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2241"><code>pxl.js:2241</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Used by undo and redo methods.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">session</code>
-                        <span class="type">Object</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_cache" class="method item">
-    <h3 class="name"><code>cache</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>pixel</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2128"><code>pxl.js:2128</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Take pixel colour from layer (lastSession's member);
-Save in history.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">pixel</code>
-                        <span class="type"><a href="../classes/Pixel.html" class="crosslink">Pixel</a></span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_clean" class="method item">
     <h3 class="name"><code>clean</code></h3>
 
@@ -311,7 +202,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2212"><code>pxl.js:2212</code></a>
+        <a href="../files/pxl.js.html#l2029"><code>pxl.js:2029</code></a>
         </p>
 
 
@@ -327,14 +218,17 @@ Save in history.</p>
 
 
 </div>
-<div id="method_getCurrentSession" class="method item">
-    <h3 class="name"><code>getCurrentSession</code></h3>
+<div id="method_getSession" class="method item">
+    <h3 class="name"><code>getSession</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>layer</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
-        <span class="returns-inline">
-            <span class="type">Object | Null</span>
-        </span>
 
 
 
@@ -345,7 +239,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2198"><code>pxl.js:2198</code></a>
+        <a href="../files/pxl.js.html#l1985"><code>pxl.js:1985</code></a>
         </p>
 
 
@@ -356,19 +250,28 @@ Save in history.</p>
         
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
 
-        <div class="returns">
-            <h4>Returns:</h4>
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">layer</code>
+                        <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
 
-            <div class="returns-description">
-                        <span class="type">Object | Null</span>:
-            </div>
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
         </div>
 
 
+
 </div>
-<div id="method_isEmptySession" class="method item">
-    <h3 class="name"><code>isEmptySession</code></h3>
+<div id="method_isHistoryEmpty" class="method item">
+    <h3 class="name"><code>isHistoryEmpty</code></h3>
 
         <span class="paren">()</span>
 
@@ -385,7 +288,47 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2150"><code>pxl.js:2150</code></a>
+        <a href="../files/pxl.js.html#l1951"><code>pxl.js:1951</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_isHistoryFull" class="method item">
+    <h3 class="name"><code>isHistoryFull</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1959"><code>pxl.js:1959</code></a>
         </p>
 
 
@@ -428,7 +371,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2161"><code>pxl.js:2161</code></a>
+        <a href="../files/pxl.js.html#l1996"><code>pxl.js:1996</code></a>
         </p>
 
 
@@ -436,7 +379,7 @@ Save in history.</p>
     </div>
 
     <div class="description">
-        <p>Start recording the Layer.</p>
+        <p>Start Layer recording.</p>
 
     </div>
 
@@ -458,6 +401,15 @@ Save in history.</p>
         </div>
 
 
+        <div class="throws">
+            <h4>Throws:</h4>
+
+            <div class="throws-description">
+                        <span class="type">Error</span>:
+                    <p>Raise an error if already is under recording.</p>
+
+            </div>
+        </div>
 
 </div>
 <div id="method_redo" class="method item">
@@ -475,7 +427,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2119"><code>pxl.js:2119</code></a>
+        <a href="../files/pxl.js.html#l1976"><code>pxl.js:1976</code></a>
         </p>
 
 
@@ -505,7 +457,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2178"><code>pxl.js:2178</code></a>
+        <a href="../files/pxl.js.html#l2010"><code>pxl.js:2010</code></a>
         </p>
 
 
@@ -513,7 +465,7 @@ Save in history.</p>
     </div>
 
     <div class="description">
-        <p>Stop recording the current Layer and save session.</p>
+        <p>Stop recording and save session.</p>
 
     </div>
 
@@ -536,7 +488,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2110"><code>pxl.js:2110</code></a>
+        <a href="../files/pxl.js.html#l1967"><code>pxl.js:1967</code></a>
         </p>
 
 
@@ -556,9 +508,9 @@ Save in history.</p>
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property__container" class="property item private">
-    <h3 class="name"><code>_container</code></h3>
-    <span class="type">Array</span>
+<div id="property__lastSession" class="property item private">
+    <h3 class="name"><code>_lastSession</code></h3>
+    <span class="type">Object | Null</span>
 
 
         <span class="flag private">private</span>
@@ -568,7 +520,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2077"><code>pxl.js:2077</code></a>
+        <a href="../files/pxl.js.html#l1935"><code>pxl.js:1935</code></a>
         </p>
 
 
@@ -578,32 +530,7 @@ Save in history.</p>
         
     </div>
 
-
-
-</div>
-<div id="property__isRecording" class="property item private">
-    <h3 class="name"><code>_isRecording</code></h3>
-    <span class="type">Boolean</span>
-
-
-        <span class="flag private">private</span>
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2094"><code>pxl.js:2094</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> false</p>
+        <p><strong>Default:</strong> null</p>
 
 
 </div>
@@ -619,7 +546,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2084"><code>pxl.js:2084</code></a>
+        <a href="../files/pxl.js.html#l1925"><code>pxl.js:1925</code></a>
         </p>
 
 
@@ -634,9 +561,9 @@ Save in history.</p>
 
 
 </div>
-<div id="property_lastSession" class="property item private">
-    <h3 class="name"><code>lastSession</code></h3>
-    <span class="type">Object | Null</span>
+<div id="property__stack" class="property item private">
+    <h3 class="name"><code>_stack</code></h3>
+    <span class="type">Array</span>
 
 
         <span class="flag private">private</span>
@@ -646,7 +573,7 @@ Save in history.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2102"><code>pxl.js:2102</code></a>
+        <a href="../files/pxl.js.html#l1917"><code>pxl.js:1917</code></a>
         </p>
 
 
@@ -656,7 +583,59 @@ Save in history.</p>
         
     </div>
 
-        <p><strong>Default:</strong> null</p>
+        <p><strong>Default:</strong> []</p>
+
+
+</div>
+<div id="property_isRecording" class="property item private">
+    <h3 class="name"><code>isRecording</code></h3>
+    <span class="type">Boolean</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1943"><code>pxl.js:1943</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> false</p>
+
+
+</div>
+<div id="property_MAX_HISTORY_SIZE" class="property item">
+    <h3 class="name"><code>MAX_HISTORY_SIZE</code></h3>
+    <span class="type">Number</span>
+
+
+
+        <span class="flag final">final</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1909"><code>pxl.js:1909</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> 20</p>
 
 
 </div>

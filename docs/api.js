@@ -1,11 +1,10 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "GrowingPool",
         "Layer",
         "Layout",
         "Observer",
-        "Pixel",
+        "Session",
         "Vector2",
         "View",
         "bresenham",

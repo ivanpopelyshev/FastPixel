@@ -10,7 +10,7 @@
 	 * @param options.layout {Layout}
 	 * @param options.isOwner {Boolean}
 	 */
-	var View = pxl.Layout.View = function(options){
+	var View = pxl.View = function(options){
 		/**
 		 * @property _buffer
 		 * @private
@@ -37,14 +37,14 @@
 		 * @private
 		 * @type {Vector2}
 		 */
-		this._imagePoint = new pxl.Vector2(0);
+		this._imagePoint = new pxl.Vector2;
 
 		/**
 		 * @property _scale
 		 * @private
 		 * @type {Number}
 		 */
-		this._scale = pxl.MIN_ZOOM_SCALE;
+		this._scale = View.MIN_SCALE_RATE;
 
 		/**
 		 * @property _layout
@@ -83,7 +83,7 @@
 		var isOwner = true;
 		if (options.element){
 			if (options.element.nodeName.toUpperCase() === "CANVAS"){
-				canvas = options.element
+				canvas = options.element;
 			} else{
 				canvas = options.element.appendChild(pxl.createCanvas());
 			}
@@ -96,17 +96,9 @@
 			isOwner = false;
 		} else{
 			bufferCanvas = pxl.createCanvas();
-			bufferCanvas.width = pxl.clamp(
-				options.canvasSize.width,
-				pxl.MIN_CANVAS_SIZE, pxl.MAX_CANVAS_SIZE
-			);
-			bufferCanvas.height = pxl.clamp(
-				options.canvasSize.height,
-				pxl.MIN_CANVAS_SIZE, pxl.MAX_CANVAS_SIZE
-			);
-			layout = new pxl.Layout(
-				bufferCanvas.width, bufferCanvas.height
-			).appendLayer();
+			bufferCanvas.width = options.canvasSize.width;
+			bufferCanvas.height = options.canvasSize.height;
+			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
 		var view = new View({
 			"buffer": _setupContext(bufferCanvas.getContext("2d")),
@@ -119,25 +111,56 @@
 	};
 
 	/**
-	 * List of all existing View instances
+	 * List of all existing View instances.
 	 *
 	 * @property instances
 	 * @static
 	 * @type {Array}
+	 * @default []
 	 */
 	View.instances = [];
+
+	/**
+	 * @property MIN_SCALE_RATE
+	 * @static
+	 * @final
+	 * @type {Number}
+	 * @default 1
+	 */
+	View.MIN_SCALE_RATE = 1;
+
+	/**
+	 * @property MAX_SCALE_RATE
+	 * @static
+	 * @final
+	 * @type {Number}
+	 * @default 128
+	 */
+	View.MAX_SCALE_RATE = 128;
+
+	/**
+	 * Reference onto the currently active view instance.
+	 *
+	 * @property activeView
+	 * @type {View|null}
+	 * @static
+	 * @default null
+	 */
+	View.activeView = null;
 
 	var viewProto = View.prototype;
  
 	/**
 	 * Clear canvas and update imageData and draw.
 	 *
+	 * @see clear
+	 * @see update
+	 * @see redraw
 	 * @method render
 	 * @param options {Object|undefined}
 	 * @chainable
 	 */
 	viewProto.render = function(options){
-		options = options || {};
 		return this.clear(options).update(options).redraw(options);
 	};
 
@@ -192,9 +215,7 @@
 			);
 		} else{
 			this._ctx.drawImage(
-				this._buffer.canvas,
-				this._imagePoint.x, this._imagePoint.y
-			);
+				this._buffer.canvas, this._imagePoint.x, this._imagePoint.y);
 		}
 		return this;
 	};
@@ -218,8 +239,7 @@
 			);
 		} else{
 			this._ctx.clearRect(
-				0, 0, this._ctx.canvas.width, this._ctx.canvas.height
-			);
+				0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
 		}
 		return this;
 	};
@@ -243,7 +263,8 @@
 					options.offset.x, options.offset.y
 				);
 			} else{
-				this._buffer.putImageData(this._layout.getImageData(), 0, 0);
+				this._buffer.putImageData(
+					this._layout.getImageData(options), 0, 0);
 			}
 		}
 		return this;
@@ -337,7 +358,8 @@
 	 * @chainable
 	 */
 	viewProto.setScale = function(scale){
-		this._scale = pxl.clamp(scale, pxl.MIN_ZOOM_SCALE, pxl.MAX_ZOOM_SCALE);
+		this._scale = pxl.clamp(
+			scale, View.MIN_SCALE_RATE, View.MAX_SCALE_RATE);
 		return this;
 	};
 
@@ -373,7 +395,7 @@
 	};
 
 	/**
-	 * Transform position according to current scale offset.
+	 * Transform position according to the current scale offset.
 	 *
 	 * @method fitToTransition
 	 * @param position {Vector2} [out]
@@ -435,8 +457,7 @@
         if (!this._boundedRender){
 			this._boundedRender = this.render.bind(this);
 			this._layout.observer.subscribe(
-				pxl.PIXELS_CHANGED_EVENT, this._boundedRender
-			);
+				pxl.Layout.PIXELS_CHANGED_EVENT, this._boundedRender);
 		}
 		return this;
     };
@@ -450,14 +471,14 @@
      */
     viewProto._unsubscribe = function(){
 		this._layout.observer.unsubscribe(
-			pxl.PIXELS_CHANGED_EVENT, this._boundedRender
-		);
+			pxl.Layout.PIXELS_CHANGED_EVENT, this._boundedRender);
 		this._boundedRender = null;
 		return this;
     };
 
 	/**
-	 * @destructor
+	 * Destructor.
+	 *
 	 * @method destroy
 	 */
 	viewProto.destroy = function(){
@@ -471,7 +492,8 @@
 		}
 	};
 
-	//Helper
+	//Helpers:
+
 	//Disable default image smoothing
 	function _setupContext(dest){
 		if ("imageSmoothingEnabled" in dest){
@@ -486,13 +508,11 @@
 		return dest;
 	};
 
-	//Helper
 	//remove _layout and _buffer properties
 	function _removeLayout(view){
 		view._buffer = view._layout = null;
 	}
 
-	//Helper
 	function _offset(scale, side){
 		return (side * (1 - scale)) >> 1;
 	}

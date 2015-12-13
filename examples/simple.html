@@ -10,13 +10,13 @@
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
 
-		<script src="../pxl.min.js"></script>
+		<script src="../pxl.js"></script>
 		<script>
 			//make sure that the current browser is cool:
-			if (pxl.isSupported()){
+			if (pxl.isSupported){
 
 				//create the new View instance, and set it as active:
-				pxl.activeView = pxl.Layout.View.create({
+				pxl.View.activeView = pxl.View.create({
 					canvasSize: { //size (in pixels) of your "off-screen" canvas
 						width: 128,
 						height: 128
@@ -25,9 +25,9 @@
 				});
 
 				//method above will draw simple rectangle:
-				pxl.activeView.drawRect({
-					"start": new pxl.Vector2(60, 60),
-					"offset": new pxl.Vector2(8, 8),
+				pxl.View.activeView.drawRect({
+					"start": new pxl.Vector2(64, 64), //x:y position
+					"offset": new pxl.Vector2(32, 32), //width:height
 					"pixel": new pxl.ImageDataArray([255, 0, 255, 255]) //magenta
 				});
 
@@ -35,6 +35,6 @@
 				alert("Not supported!"); //old IE or something like that
 			}
 		</script>
-		<p>nothing special here, just a magenta square</p>
+		<p class="noselect">nothing special here, just a magenta square</p>
 	</body>
 </html>

@@ -7,13 +7,12 @@ var FILE_LIST = [
 	"./public/js/pxl/pxl.js",
 	"./public/js/pxl/Vector2/Vector2.js",
 	"./public/js/pxl/Observer/Observer.js",
-	"./public/js/pxl/GrowingPool/GrowingPool.js",
 	"./public/js/pxl/bresenham/bresenham.js",
+	"./public/js/pxl/View/View.js",
 	"./public/js/pxl/Layout/Layout.js",
 	"./public/js/pxl/Layout/Layer/Layer.js",
-	"./public/js/pxl/Layout/Layer/Pixel/Pixel.js",
-	"./public/js/pxl/Layout/View/View.js",
-	"./public/js/pxl/Layout/history/history.js"
+	"./public/js/pxl/Layout/Layer/history/history.js",
+	"./public/js/pxl/Layout/Layer/history/Session/Session.js"
 ];
 
 var APP_NAME = "pxl";
@@ -25,10 +24,10 @@ gulp.task("default", function(){
 });
 
 gulp.task("compress", function(){
-  return gulp.src(FILE_LIST)
-		.pipe(concat(APP_NAME + ".min.js"))
-		.pipe(uglify())
-		.pipe(gulp.dest("./"));
+	return  gulp.src(FILE_LIST)
+			.pipe(concat(APP_NAME + ".min.js"))
+			.pipe(uglify())
+			.pipe(gulp.dest("./"));
 });
 
 gulp.task("watch", function(){
