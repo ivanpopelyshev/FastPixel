@@ -1823,7 +1823,13 @@
 	 * @return {ImageDataArray}
 	 */
 	layerProto.pixelAt = function(index){
-		return this.data.slice(index, index + 4);
+		var pixel = new pxl.ImageDataArray(4);
+		var data = this.data;
+		pixel[0] = data[index];
+		pixel[1] = data[++index];
+		pixel[2] = data[++index];
+		pixel[3] = data[++index];
+		return pixel;
 	};
 
 	/**
