@@ -17,9 +17,17 @@
 				//make sure that the current browser is cool:
 				if (pxl.isSupported){
 
+					var isPressed = false;
+
 					var history = pxl.Layout.Layer.history;
 					var View = pxl.View;
 					var prevPosition = new pxl.Point;
+	
+					var options = {
+						"start": new pxl.Point,
+						"offset": new pxl.Point(1), //size of the pixel
+						"pixel": new pxl.ImageDataArray([0, 0, 0, 255])
+					};
 
 					//create the new View instance, and set it as active:
 					View.activeView = View.create({
@@ -38,15 +46,9 @@
 
 					//listen for some of user movements:
 					document.addEventListener("wheel", userWheel, false);
-					canvas.addEventListener("mousemove", function(e){
-						var position = new pxl.Point(e.pageX, e.pageY)
-											  .abs().floor();
-						View.activeView.fitToTransition(position);
-						position.sub(View.activeView.getImagePoint());
-
-						carry(prevPosition, position);
-						prevPosition.set(position);
-					}, false);
+					canvas.addEventListener("mousemove", userMove, false);
+					document.addEventListener("mousedown", userDownMouse, false);
+					document.addEventListener("mouseup", userUpMouse, false);
 				} else{
 					alert("Not supported!"); //old IE or something like that
 				}
@@ -69,22 +71,47 @@
 				//prev is a position to clear previously drawed pixel
 				//current is a position where to draw new pixel
 				function carry(prev, current){
-					var options = {
-						"start": prev,
-						"offset": new pxl.Point(5), //size of the pixel
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255])
-					};
+					
+
+					options.start = current;
+
+				};
+
+				function userDownMouse(event){
 					View.activeView
 						.begin() //fit things for the current scale
 						.clear(options)
 						.redraw(options);
 
-					options.start = current;
+					isPressed = true;
+				};
 
+				function userUpMouse(event){
 					View.activeView
 						.drawRect(options)
 						.end(); //restore view to default scale
+				
+					isPressed = false;
 				};
+
+				function userMove(e){
+					var position = new pxl.Point(e.pageX, e.pageY)
+										  .abs().floor();
+					View.activeView.fitToTransition(position);
+					position.sub(View.activeView.getImagePoint());
+
+					if (isPressed){
+						pxl.bresenham.line(
+							prevPosition.x, prevPosition.y,
+							position.x, position.y,
+							setPixel
+						);
+					} else{
+						carry(prevPosition, position);
+					}
+					
+					prevPosition.set(position);
+				}
 
 				function userWheel(e){
 					var scale = View.activeView.getScale();

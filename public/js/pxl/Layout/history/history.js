@@ -4,14 +4,34 @@
 	/**
 	 * @class history
 	 */
-	pxl.Layout.Layer.history = {
+	pxl.Layout.history = {
 		/**
 		 * @property MAX_HISTORY_SIZE
 		 * @type {Number}
 		 * @final
-		 * @default 20
+		 * @default 30
 		 */
-		MAX_HISTORY_SIZE: 20,
+		MAX_HISTORY_SIZE: 30,
+
+		/**
+		 * Special recording flag. Cache method have to be used once on session.
+		 * Use case: methods like fill or replaceColor.
+		 *
+		 * @property STATIC_SHOT
+		 * @type {Number}
+		 * @final
+		 */
+		STATIC_SHOT: 1,
+
+		/**
+		 * Special recording flag. Cache method may be used as many times as possible.
+		 * Use case: user draw lines.
+		 *
+		 * @property DYNAMIC_SHOT
+		 * @type {Number}
+		 * @final
+		 */
+		DYNAMIC_SHOT: 2,
 
 		/**
 		 * @property _stack
@@ -40,12 +60,12 @@
         _lastSession: null,
 
 		/**
-		 * @property isRecording
+		 * @property _isRecording
 		 * @private
 		 * @type {Boolean}
 		 * @default false
 		 */
-		isRecording: false,
+		_isRecording: false,
 
 		/**
 		 * @method isHistoryEmpty
@@ -61,6 +81,14 @@
 		 */
 		isHistoryFull: function(){
 			return this._stack.length === this.MAX_HISTORY_SIZE;
+		},
+
+		/**
+		 * @method isRecording
+		 * @return {Boolean}
+		 */
+		isRecording: function(){
+			return this._isRecording;
 		},
 
 		/**
@@ -83,35 +111,59 @@
 
 		/**
 		 * @method getSession
-		 * @param layer {Layer}
+		 * @param options {Options}
+		 * @param layout {Layout}
 		 */
-		getSession: function(layer){
-			if (this._lastSession === null){
-				this._lastSession = new pxl.Layout.Layer.history.Session(layer);
+		cache: (function(){ //anonymos
+			var _diffPos = new pxl.Point;
+			return function(options, layout){
+				if (options.start && options.offset){
+					_diffPos.set(options.start).sub(options.offset);
+					if (_diffPos.x === 1 && _diffPos.y === 1){
+						this._lastSession.pushIndex(
+							layout.indexAt(options.start));
+						return; //stop.
+					}
+				}
+				this._lastSession.pushArray(
+					layout.activeLayer.cloneData(options), options);
 			}
-			return this._lastSession;
-		},
+		})(),
 
 		/**
 		 * Start Layer recording.
 		 *
-		 * @method rec
-		 * @throws {Error} Raise an error if already is under recording.
-		 * @param layer {Layer|undefined}
+		 * @method record
+		 * @throws {Error} Raise an error if already is under recording; Or if flag is unknown.
+		 * @param layout {Layout}
+		 * @param flag {Number} STATIC_SHOT or DYNAMIC_SHOT
 		 */
-		record: function(layer){
-			if (this.isRecording === true){
+		record: function(layout, flag){
+			if (this._isRecording === true){
 				throw new Error;
 			}
-			this.isRecording = true;
+			if (flag === pxl.Layout.history.STATIC_SHOT){
+				this._lastSession = new pxl.Layout.history.SessionStatic(
+					layout.activeLayer);
+			} else if (flag === pxl.Layout.history.DYNAMIC_SHOT){
+				this._lastSession = new pxl.Layout.history.SessionDynamic(
+					layout.activeLayer);
+			} else{
+				throw new Error;
+			}
+			this._isRecording = true;
 		},
 
 		/**
 		 * Stop recording and save session.
 		 *
+		 * @throws {Error} Raise an error if recording has not been started.
 		 * @method stop
 		 */
 		stop: function(){
+			if (this._isRecording !== true){
+				throw new Error;
+			}
 			if (this._lastSession.isEmpty() === false){
 				if (this._pointer < this.MAX_HISTORY_SIZE){ //prevent overflow
 					this._stack[this._pointer++] = this._lastSession;
@@ -121,7 +173,7 @@
 					this._stack.shift();
 				}
 			}
-			this.isRecording = false;
+			this._isRecording = false;
 			this._lastSession = null;
 		},
 

@@ -7,11 +7,11 @@
 
     /**
      * @constructor
-	 * @class Vector2
+	 * @class Point
      * @param x {Number|undefined}
      * @param y {Number|undefined}
      */
-    var Vector2 = parent.Vector2 = function(x, y){
+    var Point = parent.Point = function(x, y){
         this.set(x || 0, y);
 
 		/**
@@ -33,9 +33,9 @@
 	 * @static
 	 * @type {Number}
 	 */
-	Vector2.EPSILON = 1e-10;
+	Point.EPSILON = 1e-10;
 
-    var vector2Proto = Vector2.prototype;
+    var pointProto = Point.prototype;
 
 	/**
 	 * Return string is JSON format.
@@ -43,21 +43,21 @@
 	 * @method toString
 	 * @return {String}
 	 */
-	vector2Proto.toString = function(){
+	pointProto.toString = function(){
 		return '{"x":' + this.x + ',"y":' + this.y + '}';
 	};
 
 	/**
-	 * Add two Vector2 instances;
-	 * or add Vector2 instance with numbers.
+	 * Add two Point instances;
+	 * or add Point instance with numbers.
 	 *
 	 * @method add
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.add = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.add = function(param1, param2){
+        if (param1 instanceof Point){
             this.x += param1.x;
             this.y += param1.y;
         } else{
@@ -68,16 +68,16 @@
     };
 
 	/**
-	 * Substract one Vector2 instance from another;
-	 * or substrast number from Vector2 instance.
+	 * Substract one Point instance from another;
+	 * or substrast number from Point instance.
 	 *
 	 * @method sub
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.sub = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.sub = function(param1, param2){
+        if (param1 instanceof Point){
             this.x -= param1.x;
             this.y -= param1.y;
         } else{
@@ -88,16 +88,16 @@
     };
 
 	/**
-	 * Multiply two Vector2 instances;
-	 * or multiply Vector2 instance by numbers.
+	 * Multiply two Point instances;
+	 * or multiply Point instance by numbers.
 	 *
 	 * @method mul
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.mul = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.mul = function(param1, param2){
+        if (param1 instanceof Point){
             this.x *= param1.x;
             this.y *= param1.y;
         } else{
@@ -108,16 +108,16 @@
     };
 
 	/**
-	 * Divide one Vector2 instance by another;
-	 * or divide Vector2 instance by numbers.
+	 * Divide one Point instance by another;
+	 * or divide Point instance by numbers.
 	 *
 	 * @method div
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.div = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.div = function(param1, param2){
+        if (param1 instanceof Point){
             this.x /= param1.x;
             this.y /= param1.y;
         } else{
@@ -128,16 +128,16 @@
     };
 
 	/**
-	 * Copy Vector2 instance;
-	 * or set new values for Vector2 instance.
+	 * Copy Point instance;
+	 * or set new values for Point instance.
 	 *
 	 * @method set
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.set = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.set = function(param1, param2){
+        if (param1 instanceof Point){
             this.x = param1.x;
             this.y = param1.y;
         } else{
@@ -148,58 +148,58 @@
     };
 
 	/**
-	 * Compare two Vector2 instances
-	 * or compare Vector2 instance properties with numbers.
+	 * Compare two Point instances
+	 * or compare Point instance properties with numbers.
 	 *
 	 * @method cmp
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @return {Boolean}
      */
-    vector2Proto.cmp = function(param1, param2){
-        if (param1 instanceof Vector2){
-            return (abs(this.x - param1.x) < Vector2.EPSILON &&
-                    abs(this.y - param1.y) < Vector2.EPSILON);
+    pointProto.cmp = function(param1, param2){
+        if (param1 instanceof Point){
+            return (abs(this.x - param1.x) < Point.EPSILON &&
+                    abs(this.y - param1.y) < Point.EPSILON);
         }
         return (
-			abs(this.x - param1) < Vector2.EPSILON &&
+			abs(this.x - param1) < Point.EPSILON &&
 			abs(this.y - (typeof param2 === "number" ? param2 : param1)) <
-			Vector2.EPSILON
+			Point.EPSILON
 		);
     };
 
 	/**
-	 * Make Vector2 instance properties absolute.
+	 * Make Point instance properties absolute.
 	 *
 	 * @method abs
 	 * @chainable
 	 */
-	vector2Proto.abs = function(){
+	pointProto.abs = function(){
 		this.x = abs(this.x);
 		this.y = abs(this.y);
 		return this;
 	};
 
 	/**
-	 * Make Vector2 instance properties negative.
+	 * Make Point instance properties negative.
 	 *
 	 * @method neg
 	 * @chainable
 	 */
-	vector2Proto.neg = function(){
+	pointProto.neg = function(){
 		this.x = -abs(this.x);
 		this.y = -abs(this.y);
 		return this;
 	};
 
 	/**
-	 * Swap properties between Vector2 instances.
+	 * Swap properties between Point instances.
 	 *
 	 * @method swap
-	 * @param other {Vector2}
+	 * @param other {Point}
 	 * @chainable
 	 */
-	vector2Proto.swap = function(other){
+	pointProto.swap = function(other){
 		var tmp = other.x;
 		other.x = this.x;
 		this.x = tmp;
@@ -210,36 +210,36 @@
 	};
 
 	/**
-	 * Round down Vector2 instance properties.
+	 * Round down Point instance properties.
 	 *
 	 * @method floor
 	 * @chainable
 	 */
-	vector2Proto.floor = function(){
+	pointProto.floor = function(){
 		this.x = _floor(this.x);
 		this.y = _floor(this.y);
 		return this;
 	};
 
 	/**
-	 * Round up Vector2 instance properties.
+	 * Round up Point instance properties.
 	 *
 	 * @method ceil
 	 * @chainable
 	 */
-	vector2Proto.ceil = function(){
+	pointProto.ceil = function(){
 		this.x = _ceil(this.x);
 		this.y = _ceil(this.y);
 		return this;
 	};
 
 	/**
-	 * Round Vector2 instance properties.
+	 * Round Point instance properties.
 	 *
 	 * @method round
 	 * @chainable
 	 */
-	vector2Proto.round = function(){
+	pointProto.round = function(){
 		this.x = _round(this.x);
 		this.y = _round(this.y);
 		return this;
@@ -251,7 +251,7 @@
 	 * @method hasNaN
 	 * @return {Boolean}
 	 */
-	vector2Proto.hasNaN = function(){
+	pointProto.hasNaN = function(){
 		return isNaN(this.x) || isNaN(this.y);
 	};
 
@@ -261,25 +261,26 @@
 	 * @method hasInfinity
 	 * @return {Boolean}
 	 */
-	vector2Proto.hasInfinity = function(){
+	pointProto.hasInfinity = function(){
 		return !isFinite(this.x) || !isFinite(this.y);
 	};
 
     /**
-	 * Make new Vector2 instance with same properties.
+	 * Make new Point instance with same properties.
 	 *
 	 * @method clone
-     * @return {Vector2}
+     * @return {Point}
      */
-	vector2Proto.clone = function(){
-		return new Vector2(this);
+	pointProto.clone = function(){
+		return new Point(this);
 	};
 
 	//Helpers:
 
 	//correctly floor down if negative
 	function _floor(n){
-		return (n < 0 ? (n | 0) - 1 : n | 0);
+        var flooredN = n | 0;
+        return (flooredN !== n && flooredN < 0 ? --flooredN : flooredN);
 	};
 
 	//faster than Math.round
@@ -289,11 +290,12 @@
 
 	//
 	function _ceil(n){
-		return (n === (n | 0) ? n : (n | 0) + 1);
+        var ceiledN = n | 0;
+		return (n === ceiledN ? n : ceiledN + 1);
 	};
 
 	//faster than Math.abs
 	function abs(n){
-		return n < 0 ? -n : n;
+		return n < 0 || n === -0 ? -n : n;
 	};
 })(pxl);

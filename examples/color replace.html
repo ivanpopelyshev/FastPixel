@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="common.css"/>
 	</head>
 	<body>
-		<canvas id="canvas" width="1024" height="1024"></canvas>
+		<canvas id="canvas" width="2048" height="2048"></canvas>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -16,20 +16,19 @@
 				//make sure that the current browser is cool:
 				if (pxl.isSupported){
 
-					var history = pxl.Layout.Layer.history;
+					var history = pxl.Layout.history;
 					var View = pxl.View;
 
 					//create the new View instance, and set it as active:
 					View.activeView = View.create({
 						canvasSize: {
-							width: 1024,
-							height: 1024
+							width: 2048,
+							height: 2048
 						},
 						element: document.querySelector("#canvas")
 					});
 					var layout = View.activeView.getLayout().appendLayer();
 
-					pxl.bresenham.rectangle(0, 0, 1024 - 1, 1024 - 1, setPixel);
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
 
 					//listen for some of user movements:
@@ -59,13 +58,8 @@
 				function colorReplace(x, y){
 					if (x >= 0 && x < layout.getWidth() &&
 						y >= 0 && y < layout.getHeight()){
-						var position = new pxl.Vector2(x, y);
-						history.record(layout.activeLayer);
-						layout.colorReplace({
-							/*"start": new pxl.Vector2(50, 50),
-							"offset": new pxl.Vector2(250, 250),*/
-							"position": position,
-							"oldPixel": layout.activeLayer.pixelFromPosition(position),
+						var options = {
+							"position": new pxl.Point(x, y),
 							"pixel": new pxl.ImageDataArray([
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0,
@@ -74,15 +68,19 @@
 							]),
 							"isMix": true,
 							"isNotifyView": true
-						});
+						};
+
+						history.record(layout, history.STATIC_SHOT);
+						history._lastSession.push(options);
+						layout.colorReplace(options);
 						history.stop();
 					}
 				}
 
 				function setPixel(x, y){
 					layout.set({
-						"start": new pxl.Vector2(x, y),
-						"offset": new pxl.Vector2(1),
+						"start": new pxl.Point(x, y),
+						"offset": new pxl.Point(20),
 						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
 						"isMix": false,
 						"isNotifyView": true

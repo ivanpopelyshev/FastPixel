@@ -16,9 +16,13 @@ pxl.View.activeView = pxl.View.create({
 	element: document.querySelector("CANVAS")
 });
 
+var layout = pxl.View.activeView.getLayout();
+
+layout.appendLayer();
+
 //draws line from 25:25 to 50:100
 pxl.bresenham.line(25, 25, 50, 100, function(x, y){
-	pxl.View.activeView.getLayout().set({
+	layout.set({
 		"start": new pxl.Vector2(x, y), //position where to apply
 		"offset": new pxl.Vector2(1), //size of the pixel
 		"pixel": new pxl.ImageDataArray([0, 0, 0, 255]), //pixel's color (black)
@@ -41,13 +45,11 @@ Based on different modules, separated by files (thanks to gulp).
 There are few absolutely independence modules:
 - [Vector2][]
 - [Observer][]
-- [brezenham][]
-
-Other have different kinds of dependencies
-(Layout can't work without Layer and Layer can't work without history)
+- [bresenham][]
 
 Main logic is based on MVC design pattern.
-So, it is possible to create few view instances that will listen for changes in one model, too example.
+"Model" is a group of classes: Layout and Layer. The  View component has obvious name "View".
+The "Controller" have to be implemented by you. By default it equal to null and called as "controller".
 
 ## Feedback
 
@@ -58,4 +60,4 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [pxl.min.js]: ./pxl.min.js
 [Vector2]: ./public/js/pxl/Vector2/Vector2.js
 [Observer]: ./public/js/pxl/Observer/Observer.js
-[brezenham]: ./public/js/pxl/brezenham/brezenham.js
+[bresenham]: ./public/js/pxl/bresenham/bresenham.js

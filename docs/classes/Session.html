@@ -43,9 +43,11 @@
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
+                                <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
+                                <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
                 
@@ -90,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l2064"><code>pxl.js:2064</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1680"><code>pxl.js:1680</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -125,7 +127,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2064"><code>pxl.js:2064</code></a>
+        <a href="../files/pxl.js.html#l1680"><code>pxl.js:1680</code></a>
         </p>
 
 
@@ -146,7 +148,8 @@
 
 
                     <div class="param-description">
-                         
+                        <p>[in/out]</p>
+
                     </div>
 
                 </li>
@@ -163,6 +166,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -174,28 +178,26 @@
 
                     <ul class="index-list methods">
                             <li class="index-item method">
-                                <a href="#method_initColor">initColor</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_isEmpty">isEmpty</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_pushIndex">pushIndex</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_pushPixel">pushPixel</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_rewrite">rewrite</a>
 
                             </li>
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property private">
+                                <a href="#property__list">_list</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_layer">layer</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
@@ -203,99 +205,6 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_initColor" class="method item">
-    <h3 class="name"><code>initColor</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2085"><code>pxl.js:2085</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Have to be called once, before started color processing;
-Only for operations with single color.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_isEmpty" class="method item">
     <h3 class="name"><code>isEmpty</code></h3>
 
@@ -314,7 +223,7 @@ Only for operations with single color.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2077"><code>pxl.js:2077</code></a>
+        <a href="../files/pxl.js.html#l1705"><code>pxl.js:1705</code></a>
         </p>
 
 
@@ -336,182 +245,25 @@ Only for operations with single color.</p>
 
 
 </div>
-<div id="method_pushIndex" class="method item">
-    <h3 class="name"><code>pushIndex</code></h3>
+            </div>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>index</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property__list" class="property item private">
+    <h3 class="name"><code>_list</code></h3>
+    <span class="type">Array</span>
 
 
-
-
-
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2123"><code>pxl.js:2123</code></a>
+        <a href="../files/pxl.js.html#l1694"><code>pxl.js:1694</code></a>
         </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Only for operations with single color. Used only after initColor() method.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">index</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_pushPixel" class="method item">
-    <h3 class="name"><code>pushPixel</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>index</code>
-                </li>
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2101"><code>pxl.js:2101</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>It is recommended to use this during processing multiple colors.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">index</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_rewrite" class="method item">
-    <h3 class="name"><code>rewrite</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2135"><code>pxl.js:2135</code></a>
-        </p>
-
 
 
     </div>
@@ -520,12 +272,36 @@ Only for operations with single color.</p>
         
     </div>
 
+        <p><strong>Default:</strong> []</p>
+
+
+</div>
+<div id="property_layer" class="property item">
+    <h3 class="name"><code>layer</code></h3>
+    <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1686"><code>pxl.js:1686</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Reference on the layer.</p>
+
+    </div>
 
 
 
 </div>
             </div>
-
 
 
     </div>

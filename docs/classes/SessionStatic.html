@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Observer</title>
+    <title>SessionStatic</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -87,12 +87,15 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Observer Class</h1>
+<h1>SessionStatic Class</h1>
 <div class="box meta">
 
+        <div class="extends">
+            Extends <a href="../classes/Session.html" class="crosslink">Session</a>
+        </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l414"><code>pxl.js:414</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1809"><code>pxl.js:1809</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -101,16 +104,21 @@
 
 
 <div class="box intro">
-    <p>Simple observer-pattern implementation.</p>
-
+    
 </div>
 
     <div class="constructor">
         <h2>Constructor</h2>
-<div id="method_Observer" class="method item">
-    <h3 class="name"><code>Observer</code></h3>
+<div id="method_SessionStatic" class="method item">
+    <h3 class="name"><code>SessionStatic</code></h3>
 
-        <span class="paren">()</span>
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>layer</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
 
 
 
@@ -122,7 +130,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l414"><code>pxl.js:414</code></a>
+        <a href="../files/pxl.js.html#l1809"><code>pxl.js:1809</code></a>
         </p>
 
 
@@ -133,6 +141,23 @@
         
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">layer</code>
+                        <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
+
+
+                    <div class="param-description">
+                        <p>[in/out]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
 
@@ -154,17 +179,17 @@
                 <div class="index-section methods">
                     <h3>Methods</h3>
 
-                    <ul class="index-list methods">
-                            <li class="index-item method">
-                                <a href="#method_notify">notify</a>
+                    <ul class="index-list methods extends">
+                            <li class="index-item method inherited">
+                                <a href="#method_isEmpty">isEmpty</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_subscribe">subscribe</a>
+                                <a href="#method_push">push</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_unsubscribe">unsubscribe</a>
+                                <a href="#method_rewrite">rewrite</a>
 
                             </li>
                     </ul>
@@ -173,9 +198,13 @@
                 <div class="index-section properties">
                     <h3>Properties</h3>
 
-                    <ul class="index-list properties">
-                            <li class="index-item property private">
-                                <a href="#property__eventBook">_eventBook</a>
+                    <ul class="index-list properties extends">
+                            <li class="index-item property private inherited">
+                                <a href="#property__list">_list</a>
+
+                            </li>
+                            <li class="index-item property inherited">
+                                <a href="#property_layer">layer</a>
 
                             </li>
                     </ul>
@@ -187,16 +216,56 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_notify" class="method item">
-    <h3 class="name"><code>notify</code></h3>
+<div id="method_isEmpty" class="method item inherited">
+    <h3 class="name"><code>isEmpty</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Session.html#method_isEmpty">Session</a>:
+        <a href="../files/pxl.js.html#l1705"><code>pxl.js:1705</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_push" class="method item">
+    <h3 class="name"><code>push</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>event</code>
+                        <code>data</code>
                 </li>
                 <li class="arg">
-                        <code>eventObj</code>
+                        <code>options</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -211,7 +280,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l466"><code>pxl.js:466</code></a>
+        <a href="../files/pxl.js.html#l1823"><code>pxl.js:1823</code></a>
         </p>
 
 
@@ -219,7 +288,8 @@
     </div>
 
     <div class="description">
-        
+        <p>Will cache the whole token array.</p>
+
     </div>
 
         <div class="params">
@@ -227,23 +297,23 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
+                        <code class="param-name">data</code>
+                        <span class="type">ImageDataArray</span>
 
 
                     <div class="param-description">
-                        <p>[in] Name of event.</p>
+                        <p>[in/out]</p>
 
                     </div>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">eventObj</code>
+                        <code class="param-name">options</code>
                         <span class="type">Object</span>
 
 
                     <div class="param-description">
-                        <p>[in/out] Special event data.</p>
+                        <p>[in]</p>
 
                     </div>
 
@@ -254,19 +324,10 @@
 
 
 </div>
-<div id="method_subscribe" class="method item">
-    <h3 class="name"><code>subscribe</code></h3>
+<div id="method_rewrite" class="method item">
+    <h3 class="name"><code>rewrite</code></h3>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code>method</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
+        <span class="paren">()</span>
 
 
 
@@ -278,7 +339,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l432"><code>pxl.js:432</code></a>
+        <a href="../files/pxl.js.html#l1843"><code>pxl.js:1843</code></a>
         </p>
 
 
@@ -286,104 +347,10 @@
     </div>
 
     <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>[in] Name of event.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">method</code>
-                        <span class="type">Function</span>
-
-
-                    <div class="param-description">
-                        <p>[out] The method to execute when event is fired.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_unsubscribe" class="method item">
-    <h3 class="name"><code>unsubscribe</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>event</code>
-                </li>
-                <li class="arg">
-                        <code>method</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l448"><code>pxl.js:448</code></a>
-        </p>
-
-
+        <p>Swap data from session to current layer's data.</p>
 
     </div>
 
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">event</code>
-                        <span class="type">String</span>
-
-
-                    <div class="param-description">
-                        <p>[in] Name of event.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">method</code>
-                        <span class="type">Function</span>
-
-
-                    <div class="param-description">
-                        <p>[in] Have to be same reference that passed in subscribe method.</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
 
 
 
@@ -393,9 +360,9 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property__eventBook" class="property item private">
-    <h3 class="name"><code>_eventBook</code></h3>
-    <span class="type">Object</span>
+<div id="property__list" class="property item private inherited">
+    <h3 class="name"><code>_list</code></h3>
+    <span class="type">Array</span>
 
 
         <span class="flag private">private</span>
@@ -403,9 +370,9 @@
 
 
     <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l421"><code>pxl.js:421</code></a>
+                <p>Inherited from
+                <a href="../classes/Session.html#property__list">Session</a>:
+        <a href="../files/pxl.js.html#l1694"><code>pxl.js:1694</code></a>
         </p>
 
 
@@ -415,7 +382,32 @@
         
     </div>
 
-        <p><strong>Default:</strong> {}</p>
+        <p><strong>Default:</strong> []</p>
+
+
+</div>
+<div id="property_layer" class="property item inherited">
+    <h3 class="name"><code>layer</code></h3>
+    <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>Inherited from
+                <a href="../classes/Session.html#property_layer">Session</a>:
+        <a href="../files/pxl.js.html#l1686"><code>pxl.js:1686</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Reference on the layer.</p>
+
+    </div>
+
 
 
 </div>

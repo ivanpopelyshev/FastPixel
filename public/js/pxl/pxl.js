@@ -28,9 +28,16 @@
 		//Not "linked" yet objects:
 		Layout: null,
 		View: null,
-		Vector2: null,
+		Point: null,
 		Observer: null,
 		bresenham: null,
+
+		/**
+		 * @property controller
+		 * @type {HAVE_TO_BE_REDEFINED_BY_USER}
+		 * @default null
+		 */
+		controller: null,
 
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
@@ -51,7 +58,7 @@
 		/**
 		 * More safest and fastest method to create ImageData.
 		 *
-		 * @property createImageData
+		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number} [in]
 		 * @param arguments[1] {undefined|Number} [in]
 		 * @return {ImageData}
@@ -81,6 +88,18 @@
 		 */
 		createCanvas: function(){
 			return _canvas.cloneNode();
+		},
+
+		/**
+		 * @method extend
+		 * @param child {Function}
+		 * @param parent {Function}
+		 */
+		extend: function(child, parent){
+			var F = function(){};
+			F.prototype = parent.prototype;
+			child.prototype = new F;
+			child.prototype.constructor = child;
 		}
 	};
 })(document);

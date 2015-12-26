@@ -5,6 +5,11 @@ describe("Layout", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 
+			var data = layout.dataLayer.data;
+			for (var i = 0; i < data.length; ++i){
+				expect(data[i]).to.equal(0);
+			}
+			
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
 		});
@@ -14,6 +19,11 @@ describe("Layout", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(pxl.createImageData(8, 16));
 
+			var data = layout.dataLayer.data;
+			for (var i = 0; i < data.length; ++i){
+				expect(data[i]).to.equal(0);
+			}
+			
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
 		});
@@ -44,7 +54,7 @@ describe("Layout", function(){
 		it("should be equal to 9", function(){
 			var layout = new pxl.Layout(8, 16);
 
-			expect(layout.indexAt(new pxl.Vector2(1, 1))).to.equal(9);
+			expect(layout.indexAt(new pxl.Point(1, 1))).to.equal(9);
 		});
 	});
 
@@ -52,7 +62,7 @@ describe("Layout", function(){
 		it("should be equal to 1:1", function(){
 			var layout = new pxl.Layout(8, 16);
 
-			expect(layout.positionFrom(9).cmp(new pxl.Vector2(1, 1))).to.equal(true);
+			expect(layout.positionFrom(9).cmp(new pxl.Point(1, 1))).to.equal(true);
 		});
 	});
 
@@ -71,8 +81,8 @@ describe("Layout", function(){
 			var layout = new pxl.Layout(8, 16);
 
 			var imageData = layout.getImageData({
-				"start": new pxl.Vector2(2, 2),
-				"offset": new pxl.Vector2(4, 7)
+				"start": new pxl.Point(2, 2),
+				"offset": new pxl.Point(4, 7)
 			});
 			expect(imageData.width).to.equal(4);
 			expect(imageData.height).to.equal(7);
@@ -82,12 +92,38 @@ describe("Layout", function(){
 	describe("visible layer list", function(){
 		it("two layers are visible", function(){
 			var layout = new pxl.Layout(8, 16);
+		
 			layout.appendLayer();
 			layout.appendLayer();
+			layout.appendLayer();
+			
 			layout.activeLayer.isVisible = false;
-			layout.appendLayer();
 
 			expect(layout.visibleLayers().length).to.equal(2);
+		});
+	});
+
+	describe("fix the range", function(){
+		it("have to be fixed properly", function(){
+			var layout = new pxl.Layout(8, 16);
+
+			var oldStart = new pxl.Point(2, 2);
+			var oldOffset = new pxl.Point(4, 4);
+
+			var options = {
+				"start": new pxl.Point(oldStart),
+				"offset": new pxl.Point(oldOffset)
+			};
+			expect(layout.fixRange(options)).to.equal(true); //everything is OK here and no changes
+			expect(options.start.cmp(oldStart)).to.equal(true);
+			expect(options.offset.cmp(oldOffset)).to.equal(true);
+			
+			
+			oldStart.set(-1, 0);
+			options.start.set(oldStart);
+			expect(layout.fixRange(options)).to.equal(true); //Ok, and will be changed
+			expect(options.start.cmp(oldStart)).to.equal(false);
+			expect(options.offset.cmp(oldOffset)).to.equal(false);
 		});
 	});
 

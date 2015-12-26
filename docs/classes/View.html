@@ -43,9 +43,11 @@
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
+                                <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
+                                <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
                 
@@ -90,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l591"><code>pxl.js:591</code></a>
+            Defined in: <a href="../files/pxl.js.html#l616"><code>pxl.js:616</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -110,7 +112,16 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>options</code>
+                        <code>ctx</code>
+                </li>
+                <li class="arg">
+                        <code>buffer</code>
+                </li>
+                <li class="arg">
+                        <code>layout</code>
+                </li>
+                <li class="arg">
+                        <code>isOwner</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -125,7 +136,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l591"><code>pxl.js:591</code></a>
+        <a href="../files/pxl.js.html#l616"><code>pxl.js:616</code></a>
         </p>
 
 
@@ -141,53 +152,44 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">options</code>
-                        <span class="type">Object</span>
+                        <code class="param-name">ctx</code>
+                        <span class="type">CanvasRenderingContext2D</span>
 
 
                     <div class="param-description">
-                        <p>[in]</p>
-
+                         
                     </div>
 
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">buffer</code>
-                                    <span class="type">CanvasRenderingContext2D</span>
+                </li>
+                <li class="param">
+                        <code class="param-name">buffer</code>
+                        <span class="type">CanvasRenderingContext2D</span>
 
-                                <div class="param-description">
-                                    
-                                </div>
 
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">ctx</code>
-                                    <span class="type">CanvasRenderingContext2D</span>
+                    <div class="param-description">
+                         
+                    </div>
 
-                                <div class="param-description">
-                                    
-                                </div>
+                </li>
+                <li class="param">
+                        <code class="param-name">layout</code>
+                        <span class="type"><a href="../classes/Layout.html" class="crosslink">Layout</a></span>
 
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">layout</code>
-                                    <span class="type"><a href="../classes/Layout.html" class="crosslink">Layout</a></span>
 
-                                <div class="param-description">
-                                    
-                                </div>
+                    <div class="param-description">
+                         
+                    </div>
 
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">isOwner</code>
-                                    <span class="type">Boolean</span>
+                </li>
+                <li class="param">
+                        <code class="param-name">isOwner</code>
+                        <span class="type">Boolean</span>
 
-                                <div class="param-description">
-                                    
-                                </div>
 
-                            </li>
-                        </ul>
+                    <div class="param-description">
+                         
+                    </div>
+
                 </li>
             </ul>
         </div>
@@ -351,16 +353,6 @@
 
                                     <span class="flag static">static</span>
                             </li>
-                            <li class="index-item property">
-                                <a href="#property_MAX_SCALE_RATE">MAX_SCALE_RATE</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_MIN_SCALE_RATE">MIN_SCALE_RATE</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
                     </ul>
                 </div>
 
@@ -387,7 +379,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1036"><code>pxl.js:1036</code></a>
+        <a href="../files/pxl.js.html#l1047"><code>pxl.js:1047</code></a>
         </p>
 
 
@@ -420,7 +412,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1052"><code>pxl.js:1052</code></a>
+        <a href="../files/pxl.js.html#l1063"><code>pxl.js:1063</code></a>
         </p>
 
 
@@ -452,7 +444,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l860"><code>pxl.js:860</code></a>
+        <a href="../files/pxl.js.html#l867"><code>pxl.js:867</code></a>
         </p>
 
 
@@ -490,7 +482,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l810"><code>pxl.js:810</code></a>
+        <a href="../files/pxl.js.html#l817"><code>pxl.js:817</code></a>
         </p>
 
 
@@ -519,7 +511,7 @@
                         <ul class="params-list">
                             <li class="param">
                                     <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -528,7 +520,7 @@
                             </li>
                             <li class="param">
                                     <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -568,7 +560,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l651"><code>pxl.js:651</code></a>
+        <a href="../files/pxl.js.html#l676"><code>pxl.js:676</code></a>
         </p>
 
 
@@ -602,7 +594,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                                     <span class="type">HTMLCanvasElement | HTMLElement</span>
 
                                 <div class="param-description">
-                                    <p>The canvas for drawing, or other element as parent.</p>
+                                    <p>The canvas for drawing, or any other element as a parent.</p>
 
                                 </div>
 
@@ -619,7 +611,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">canvasSize</code>
-                                    <span class="type">Object</span>
+                                    <span class="type">Object | Undefined</span>
 
                                 <div class="param-description">
                                     <p>Size of the model.</p>
@@ -676,7 +668,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1015"><code>pxl.js:1015</code></a>
+        <a href="../files/pxl.js.html#l1026"><code>pxl.js:1026</code></a>
         </p>
 
 
@@ -706,7 +698,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1066"><code>pxl.js:1066</code></a>
+        <a href="../files/pxl.js.html#l1077"><code>pxl.js:1077</code></a>
         </p>
 
 
@@ -744,7 +736,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l754"><code>pxl.js:754</code></a>
+        <a href="../files/pxl.js.html#l761"><code>pxl.js:761</code></a>
         </p>
 
 
@@ -773,7 +765,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                         <ul class="params-list">
                             <li class="param">
                                     <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
 
                                 <div class="param-description">
                                     
@@ -782,7 +774,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
 
                                 <div class="param-description">
                                     
@@ -791,7 +783,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">pixel</code>
-                                    <span class="type">ImageDataArray</span>
+                                    <span class="type">ImageDataArray | Array</span>
 
                                 <div class="param-description">
                                     
@@ -822,7 +814,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l878"><code>pxl.js:878</code></a>
+        <a href="../files/pxl.js.html#l885"><code>pxl.js:885</code></a>
         </p>
 
 
@@ -860,7 +852,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l984"><code>pxl.js:984</code></a>
+        <a href="../files/pxl.js.html#l995"><code>pxl.js:995</code></a>
         </p>
 
 
@@ -878,7 +870,7 @@ Also put new instance into static &quot;instances&quot; list</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">position</code>
-                        <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                        <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
 
 
                     <div class="param-description">
@@ -911,7 +903,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l889"><code>pxl.js:889</code></a>
+        <a href="../files/pxl.js.html#l896"><code>pxl.js:896</code></a>
         </p>
 
 
@@ -951,7 +943,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l905"><code>pxl.js:905</code></a>
+        <a href="../files/pxl.js.html#l912"><code>pxl.js:912</code></a>
         </p>
 
 
@@ -979,7 +971,7 @@ Also put new instance into static &quot;instances&quot; list</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+            <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
         </span>
 
 
@@ -991,7 +983,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l921"><code>pxl.js:921</code></a>
+        <a href="../files/pxl.js.html#l928"><code>pxl.js:928</code></a>
         </p>
 
 
@@ -1007,7 +999,7 @@ Also put new instance into static &quot;instances&quot; list</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>:
+                        <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>:
             </div>
         </div>
 
@@ -1031,7 +1023,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l913"><code>pxl.js:913</code></a>
+        <a href="../files/pxl.js.html#l920"><code>pxl.js:920</code></a>
         </p>
 
 
@@ -1071,7 +1063,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l897"><code>pxl.js:897</code></a>
+        <a href="../files/pxl.js.html#l904"><code>pxl.js:904</code></a>
         </p>
 
 
@@ -1099,7 +1091,7 @@ Also put new instance into static &quot;instances&quot; list</p>
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+            <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
         </span>
 
 
@@ -1111,7 +1103,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l929"><code>pxl.js:929</code></a>
+        <a href="../files/pxl.js.html#l936"><code>pxl.js:936</code></a>
         </p>
 
 
@@ -1127,7 +1119,7 @@ Also put new instance into static &quot;instances&quot; list</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>:
+                        <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>:
             </div>
         </div>
 
@@ -1155,7 +1147,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l781"><code>pxl.js:781</code></a>
+        <a href="../files/pxl.js.html#l788"><code>pxl.js:788</code></a>
         </p>
 
 
@@ -1184,7 +1176,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                         <ul class="params-list">
                             <li class="param">
                                     <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1193,7 +1185,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1230,7 +1222,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l740"><code>pxl.js:740</code></a>
+        <a href="../files/pxl.js.html#l747"><code>pxl.js:747</code></a>
         </p>
 
 
@@ -1248,11 +1240,12 @@ Also put new instance into static &quot;instances&quot; list</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">options</code>
-                        <span class="type">Object | Undefined</span>
+                        <span class="type">Object</span>
 
 
                     <div class="param-description">
-                         
+                        <p>[in]</p>
+
                     </div>
 
                 </li>
@@ -1287,7 +1280,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l998"><code>pxl.js:998</code></a>
+        <a href="../files/pxl.js.html#l1009"><code>pxl.js:1009</code></a>
         </p>
 
 
@@ -1354,7 +1347,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l974"><code>pxl.js:974</code></a>
+        <a href="../files/pxl.js.html#l985"><code>pxl.js:985</code></a>
         </p>
 
 
@@ -1419,7 +1412,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l953"><code>pxl.js:953</code></a>
+        <a href="../files/pxl.js.html#l964"><code>pxl.js:964</code></a>
         </p>
 
 
@@ -1457,7 +1450,7 @@ Also put new instance into static &quot;instances&quot; list</p>
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>scale</code>
+                        <code>value</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1473,7 +1466,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l940"><code>pxl.js:940</code></a>
+        <a href="../files/pxl.js.html#l947"><code>pxl.js:947</code></a>
         </p>
 
 
@@ -1481,7 +1474,9 @@ Also put new instance into static &quot;instances&quot; list</p>
     </div>
 
     <div class="description">
-        <p>Change current scale rate value.</p>
+        <p>Change current scale rate value;
+Only an integer part will be taken.</p>
+<p>Warn: scale can't be lower then 1.</p>
 
     </div>
 
@@ -1490,7 +1485,7 @@ Also put new instance into static &quot;instances&quot; list</p>
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">scale</code>
+                        <code class="param-name">value</code>
                         <span class="type">Number</span>
 
 
@@ -1528,7 +1523,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l834"><code>pxl.js:834</code></a>
+        <a href="../files/pxl.js.html#l841"><code>pxl.js:841</code></a>
         </p>
 
 
@@ -1557,7 +1552,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                         <ul class="params-list">
                             <li class="param">
                                     <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1566,7 +1561,7 @@ Also put new instance into static &quot;instances&quot; list</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1598,7 +1593,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l643"><code>pxl.js:643</code></a>
+        <a href="../files/pxl.js.html#l668"><code>pxl.js:668</code></a>
         </p>
 
 
@@ -1623,7 +1618,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l601"><code>pxl.js:601</code></a>
+        <a href="../files/pxl.js.html#l625"><code>pxl.js:625</code></a>
         </p>
 
 
@@ -1648,7 +1643,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l608"><code>pxl.js:608</code></a>
+        <a href="../files/pxl.js.html#l632"><code>pxl.js:632</code></a>
         </p>
 
 
@@ -1663,7 +1658,7 @@ Also put new instance into static &quot;instances&quot; list</p>
 </div>
 <div id="property__imagePoint" class="property item private">
     <h3 class="name"><code>_imagePoint</code></h3>
-    <span class="type"><a href="../classes/Vector2.html" class="crosslink">Vector2</a></span>
+    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
 
 
         <span class="flag private">private</span>
@@ -1673,7 +1668,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l622"><code>pxl.js:622</code></a>
+        <a href="../files/pxl.js.html#l646"><code>pxl.js:646</code></a>
         </p>
 
 
@@ -1698,7 +1693,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l636"><code>pxl.js:636</code></a>
+        <a href="../files/pxl.js.html#l661"><code>pxl.js:661</code></a>
         </p>
 
 
@@ -1723,7 +1718,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l615"><code>pxl.js:615</code></a>
+        <a href="../files/pxl.js.html#l639"><code>pxl.js:639</code></a>
         </p>
 
 
@@ -1748,7 +1743,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l629"><code>pxl.js:629</code></a>
+        <a href="../files/pxl.js.html#l653"><code>pxl.js:653</code></a>
         </p>
 
 
@@ -1758,6 +1753,7 @@ Also put new instance into static &quot;instances&quot; list</p>
         
     </div>
 
+        <p><strong>Default:</strong> 1</p>
 
 
 </div>
@@ -1773,7 +1769,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l728"><code>pxl.js:728</code></a>
+        <a href="../files/pxl.js.html#l735"><code>pxl.js:735</code></a>
         </p>
 
 
@@ -1800,7 +1796,7 @@ Also put new instance into static &quot;instances&quot; list</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l700"><code>pxl.js:700</code></a>
+        <a href="../files/pxl.js.html#l725"><code>pxl.js:725</code></a>
         </p>
 
 
@@ -1812,60 +1808,6 @@ Also put new instance into static &quot;instances&quot; list</p>
     </div>
 
         <p><strong>Default:</strong> []</p>
-
-
-</div>
-<div id="property_MAX_SCALE_RATE" class="property item">
-    <h3 class="name"><code>MAX_SCALE_RATE</code></h3>
-    <span class="type">Number</span>
-
-
-
-        <span class="flag final">final</span>
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l719"><code>pxl.js:719</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> 128</p>
-
-
-</div>
-<div id="property_MIN_SCALE_RATE" class="property item">
-    <h3 class="name"><code>MIN_SCALE_RATE</code></h3>
-    <span class="type">Number</span>
-
-
-
-        <span class="flag final">final</span>
-
-        <span class="flag static">static</span>
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l710"><code>pxl.js:710</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> 1</p>
 
 
 </div>

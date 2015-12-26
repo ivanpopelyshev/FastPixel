@@ -3,13 +3,12 @@
 
 	/**
 	 * Pass width and height parameters;
-	 * or just already existing ImageData as source.
+	 * Or just already existing ImageData as a source.
 	 *
 	 * @constructor
 	 * @class Layout
-	 * @param ImageData {Object} [in]
-	 * @param width {Number}
-	 * @param height {Number}
+	 * @param param1 {ImageData|Number} [out]
+	 * @param param2 {undefined|Number} [in]
 	 */
 	var Layout = pxl.Layout = function(){
 		/**
@@ -23,10 +22,8 @@
 		 * @property dataLayer
 		 * @type {Layer}
 		 */
-		this.dataLayer = new pxl.Layout.Layer({
-			"source": this._imageData.data.buffer,
-			"layout": this
-		});
+		this.dataLayer = new pxl.Layout.Layer(
+			this._imageData.data.buffer, this);
 
 		/**
 		 * @property layerList
@@ -82,11 +79,11 @@
 	 */
 	layoutProto.appendLayer = function(){
 		if (this.layerList.length < Layout.MAX_LAYER_COUNT){
-			this.activeLayer = new Layout.Layer({
-				"source": this.getWidth() * this.getHeight(),
-				"layout": this,
-				"name": "Layer " + this.layerList.length
-			});
+			this.activeLayer = new Layout.Layer(
+				this.getWidth() * this.getHeight(),
+				this,
+				"Layer " + this.layerList.length
+			);
 			this.layerList.push(this.activeLayer);
 		}
 		return this;
@@ -121,8 +118,8 @@
 	 * @method mergeLayers
 	 * @param options {Object} [in]
 	 * @param options.isMix {Boolean}
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
 	 * @param options.isNotifyView {Boolean}
 	 * @chainable
 	 */
@@ -213,7 +210,7 @@
 	 * Provide an index from position.
 	 *
 	 * @method indexAt
-	 * @param position {Vector2} [in]
+	 * @param position {Point} [in]
 	 * @return {Number}
 	 */
 	layoutProto.indexAt = function(position){
@@ -225,11 +222,11 @@
 	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	layoutProto.positionFrom = function(index){
 		var width = this.getWidth();
-		return new pxl.Vector2(index % width, (index / width) | 0);
+		return new pxl.Point(index % width, (index / width) | 0);
 	};
 
 	/**
@@ -242,7 +239,7 @@
 	layoutProto.getImageData = function(options){
 		return (options.start && options.offset
 			? this.dataLayer.generateImageData(options)
-			: this._imageData
+			: this._imageData //much faster
 		);
 	};
 
@@ -278,28 +275,56 @@
 	};
 
 	/**
+	 * @method fixRange
+	 * @param options {Object} [out]
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
+	 * @return {Boolean} False if range can't be fixed.
+	 */
+	layoutProto.fixRange = function(options){
+		var start = options.start;
+		var offset = options.offset;
+		var width = this.getWidth();
+		var height = this.getHeight();
+
+		if (start.x >= width || start.y >= height ||
+			offset.x <= 0 || offset.y <= 0) return false; //unfixed things
+
+		if (start.x < 0){
+			offset.x -= -start.x;
+			start.x = 0;
+		}
+		if (start.y < 0){
+			offset.y -= -start.y;
+			start.y = 0;
+		}
+		if (start.x + offset.x > width){
+			offset.x = width - start.x;
+		}
+		if (start.y + offset.y > height){
+			offset.y = height - start.y;
+		}
+
+		return !(offset.x <= 0 || offset.y <= 0); //is still bad?
+	};
+
+	/**
 	 * Warn: for internal usage only!
 	 *
 	 * @method __process
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @param callback {Function}
 	 * @private
 	 */
 	layoutProto.__process = function(options, callback){
 		if (options.start && options.offset){
 			var length = 0;
-			var width = this.getWidth();
-			var wideOffset = options.offset.x;
 			var high = options.offset.y;
+			var width = this.getWidth() << 2;
+			var wideOffset = options.offset.x << 2;
 			var index = this.indexAt(options.start) << 2;
-			if (wideOffset >= width){
-				wideOffset = width <<= 2;
-			} else{
-				wideOffset <<= 2;
-				width <<= 2;
-			}
 			for (var i = 0; i < high; ++i){
 				length = index + wideOffset;
 				callback(index, length);

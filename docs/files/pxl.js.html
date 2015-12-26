@@ -43,9 +43,11 @@
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
+                                <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
+                                <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
                 
@@ -119,9 +121,16 @@
 		//Not &quot;linked&quot; yet objects:
 		Layout: null,
 		View: null,
-		Vector2: null,
+		Point: null,
 		Observer: null,
 		bresenham: null,
+
+		/**
+		 * @property controller
+		 * @type {HAVE_TO_BE_REDEFINED_BY_USER}
+		 * @default null
+		 */
+		controller: null,
 
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
@@ -142,7 +151,7 @@
 		/**
 		 * More safest and fastest method to create ImageData.
 		 *
-		 * @property createImageData
+		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number} [in]
 		 * @param arguments[1] {undefined|Number} [in]
 		 * @return {ImageData}
@@ -172,6 +181,18 @@
 		 */
 		createCanvas: function(){
 			return _canvas.cloneNode();
+		},
+
+		/**
+		 * @method extend
+		 * @param child {Function}
+		 * @param parent {Function}
+		 */
+		extend: function(child, parent){
+			var F = function(){};
+			F.prototype = parent.prototype;
+			child.prototype = new F;
+			child.prototype.constructor = child;
 		}
 	};
 })(document);
@@ -184,11 +205,11 @@
 
     /**
      * @constructor
-	 * @class Vector2
+	 * @class Point
      * @param x {Number|undefined}
      * @param y {Number|undefined}
      */
-    var Vector2 = parent.Vector2 = function(x, y){
+    var Point = parent.Point = function(x, y){
         this.set(x || 0, y);
 
 		/**
@@ -210,9 +231,9 @@
 	 * @static
 	 * @type {Number}
 	 */
-	Vector2.EPSILON = 1e-10;
+	Point.EPSILON = 1e-10;
 
-    var vector2Proto = Vector2.prototype;
+    var pointProto = Point.prototype;
 
 	/**
 	 * Return string is JSON format.
@@ -220,21 +241,21 @@
 	 * @method toString
 	 * @return {String}
 	 */
-	vector2Proto.toString = function(){
+	pointProto.toString = function(){
 		return &#x27;{&quot;x&quot;:&#x27; + this.x + &#x27;,&quot;y&quot;:&#x27; + this.y + &#x27;}&#x27;;
 	};
 
 	/**
-	 * Add two Vector2 instances;
-	 * or add Vector2 instance with numbers.
+	 * Add two Point instances;
+	 * or add Point instance with numbers.
 	 *
 	 * @method add
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.add = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.add = function(param1, param2){
+        if (param1 instanceof Point){
             this.x += param1.x;
             this.y += param1.y;
         } else{
@@ -245,16 +266,16 @@
     };
 
 	/**
-	 * Substract one Vector2 instance from another;
-	 * or substrast number from Vector2 instance.
+	 * Substract one Point instance from another;
+	 * or substrast number from Point instance.
 	 *
 	 * @method sub
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.sub = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.sub = function(param1, param2){
+        if (param1 instanceof Point){
             this.x -= param1.x;
             this.y -= param1.y;
         } else{
@@ -265,16 +286,16 @@
     };
 
 	/**
-	 * Multiply two Vector2 instances;
-	 * or multiply Vector2 instance by numbers.
+	 * Multiply two Point instances;
+	 * or multiply Point instance by numbers.
 	 *
 	 * @method mul
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.mul = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.mul = function(param1, param2){
+        if (param1 instanceof Point){
             this.x *= param1.x;
             this.y *= param1.y;
         } else{
@@ -285,16 +306,16 @@
     };
 
 	/**
-	 * Divide one Vector2 instance by another;
-	 * or divide Vector2 instance by numbers.
+	 * Divide one Point instance by another;
+	 * or divide Point instance by numbers.
 	 *
 	 * @method div
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.div = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.div = function(param1, param2){
+        if (param1 instanceof Point){
             this.x /= param1.x;
             this.y /= param1.y;
         } else{
@@ -305,16 +326,16 @@
     };
 
 	/**
-	 * Copy Vector2 instance;
-	 * or set new values for Vector2 instance.
+	 * Copy Point instance;
+	 * or set new values for Point instance.
 	 *
 	 * @method set
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @chainable
      */
-    vector2Proto.set = function(param1, param2){
-        if (param1 instanceof Vector2){
+    pointProto.set = function(param1, param2){
+        if (param1 instanceof Point){
             this.x = param1.x;
             this.y = param1.y;
         } else{
@@ -325,58 +346,58 @@
     };
 
 	/**
-	 * Compare two Vector2 instances
-	 * or compare Vector2 instance properties with numbers.
+	 * Compare two Point instances
+	 * or compare Point instance properties with numbers.
 	 *
 	 * @method cmp
-     * @param param1 {Vector2|Number}
+     * @param param1 {Point|Number}
      * @param param2 {Number|undefined}
 	 * @return {Boolean}
      */
-    vector2Proto.cmp = function(param1, param2){
-        if (param1 instanceof Vector2){
-            return (abs(this.x - param1.x) &lt; Vector2.EPSILON &amp;&amp;
-                    abs(this.y - param1.y) &lt; Vector2.EPSILON);
+    pointProto.cmp = function(param1, param2){
+        if (param1 instanceof Point){
+            return (abs(this.x - param1.x) &lt; Point.EPSILON &amp;&amp;
+                    abs(this.y - param1.y) &lt; Point.EPSILON);
         }
         return (
-			abs(this.x - param1) &lt; Vector2.EPSILON &amp;&amp;
+			abs(this.x - param1) &lt; Point.EPSILON &amp;&amp;
 			abs(this.y - (typeof param2 === &quot;number&quot; ? param2 : param1)) &lt;
-			Vector2.EPSILON
+			Point.EPSILON
 		);
     };
 
 	/**
-	 * Make Vector2 instance properties absolute.
+	 * Make Point instance properties absolute.
 	 *
 	 * @method abs
 	 * @chainable
 	 */
-	vector2Proto.abs = function(){
+	pointProto.abs = function(){
 		this.x = abs(this.x);
 		this.y = abs(this.y);
 		return this;
 	};
 
 	/**
-	 * Make Vector2 instance properties negative.
+	 * Make Point instance properties negative.
 	 *
 	 * @method neg
 	 * @chainable
 	 */
-	vector2Proto.neg = function(){
+	pointProto.neg = function(){
 		this.x = -abs(this.x);
 		this.y = -abs(this.y);
 		return this;
 	};
 
 	/**
-	 * Swap properties between Vector2 instances.
+	 * Swap properties between Point instances.
 	 *
 	 * @method swap
-	 * @param other {Vector2}
+	 * @param other {Point}
 	 * @chainable
 	 */
-	vector2Proto.swap = function(other){
+	pointProto.swap = function(other){
 		var tmp = other.x;
 		other.x = this.x;
 		this.x = tmp;
@@ -387,36 +408,36 @@
 	};
 
 	/**
-	 * Round down Vector2 instance properties.
+	 * Round down Point instance properties.
 	 *
 	 * @method floor
 	 * @chainable
 	 */
-	vector2Proto.floor = function(){
+	pointProto.floor = function(){
 		this.x = _floor(this.x);
 		this.y = _floor(this.y);
 		return this;
 	};
 
 	/**
-	 * Round up Vector2 instance properties.
+	 * Round up Point instance properties.
 	 *
 	 * @method ceil
 	 * @chainable
 	 */
-	vector2Proto.ceil = function(){
+	pointProto.ceil = function(){
 		this.x = _ceil(this.x);
 		this.y = _ceil(this.y);
 		return this;
 	};
 
 	/**
-	 * Round Vector2 instance properties.
+	 * Round Point instance properties.
 	 *
 	 * @method round
 	 * @chainable
 	 */
-	vector2Proto.round = function(){
+	pointProto.round = function(){
 		this.x = _round(this.x);
 		this.y = _round(this.y);
 		return this;
@@ -428,7 +449,7 @@
 	 * @method hasNaN
 	 * @return {Boolean}
 	 */
-	vector2Proto.hasNaN = function(){
+	pointProto.hasNaN = function(){
 		return isNaN(this.x) || isNaN(this.y);
 	};
 
@@ -438,25 +459,26 @@
 	 * @method hasInfinity
 	 * @return {Boolean}
 	 */
-	vector2Proto.hasInfinity = function(){
+	pointProto.hasInfinity = function(){
 		return !isFinite(this.x) || !isFinite(this.y);
 	};
 
     /**
-	 * Make new Vector2 instance with same properties.
+	 * Make new Point instance with same properties.
 	 *
 	 * @method clone
-     * @return {Vector2}
+     * @return {Point}
      */
-	vector2Proto.clone = function(){
-		return new Vector2(this);
+	pointProto.clone = function(){
+		return new Point(this);
 	};
 
 	//Helpers:
 
 	//correctly floor down if negative
 	function _floor(n){
-		return (n &lt; 0 ? (n | 0) - 1 : n | 0);
+        var flooredN = n | 0;
+        return (flooredN !== n &amp;&amp; flooredN &lt; 0 ? --flooredN : flooredN);
 	};
 
 	//faster than Math.round
@@ -466,12 +488,13 @@
 
 	//
 	function _ceil(n){
-		return (n === (n | 0) ? n : (n | 0) + 1);
+        var ceiledN = n | 0;
+		return (n === ceiledN ? n : ceiledN + 1);
 	};
 
 	//faster than Math.abs
 	function abs(n){
-		return n &lt; 0 ? -n : n;
+		return n &lt; 0 || n === -0 ? -n : n;
 	};
 })(pxl);
 ;(function(parent){
@@ -606,12 +629,16 @@
 		rectangle: function(x0, y0, x1, y1, callback){
 			//FIXME
 			if (x0 === x1 || y0 === y1){
-				bresenham.line(x0, y0, x1, y0, callback);
+				if (x0 === x1 &amp;&amp; y0 === y1){
+					callback(x0, y0);
+				} else{
+					bresenham.line(x0, y0, x1, y0, callback);
+				}
 			} else{
-				bresenham.line(x0, y0, x1, y0, callback);
-				bresenham.line(x1, y0, x1, y1, callback);
-				bresenham.line(x1, y1, x0, y1, callback);
-				bresenham.line(x0, y1, x0, y0, callback);
+				bresenham.line(x0, y0, x1 - 1, y0, callback);
+				bresenham.line(x1, y0, x1, y1 - 1, callback);
+				bresenham.line(x1, y1, x0 + 1, y1, callback);
+				bresenham.line(x0, y1, x0, y0 + 1, callback);
 			}
 		},
 
@@ -649,8 +676,8 @@
 			y0 += (b + 1) &gt;&gt; 1;
 			y1 = y0 - b1;
 			a = 8 * a * a;
-			b1 = 8 * b * b;                               
-			do {
+			b1 = 8 * b * b;
+			do{
 				callback(x1, y0);
 				callback(x0, y0);
 				callback(x0, y1);
@@ -666,8 +693,8 @@
 					--x1;
 					err += dx += b1;
 				}
-			} while (x0 &lt;= x1);
-			while (y0-y1 &lt;= b){
+			} while(x0 &lt;= x1);
+			while (y0 - y1 &lt;= b){
 				callback(x0 - 1, y0);
 				callback(x1 + 1, y0++);
 				callback(x0 - 1, y1);
@@ -682,54 +709,54 @@
 	/**
 	 * @constructor
 	 * @class View
-	 * @param options {Object} [in]
-	 * @param options.buffer {CanvasRenderingContext2D}
-	 * @param options.ctx {CanvasRenderingContext2D}
-	 * @param options.layout {Layout}
-	 * @param options.isOwner {Boolean}
+	 * @param ctx {CanvasRenderingContext2D}
+	 * @param buffer {CanvasRenderingContext2D}
+	 * @param layout {Layout}
+	 * @param isOwner {Boolean}
 	 */
-	var View = pxl.View = function(options){
+	var View = pxl.View = function(ctx, buffer, layout, isOwner){
 		/**
 		 * @property _buffer
 		 * @private
 		 * @type {CanvasRenderingContext2D}
 		 */
-		this._buffer = options.buffer;
+		this._buffer = buffer;
 
 		/**
 		 * @property _ctx
 		 * @private
 		 * @type {CanvasRenderingContext2D}
 		 */
-		this._ctx = options.ctx;
+		this._ctx = ctx;
 
 		/**
 		 * @property _layoutOwner
 		 * @private
 		 * @type {Boolean}
 		 */
-		this._layoutOwner = options.isOwner;
+		this._layoutOwner = isOwner;
 
 		/**
 		 * @property _imagePoint
 		 * @private
-		 * @type {Vector2}
+		 * @type {Point}
 		 */
-		this._imagePoint = new pxl.Vector2;
+		this._imagePoint = new pxl.Point;
 
 		/**
 		 * @property _scale
 		 * @private
 		 * @type {Number}
+		 * @default 1
 		 */
-		this._scale = View.MIN_SCALE_RATE;
+		this._scale = 1;
 
 		/**
 		 * @property _layout
 		 * @private
 		 * @type {Layout}
 		 */
-		this._layout = options.layout;
+		this._layout = layout;
 
 		/**
 		 * @property _boundedRender
@@ -747,9 +774,9 @@
 	 * @static
 	 * @method create
 	 * @param options {Object} [in]
-	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or other element as parent.
+	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or any other element as a parent.
 	 * @param options.source {View|undefined} New instance will listen all changes on source.
-	 * @param options.canvasSize {Object} Size of the model.
+	 * @param options.canvasSize {Object|undefined} Size of the model.
 	 * @param options.canvasSize.width {Number}
 	 * @param options.canvasSize.height {Number}
 	 * @return {View}
@@ -778,12 +805,12 @@
 			bufferCanvas.height = options.canvasSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
-		var view = new View({
-			&quot;buffer&quot;: _setupContext(bufferCanvas.getContext(&quot;2d&quot;)),
-			&quot;ctx&quot;: _setupContext(canvas.getContext(&quot;2d&quot;)),
-			&quot;isOwner&quot;: isOwner,
-			&quot;layout&quot;: layout
-		});
+		var view = new View(
+			_setupContext(canvas.getContext(&quot;2d&quot;)),
+			_setupContext(bufferCanvas.getContext(&quot;2d&quot;)),
+			layout,
+			isOwner
+		);
 		View.instances.push(view);
 		return view;
 	};
@@ -797,24 +824,6 @@
 	 * @default []
 	 */
 	View.instances = [];
-
-	/**
-	 * @property MIN_SCALE_RATE
-	 * @static
-	 * @final
-	 * @type {Number}
-	 * @default 1
-	 */
-	View.MIN_SCALE_RATE = 1;
-
-	/**
-	 * @property MAX_SCALE_RATE
-	 * @static
-	 * @final
-	 * @type {Number}
-	 * @default 128
-	 */
-	View.MAX_SCALE_RATE = 128;
 
 	/**
 	 * Reference onto the currently active view instance.
@@ -835,7 +844,7 @@
 	 * @see update
 	 * @see redraw
 	 * @method render
-	 * @param options {Object|undefined}
+	 * @param options {Object} [in]
 	 * @chainable
 	 */
 	viewProto.render = function(options){
@@ -847,9 +856,9 @@
 	 *
 	 * @method drawRect
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
-	 * @param options.pixel {ImageDataArray}
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
+	 * @param options.pixel {ImageDataArray|Array}
 	 * @chainable
 	 */
 	viewProto.drawRect = function(options){
@@ -858,7 +867,7 @@
 			pixel[0] + &quot;,&quot; + 	//r
 			pixel[1] + &quot;,&quot; + 	//g
 			pixel[2] + &quot;,&quot; + 	//b
-			(pixel[3] / 255) +	//a
+			(pixel[3] / 255) +	//a, somehow its require 0.0..1.0 format
 		&quot;)&quot;;
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
@@ -874,8 +883,8 @@
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.redraw = function(options){
@@ -903,8 +912,8 @@
 	 *
 	 * @method clear
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.clear = function(options){
@@ -927,8 +936,8 @@
 	 *
 	 * @method update
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.update = function(options){
@@ -1011,7 +1020,7 @@
 
 	/**
 	 * @method getImagePoint
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	viewProto.getImagePoint = function(){
 		return this._imagePoint;
@@ -1019,25 +1028,29 @@
 
 	/**
 	 * @method getScaleOffset
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	viewProto.getScaleOffset = function(){
-		return new pxl.Vector2(
+		return new pxl.Point(
 			_offset(this._scale, this._ctx.canvas.width),
 			_offset(this._scale, this._ctx.canvas.height)
 		);
 	};
 
 	/**
-	 * Change current scale rate value.
+	 * Change current scale rate value;
+	 * Only an integer part will be taken.
+	 *
+	 * Warn: scale can&#x27;t be lower then 1.
 	 *
 	 * @method setScale
-	 * @param scale {Number} [in]
+	 * @param value {Number} [in]
 	 * @chainable
 	 */
-	viewProto.setScale = function(scale){
-		this._scale = pxl.clamp(
-			scale, View.MIN_SCALE_RATE, View.MAX_SCALE_RATE);
+	viewProto.setScale = function(value){
+		if (value &gt;= 1){
+			this._scale = value | 0;
+		}
 		return this;
 	};
 
@@ -1076,7 +1089,7 @@
 	 * Transform position according to the current scale offset.
 	 *
 	 * @method fitToTransition
-	 * @param position {Vector2} [out]
+	 * @param position {Point} [out]
 	 * @chainable
 	 */
 	viewProto.fitToTransition = function(position){
@@ -1200,13 +1213,12 @@
 
 	/**
 	 * Pass width and height parameters;
-	 * or just already existing ImageData as source.
+	 * Or just already existing ImageData as a source.
 	 *
 	 * @constructor
 	 * @class Layout
-	 * @param ImageData {Object} [in]
-	 * @param width {Number}
-	 * @param height {Number}
+	 * @param param1 {ImageData|Number} [out]
+	 * @param param2 {undefined|Number} [in]
 	 */
 	var Layout = pxl.Layout = function(){
 		/**
@@ -1220,10 +1232,8 @@
 		 * @property dataLayer
 		 * @type {Layer}
 		 */
-		this.dataLayer = new pxl.Layout.Layer({
-			&quot;source&quot;: this._imageData.data.buffer,
-			&quot;layout&quot;: this
-		});
+		this.dataLayer = new pxl.Layout.Layer(
+			this._imageData.data.buffer, this);
 
 		/**
 		 * @property layerList
@@ -1279,11 +1289,11 @@
 	 */
 	layoutProto.appendLayer = function(){
 		if (this.layerList.length &lt; Layout.MAX_LAYER_COUNT){
-			this.activeLayer = new Layout.Layer({
-				&quot;source&quot;: this.getWidth() * this.getHeight(),
-				&quot;layout&quot;: this,
-				&quot;name&quot;: &quot;Layer &quot; + this.layerList.length
-			});
+			this.activeLayer = new Layout.Layer(
+				this.getWidth() * this.getHeight(),
+				this,
+				&quot;Layer &quot; + this.layerList.length
+			);
 			this.layerList.push(this.activeLayer);
 		}
 		return this;
@@ -1318,8 +1328,8 @@
 	 * @method mergeLayers
 	 * @param options {Object} [in]
 	 * @param options.isMix {Boolean}
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
 	 * @param options.isNotifyView {Boolean}
 	 * @chainable
 	 */
@@ -1410,7 +1420,7 @@
 	 * Provide an index from position.
 	 *
 	 * @method indexAt
-	 * @param position {Vector2} [in]
+	 * @param position {Point} [in]
 	 * @return {Number}
 	 */
 	layoutProto.indexAt = function(position){
@@ -1422,11 +1432,11 @@
 	 *
 	 * @method positionFrom
 	 * @param index {Number} [in]
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	layoutProto.positionFrom = function(index){
 		var width = this.getWidth();
-		return new pxl.Vector2(index % width, (index / width) | 0);
+		return new pxl.Point(index % width, (index / width) | 0);
 	};
 
 	/**
@@ -1439,7 +1449,7 @@
 	layoutProto.getImageData = function(options){
 		return (options.start &amp;&amp; options.offset
 			? this.dataLayer.generateImageData(options)
-			: this._imageData
+			: this._imageData //much faster
 		);
 	};
 
@@ -1475,28 +1485,56 @@
 	};
 
 	/**
+	 * @method fixRange
+	 * @param options {Object} [out]
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
+	 * @return {Boolean} False if range can&#x27;t be fixed.
+	 */
+	layoutProto.fixRange = function(options){
+		var start = options.start;
+		var offset = options.offset;
+		var width = this.getWidth();
+		var height = this.getHeight();
+
+		if (start.x &gt;= width || start.y &gt;= height ||
+			offset.x &lt;= 0 || offset.y &lt;= 0) return false; //unfixed things
+
+		if (start.x &lt; 0){
+			offset.x -= -start.x;
+			start.x = 0;
+		}
+		if (start.y &lt; 0){
+			offset.y -= -start.y;
+			start.y = 0;
+		}
+		if (start.x + offset.x &gt; width){
+			offset.x = width - start.x;
+		}
+		if (start.y + offset.y &gt; height){
+			offset.y = height - start.y;
+		}
+
+		return !(offset.x &lt;= 0 || offset.y &lt;= 0); //is still bad?
+	};
+
+	/**
 	 * Warn: for internal usage only!
 	 *
 	 * @method __process
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @param callback {Function}
 	 * @private
 	 */
 	layoutProto.__process = function(options, callback){
 		if (options.start &amp;&amp; options.offset){
 			var length = 0;
-			var width = this.getWidth();
-			var wideOffset = options.offset.x;
 			var high = options.offset.y;
+			var width = this.getWidth() &lt;&lt; 2;
+			var wideOffset = options.offset.x &lt;&lt; 2;
 			var index = this.indexAt(options.start) &lt;&lt; 2;
-			if (wideOffset &gt;= width){
-				wideOffset = width &lt;&lt;= 2;
-			} else{
-				wideOffset &lt;&lt;= 2;
-				width &lt;&lt;= 2;
-			}
 			for (var i = 0; i &lt; high; ++i){
 				length = index + wideOffset;
 				callback(index, length);
@@ -1521,489 +1559,39 @@
 	};
 })();
 (function(){
-	&quot;use strict&quot;;
-
-	/**
-	 * @constructor
-	 * @class Layer
-	 * @throws {Error} Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.
-	 * @param options {Object} [in]
-	 * @param options.source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
-	 * @param options.layout {Layout}
-	 * @param options.name {String}
-	 */
-	var Layer = pxl.Layout.Layer = function(options){
-		/**
-		 * @property data
-		 * @type {ImageDataArray}
-		 */
-		this.data = new pxl.ImageDataArray(typeof options.source === &quot;number&quot;
-			? options.source &lt;&lt; 2
-			: options.source
-		);
-
-		if (this.data.length &gt; Layer.MAX_BUFFER_SIZE){
-			this.data = null;
-			throw new Error;
-		}
-
-		/**
-		 * @property name
-		 * @type {String}
-		 * @default &quot;&quot;
-		 */
-		this.name = options.name || &quot;&quot;;
-
-		/**
-		 * @property isVisible
-		 * @type {Boolean}
-		 * @default true
-		 */
-		this.isVisible = true;
-
-		/**
-		 * @property _layout
-		 * @private
-		 * @type {Layout}
-		 */
-		this._layout = options.layout;
-	};
-
-	/**
-	 * Strict limitation, but that&#x27;s enough for pixel-art
-	 *
-	 * @property MAX_BUFFER_SIZE
-	 * @type {Number}
-	 * @static
-	 * @final
-	 * @default 1024*1024*4
-	 */
-	Layer.MAX_BUFFER_SIZE = 1024 * 1024 * 4;
-
-	var layerProto = Layer.prototype;
-
-	/**
-	 * Reset the data to default.
-	 *
-	 * @method reset
-	 */
-	layerProto.reset = function(){
-		var data = this.data;
-		if (&quot;fill&quot; in pxl.ImageDataArray.prototype){ //ES6
-			data.fill(0);
-		} else{
-			for (var i = 0, length = data.length; i &lt; length; ++i){
-				data[i] = 0;
-			}
-		}
-	};
-
-	/**
-	 * Warn: Make sure layers have same size before call this.
-	 *
-	 * @method copy
-	 * @param other {Layer} [in]
-	 * @param fullCopy {Boolean|undefined} [in]
-	 */
-	layerProto.copy = function(other, fullCopy){
-		this.data.set(other.data);
-		if (fullCopy === true){
-			this.name = other.name;
-			this._layout = other._layout;
-			this.isVisible = other.isVisible;
-		}
-	};
-
-	/**
-	 * Merge each pixel of two layers;
-	 * Or apply merging to pixels within start and offset options.
-	 *
-	 * @method merge
-     * @param options {Object}[in]
-	 * @param options.isMix {Boolean}
-	 * @param options.other {Layer}
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @param options.indexes {Array|undefined}
-     */
-	layerProto.merge = function(options){
-		var self = this;
-		if ((!options.start || !options.offset) &amp;&amp; !options.isMix){
-			self.copy(options.other, false); //much faster
-		} else{
-			var otherData = options.other.data;
-			var method = options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;;
-			self._layout.__process(options, function(i, length){
-				while (i &lt; length){
-					self[method](i,
-								otherData[i++],
-								otherData[i++],
-								otherData[i++],
-								otherData[i++]);
-				}
-			});
-		}
-	};
-
-	/**
-	 * Replace specific color from position with new one on whole layer;
-	 * Or just on area within start and offset options.
-	 *
-	 * @method colorReplace
-	 * @param options {Object} [in]
-	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @param options.position {Vector2}
-	 * @param options.isMix {Boolean}
-	 */
-	layerProto.colorReplace = function(options){
-		var self = this;
-		var session = pxl.Layout.Layer.history.getSession(this);
-		var pixel = this.pixelFromPosition(options.position);
-		var r = options.pixel[0];
-		var g = options.pixel[1];
-		var b = options.pixel[2];
-		var a = options.pixel[3];
-		var oldR = pixel[0];
-		var oldG = pixel[1];
-		var oldB = pixel[2];
-		var oldA = pixel[3];
-		session.initColor(oldR, oldG, oldB, oldA);
-		this._layout.__process(options, function(i, length){
-			for (; i &lt; length; i += 4){
-				if (self.compareAt(i, oldR, oldG, oldB, oldA)){
-					session.pushIndex(i);
-					self.setAt(i, r, g, b, a);
-				}
-			}
-		});
-	};
-
-	/**
-	 * Set new color for layer;
-	 * Or just for area within start and offset options.
-	 *
-	 * @method set
-	 * @param options {Object} [in]
-	 * @param options.pixel {ImageDataArray}
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @param options.isMix {Boolean}
-	 */
-	layerProto.set = function(options){
-		var self = this;
-		var data = this.data;
-		var session = pxl.Layout.Layer.history.getSession(this);
-		var r = options.pixel[0];
-		var g = options.pixel[1];
-		var b = options.pixel[2];
-		var a = options.pixel[3];
-		var method = options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;;
-		this._layout.__process(options, function(i, length){
-			for (; i &lt; length; i += 4){
-				session.pushPixel(i,
-								  data[i],
-								  data[i + 1],
-								  data[i + 2],
-								  data[i + 3]);
-				self[method](i, r, g, b, a);
-			}
-		});
-	};
-
-	/**
-	 * Change specific channel for layer;
-	 * Or channel for area within start and offset options.
-	 *
-	 * @method setChannel
-	 * @param options {Object} [in]
-	 * @param options.channelOffset {Number} 0-3 (rgba)
-	 * @param options.value {Number} 0-255
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 */
-	layerProto.setChannel = function(options){
-		var data = this.data;
-		var session = pxl.Layout.Layer.history.getSession(this);
-		var channelOffset = options.channelOffset;
-		var value = options.value;
-		this._layout.__process(options, function(i, length){
-			for (; i &lt; length; i += 4){
-				session.pushPixel(i,
-								  data[i],
-								  data[i + 1],
-								  data[i + 2],
-								  data[i + 3]);
-				data[i + channelOffset] = value;
-			}
-		});
-	};
-
-	/**
-	 * Flood fill (no recursion, custom stack);
-	 * Can be applyed for area within start and offset options.
-	 *
-	 * @method fill
-	 * @param options {Object} [in]
-	 * @param options.position {Vector2}
-	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @param options.isMix {Boolean|undefined}
-	 * @return {Boolean}
-	 */
-	layerProto.fill = function(options){
-		var self = this;
-		var leftBorder = 0;
-		var endIndex = this.data.length;
-		var pixel = options.pixel;
-		var index = this._layout.indexAt(options.position) &lt;&lt; 2;
-		if (index &lt; 0 || index &gt;= endIndex ||  //don&#x27;t fill on out of memory!
-			this.compareAt(index, pixel[0], pixel[1], pixel[2], pixel[3])){ //don&#x27;t fill on same colour!
-			return;
-		}
-		var rightBorder = this._layout.getWidth() &lt;&lt; 2;
-		var startIndex = 0;
-		var widthOffset = rightBorder;
-		var pixelOffset = 4;
-		var session = pxl.Layout.Layer.history.getSession(this);
-		var tmpIndex = 0;
-		var tokenPixel = this.pixelAt(index); //pixel before changes
-		var oldR = tokenPixel[0];
-		var oldG = tokenPixel[1];
-		var oldB = tokenPixel[2];
-		var oldA = tokenPixel[3];
-		this[options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;](
-			index, pixel[0], pixel[1], pixel[2], pixel[3]);
-		tokenPixel = this.pixelAt(index); //pixel after changes
-		var r = tokenPixel[0];
-		var g = tokenPixel[1];
-		var b = tokenPixel[2];
-		var a = tokenPixel[3];
-		var stack = [index];
-		session.initColor(oldR, oldG, oldB, oldA);
-		if (options.start &amp;&amp; options.offset){
-			startIndex = pxl.clamp(
-				this._layout.indexAt(options.start), 0, endIndex) &lt;&lt; 2;
-			endIndex = pxl.clamp(this._layout.indexAt(
-				new pxl.Vector2(options.start).add(options.offset)),
-				0, endIndex) &lt;&lt; 2;
-			leftBorder = options.start.x &lt;&lt; 2;
-			rightBorder = (options.start.x + options.offset.x) &lt;&lt; 2;
-		}
-		do{
-			index = stack.pop();
-			tmpIndex = index + pixelOffset; //move right
-			if (tmpIndex % widthOffset &lt;= rightBorder){
-				_fill();
-			}
-			tmpIndex = index + widthOffset; //move down
-			if (tmpIndex &lt; endIndex){
-				_fill();
-			}
-			tmpIndex = index - pixelOffset; //move left
-			if (tmpIndex % widthOffset &gt;= leftBorder){
-				_fill();
-			}
-			tmpIndex = index - widthOffset; //move up
-			if (tmpIndex &gt; startIndex){
-				_fill();
-			}
-		} while(stack.length);
-
-		//Helper:
-		function _fill(){
-			if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
-				self.setAt(tmpIndex, r, g, b, a);
-				stack.push(tmpIndex);
-				session.pushIndex(tmpIndex);
-			}
-		};
-	};	
-
-	/**
-	 * @method setAt
-	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
-	 */
-	layerProto.setAt = function(i, r, g, b, a){
-		var data = this.data;
-		data[i] = r;
-		data[i + 1] = g;
-		data[i + 2] = b;
-		data[i + 3] = a;
-	};
-
-	/**
-	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
-	 * @method mixAt
-	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
-	 */
-	layerProto.mixAt = function(i, r, g, b, a){
-		if (a !== 0){ //don&#x27;t waste time on transparent pixels
-			var data = this.data;
-			var thisA = data[i + 3];
-			if (thisA === 0){ //same as above ^
-				this.setAt(i, r, g, b, a);
-			} else{
-				thisA /= 255.0; //cast alpha channels to 0.0..1.0 format
-				a /= 255.0;
-				var aMul = thisA * (1 - a);
-				var newA = a + aMul; //new alpha
-				var op1 = a / newA;
-				var op2 = aMul / newA;
-				data[i] = data[i++] * op1 + r * op2;
-				data[i] = data[i++] * op1 + g * op2;
-				data[i] = data[i++] * op1 + b * op2;
-				data[i] = newA * 255;
-			}
-		}
-	};
-
-	/**
-	 * @method compareAt
-	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
-	 * @return {Boolean}
-	 */
-	layerProto.compareAt = function(i, r, g, b, a){
-		var data = this.data;
-		return (data[i] === r &amp;&amp;
-				data[i + 1] === g &amp;&amp;
-				data[i + 2] === b &amp;&amp;
-				data[i + 3] === a);
-	};
-
-	/**
-	 * @method pixelFromPosition
-	 * @param position {Vector2} [in]
-	 * @return {ImageDataArray}
-	 */
-	layerProto.pixelFromPosition = function(position){
-		return this.pixelAt(this._layout.indexAt(position) &lt;&lt; 2);
-	};
-
-	/**
-	 * Warn: index without color-offset!
-	 *
-	 * @see layerProto.pixelAt
-	 * @method pixelFromIndex
-	 * @param index {Number} [in]
-	 * @return {ImageDataArray}
-	 */
-	layerProto.pixelFromIndex = function(index){
-		return this.pixelAt(index &lt;&lt; 2);
-	};
-
-	/**
-	 * Index with color-offset (which equal to x4 (rgba)).
-	 *
-	 * @method pixelAt
-	 * @param index {Number} [in]
-	 * @return {ImageDataArray}
-	 */
-	layerProto.pixelAt = function(index){
-		return this.data.slice(index, index + 4);
-	};
-
-	/**
-	 * @method generateImageData
-	 * @param options {Object} [in]
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @return {ImageData}
-	 */
-	layerProto.generateImageData = function(options){
-		var index = 0;
-		var thisData = this.data;
-		var layout = this._layout;
-		var imageData = (options.start &amp;&amp; options.offset
-			? pxl.createImageData(options.offset.x, options.offset.y)
-			: pxl.createImageData(layout.getWidth(), layout.getHeight())
-		);
-		var data = new pxl.ImageDataArray(imageData.data.buffer);
-		layout.__process(options, function(i, length){
-			while (i &lt; length){
-				data[index++] = thisData[i++];
-				data[index++] = thisData[i++];
-				data[index++] = thisData[i++];
-				data[index++] = thisData[i++];
-			}
-		});
-		return imageData;
-	};
-
-	/**
-	 * @method getLayout
-	 * @return {Layout}
-	 */
-	layerProto.getLayout = function(){
-		return this._layout;
-	};
-
-	/**
-	 * @method cloneData
-	 * @param options {Object} [in]
-	 * @param options.start {Vector2|undefined}
-	 * @param options.offset {Vector2|undefined}
-	 * @return {ImageDataArray}
-	 */
-	layerProto.cloneData = function(options){
-		var index = 0;
-		var data = null;
-		var thisData = this.data;
-		if (options.start &amp;&amp; options.offset){
-			data = new pxl.ImageDataArray(options.offset.x, options.offset.y);
-			this._layout.__process(options, function(i, length){
-				while (i &lt; length){
-					data[index++] = thisData[i++];
-					data[index++] = thisData[i++];
-					data[index++] = thisData[i++];
-					data[index++] = thisData[i++];
-				}
-			});
-		} else{
-			data = new pxl.ImageDataArray(thisData); //copy constructor
-		}
-		return data;
-	};
-
-	/**
-	 * Destructor.
-	 *
-	 * @method destroy
-	 */
-	layerProto.destroy = function(){
-		this._layout = this.data = null;
-		this.isVisible = false;
-		pxl.Layout.Layer.history.clean();
-	};
-})();
-(function(){
     &quot;use strict&quot;;
 
 	/**
 	 * @class history
 	 */
-	pxl.Layout.Layer.history = {
+	pxl.Layout.history = {
 		/**
 		 * @property MAX_HISTORY_SIZE
 		 * @type {Number}
 		 * @final
-		 * @default 20
+		 * @default 30
 		 */
-		MAX_HISTORY_SIZE: 20,
+		MAX_HISTORY_SIZE: 30,
+
+		/**
+		 * Special recording flag. Cache method have to be used once on session.
+		 * Use case: methods like fill or replaceColor.
+		 *
+		 * @property STATIC_SHOT
+		 * @type {Number}
+		 * @final
+		 */
+		STATIC_SHOT: 1,
+
+		/**
+		 * Special recording flag. Cache method may be used as many times as possible.
+		 * Use case: user draw lines.
+		 *
+		 * @property DYNAMIC_SHOT
+		 * @type {Number}
+		 * @final
+		 */
+		DYNAMIC_SHOT: 2,
 
 		/**
 		 * @property _stack
@@ -2032,12 +1620,12 @@
         _lastSession: null,
 
 		/**
-		 * @property isRecording
+		 * @property _isRecording
 		 * @private
 		 * @type {Boolean}
 		 * @default false
 		 */
-		isRecording: false,
+		_isRecording: false,
 
 		/**
 		 * @method isHistoryEmpty
@@ -2053,6 +1641,14 @@
 		 */
 		isHistoryFull: function(){
 			return this._stack.length === this.MAX_HISTORY_SIZE;
+		},
+
+		/**
+		 * @method isRecording
+		 * @return {Boolean}
+		 */
+		isRecording: function(){
+			return this._isRecording;
 		},
 
 		/**
@@ -2075,35 +1671,59 @@
 
 		/**
 		 * @method getSession
-		 * @param layer {Layer}
+		 * @param options {Options}
+		 * @param layout {Layout}
 		 */
-		getSession: function(layer){
-			if (this._lastSession === null){
-				this._lastSession = new pxl.Layout.Layer.history.Session(layer);
+		cache: (function(){ //anonymos
+			var _diffPos = new pxl.Point;
+			return function(options, layout){
+				if (options.start &amp;&amp; options.offset){
+					_diffPos.set(options.start).sub(options.offset);
+					if (_diffPos.x === 1 &amp;&amp; _diffPos.y === 1){
+						this._lastSession.pushIndex(
+							layout.indexAt(options.start));
+						return; //stop.
+					}
+				}
+				this._lastSession.pushArray(
+					layout.activeLayer.cloneData(options), options);
 			}
-			return this._lastSession;
-		},
+		})(),
 
 		/**
 		 * Start Layer recording.
 		 *
-		 * @method rec
-		 * @throws {Error} Raise an error if already is under recording.
-		 * @param layer {Layer|undefined}
+		 * @method record
+		 * @throws {Error} Raise an error if already is under recording; Or if flag is unknown.
+		 * @param layout {Layout}
+		 * @param flag {Number} STATIC_SHOT or DYNAMIC_SHOT
 		 */
-		record: function(layer){
-			if (this.isRecording === true){
+		record: function(layout, flag){
+			if (this._isRecording === true){
 				throw new Error;
 			}
-			this.isRecording = true;
+			if (flag === pxl.Layout.history.STATIC_SHOT){
+				this._lastSession = new pxl.Layout.history.SessionStatic(
+					layout.activeLayer);
+			} else if (flag === pxl.Layout.history.DYNAMIC_SHOT){
+				this._lastSession = new pxl.Layout.history.SessionDynamic(
+					layout.activeLayer);
+			} else{
+				throw new Error;
+			}
+			this._isRecording = true;
 		},
 
 		/**
 		 * Stop recording and save session.
 		 *
+		 * @throws {Error} Raise an error if recording has not been started.
 		 * @method stop
 		 */
 		stop: function(){
+			if (this._isRecording !== true){
+				throw new Error;
+			}
 			if (this._lastSession.isEmpty() === false){
 				if (this._pointer &lt; this.MAX_HISTORY_SIZE){ //prevent overflow
 					this._stack[this._pointer++] = this._lastSession;
@@ -2113,7 +1733,7 @@
 					this._stack.shift();
 				}
 			}
-			this.isRecording = false;
+			this._isRecording = false;
 			this._lastSession = null;
 		},
 
@@ -2150,17 +1770,27 @@
 (function(){
 	&quot;use strict&quot;;
 
-	var history = pxl.Layout.Layer.history;
-
 	/**
 	 * @constructor
 	 * @class Session
-	 * @param layer {Layer}
+	 * @param layer {Layer} [in/out]
 	 */
-	var Session = history.Session = function(layer){
+	var Session = pxl.Layout.history.Session = function(layer){
+		/**
+		 * Reference on the layer.
+		 *
+		 * @property layer
+		 * @type {Layer}
+		 */
 		this.layer = layer;
-		this._colorMap = {};
-		this._colorOrder = [];
+
+		/**
+		 * @property _list
+		 * @private
+		 * @type {Array}
+		 * @default []
+		 */
+		this._list = [];
 	};
 
 	var sessionProto = Session.prototype;
@@ -2170,63 +1800,57 @@
 	 * @return {Boolean}
 	 */
 	sessionProto.isEmpty = function(){
-		return this._colorOrder.length === 0;
+		return this._list.length === 0;
 	};
 
 	/**
-	 * Have to be called once, before started color processing;
-	 * Only for operations with single color.
-	 *
-	 * @method initColor
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
+	 * @constructor
+	 * @class SessionDynamic
+	 * @extends Session
+	 * @param layer {Layer} [in/out]
 	 */
-	sessionProto.initColor = function(r, g, b, a){
-		var color = r + &quot;,&quot; + g + &quot;,&quot; + b + &quot;,&quot; + a;
-		this._colorOrder.push(color);
-		this._colorMap[color] = [];
+	var SessionDynamic = pxl.Layout.history.SessionDynamic = function(layer){
+		Session.call(this, layer);
+
+		/**
+		 * @property _sessionMap
+		 * @private
+		 * @type {Array}
+		 * @default []
+		 */
+		this._sessionMap = {};
 	};
 
+	pxl.extend(SessionDynamic, Session);
+	
+	var sessionDynamicProto = SessionDynamic.prototype;
+
 	/**
-	 * It is recommended to use this during processing multiple colors.
+	 * Will cache an index and the color from one.
 	 *
-	 * @method pushPixel
-	 * @param index {Number}
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
+	 * @method push
+	 * @param index {Number} [in]
 	 */
-	sessionProto.pushPixel = function(index, r, g, b, a){
-		if (history.isRecording){
-			var color = r + &quot;,&quot; + g + &quot;,&quot; + b + &quot;,&quot; + a;
-			if (color in this._colorMap){
-				this._colorMap[color].push(index);
-			} else{
-				this._colorOrder.push(color);
-				this._colorMap[color] = [index];
-			}
+	sessionDynamicProto.push = function(index){
+		var data = this.layer.data;
+		var color = data[index] + &quot;,&quot;
+					+ data[index + 1] + &quot;,&quot;
+					+ data[index + 2] + &quot;,&quot;
+					+ data[index + 3];
+		if (color in this._sessionMap){
+			this._sessionMap[color].push(index);
+		} else{
+			this._list.push(color);
+			this._sessionMap[color] = [index];
 		}
 	};
 
 	/**
-	 * Only for operations with single color. Used only after initColor() method.
+	 * Swap data from session to current layer&#x27;s data.
 	 *
-	 * @method pushIndex
-	 * @param index {Number}
-	 */
-	sessionProto.pushIndex = function(index){
-		if (history.isRecording){
-			this._colorMap[this._colorOrder[0]].push(index);
-		}
-	};
-
-	/**
 	 * @method rewrite
 	 */
-	sessionProto.rewrite = function(){
+	sessionDynamicProto.rewrite = function(){
 		var pixel = null;
 		var data = this.layer.data;
 		var indexes = null;
@@ -2241,8 +1865,8 @@
 		var usedIndexes = {};
 		var swappedMap = {};
 		var swappedOrder = [];
-		while (this._colorOrder.length){
-			color = this._colorOrder.pop();
+		while (this._list.length){
+			color = this._list.pop();
 			pixel = color.split(&quot;,&quot;);
 			r = pixel[0];
 			g = pixel[1];
@@ -2272,7 +1896,540 @@
 			}
 		}
 		this._colorMap = swappedMap;
-		this._colorOrder = swappedOrder;
+		this._list = swappedOrder;
+	};
+
+	/**
+	 * @constructor
+	 * @class SessionStatic
+	 * @extends Session
+	 * @param layer {Layer} [in/out]
+	 */
+	var SessionStatic = pxl.Layout.history.SessionStatic = function(layer){
+		Session.call(this, layer);
+	};
+
+	pxl.extend(SessionStatic, Session);
+
+	var sessionStaticProto = SessionStatic.prototype;
+
+	/**
+	 * Will cache the whole token array.
+	 *
+	 * @method push
+	 * @param data {ImageDataArray} [in/out]
+	 * @param options {Object} [in]
+	 */
+	sessionStaticProto.push = function(options){
+		var layout = this.layer.getLayout();
+		this._list.push({
+			&quot;data&quot;: this.layer.cloneData(options),
+			&quot;start&quot;: (options.start
+				? new pxl.Point(options.start)
+				: new pxl.Point(0, 0)),
+			&quot;offset&quot;: (options.offset
+				? new pxl.Point(options.offset)
+				: new pxl.Point(layout.getWidth(), layout.getHeight()))
+		});
+	};
+
+	/**
+	 * Swap data from session to current layer&#x27;s data.
+	 *
+	 * @method rewrite
+	 */
+	sessionStaticProto.rewrite = function(){
+		var lastData = this._list[this._list.length - 1];
+		var tokenData = this.layer.cloneData(lastData);
+		this.layer.insertData(lastData);
+		lastData.data = tokenData;
+	};
+})();
+(function(){
+	&quot;use strict&quot;;
+
+	/**
+	 * The Layer object here is just a wrapper for ImageDataArray;
+	 * So for most of the methods the reference on layout is required.
+	 *
+	 * @constructor
+	 * @class Layer
+	 * @throws {RangeError} Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.
+	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
+	 * @param layout {Layout|undefined}
+	 * @param name {String|undefined}
+	 */
+	var Layer = pxl.Layout.Layer = function(source, layout, name){
+		/**
+		 * @property data
+		 * @type {ImageDataArray}
+		 */
+		this.data = new pxl.ImageDataArray(
+			typeof source === &quot;number&quot; ? source &lt;&lt; 2 : source);
+
+		if (this.data.length &gt; Layer.MAX_BUFFER_SIZE){
+			this.data = null; //free memory
+			throw new RangeError;
+		}
+
+		/**
+		 * @property name
+		 * @type {String}
+		 * @default &quot;&quot;
+		 */
+		this.name = name || &quot;&quot;;
+
+		/**
+		 * @property isVisible
+		 * @type {Boolean}
+		 * @default true
+		 */
+		this.isVisible = true;
+
+		/**
+		 * @property _layout
+		 * @private
+		 * @type {Layout|null}
+		 * @default null
+		 */
+		this._layout = layout || null;
+	};
+
+	/**
+	 * Strict limitation, but that&#x27;s enough for pixel-art.
+	 *
+	 * @property MAX_BUFFER_SIZE
+	 * @type {Number}
+	 * @static
+	 * @final
+	 * @default 2048*2048*4
+	 */
+	Layer.MAX_BUFFER_SIZE = 2048 * 2048 * 4;
+
+	var layerProto = Layer.prototype;
+
+	/**
+	 * Reset the data to default (completelly fill with zeroes).
+	 *
+	 * @method reset
+	 */
+	layerProto.reset = function(){
+		var data = this.data;
+		if (&quot;fill&quot; in pxl.ImageDataArray.prototype){ //ES6
+			data.fill(0);
+		} else{
+			for (var i = 0, length = data.length; i &lt; length; ++i){
+				data[i] = 0;
+			}
+		}
+	};
+
+	/**
+	 * Warn: layers have to be from same layout or at least have equal size.
+	 *
+	 * @method copy
+	 * @param other {Layer} [in]
+	 * @param fullCopy {Boolean|undefined} [in]
+	 */
+	layerProto.copy = function(other, fullCopy){
+		this.data.set(other.data);
+		if (fullCopy === true){
+			this.name = other.name;
+			this._layout = other._layout;
+			this.isVisible = other.isVisible;
+		}
+	};
+
+	/**
+	 * Merge each pixel of two layers;
+	 * Or apply merging to pixels within start and offset area.
+	 *
+	 * @method merge
+     * @param options {Object}[in]
+	 * @param options.isMix {Boolean}
+	 * @param options.other {Layer}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+     */
+	layerProto.merge = function(options){
+		var self = this;
+		var otherData = options.other.data;
+		if ((!options.start || !options.offset) &amp;&amp; !options.isMix){
+			self.data.set(otherData); //much faster
+		} else{
+			var method = (options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;);
+			self._layout.__process(options, function(i, length){
+				while (i &lt; length){
+					self[method](i,
+								otherData[i++],
+								otherData[i++],
+								otherData[i++],
+								otherData[i++]);
+				}
+			});
+		}
+	};
+
+	/**
+	 * Replace specific color from position with new one on whole layer;
+	 * Or just on area within start and offset options.
+	 *
+	 * @method colorReplace
+	 * @param options {Object} [in]
+	 * @param options.pixel {ImageDataArray|Array}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @param options.position {Point}
+	 * @param options.isMix {Boolean}
+	 */
+	layerProto.colorReplace = function(options){
+		var self = this;
+		var pixel = this.pixelFromPosition(options.position);
+		var r = options.pixel[0];
+		var g = options.pixel[1];
+		var b = options.pixel[2];
+		var a = options.pixel[3];
+		var oldR = pixel[0];
+		var oldG = pixel[1];
+		var oldB = pixel[2];
+		var oldA = pixel[3];
+		this._layout.__process(options, function(i, length){
+			for (; i &lt; length; i += 4){
+				if (self.compareAt(i, oldR, oldG, oldB, oldA)){
+					self.setAt(i, r, g, b, a);
+				}
+			}
+		});
+	};
+
+	/**
+	 * Set new color for layer;
+	 * Or just for area within start and offset options.
+	 *
+	 * @method set
+	 * @param options {Object} [in]
+	 * @param options.pixel {ImageDataArray}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @param options.isMix {Boolean}
+	 */
+	layerProto.set = function(options){
+		var self = this;
+		var data = this.data;
+		var r = options.pixel[0];
+		var g = options.pixel[1];
+		var b = options.pixel[2];
+		var a = options.pixel[3];
+		var method = options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;;
+		this._layout.__process(options, function(i, length){
+			for (; i &lt; length; i += 4){
+				self[method](i, r, g, b, a);
+			}
+		});
+	};
+
+	/**
+	 * Change specific channel for layer;
+	 * Or channel for area within start and offset options.
+	 *
+	 * @method setChannel
+	 * @param options {Object} [in]
+	 * @param options.channelOffset {Number} 0-3 (rgba)
+	 * @param options.value {Number} 0-255
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 */
+	layerProto.setChannel = function(options){
+		var data = this.data;
+		var channelOffset = pxl.clamp(options.channelOffset, 0, 3);
+		var value = options.value;
+		this._layout.__process(options, function(i, length){
+			for (; i &lt; length; i += 4){
+				data[i + channelOffset] = value;
+			}
+		});
+	};
+
+	/**
+	 * Flood fill (no recursion, custom stack);
+	 * Can be applyed for area within start and offset options.
+	 *
+	 * @method fill
+	 * @param options {Object} [in]
+	 * @param options.position {Point}
+	 * @param options.pixel {ImageDataArray|Array}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @param options.isMix {Boolean|undefined}
+	 * @return {Boolean}
+	 */
+	layerProto.fill = (function(){
+		var _stack = []; //GC-friendly
+		return function(options){
+			var self = this;
+			var leftBorder = 0;
+			var endIndex = this.data.length;
+			var pixel = options.pixel;
+			var index = this._layout.indexAt(options.position) &lt;&lt; 2;
+			if (index &lt; 0 || index &gt;= endIndex || //don&#x27;t fill on out of memory!
+				this.compareAt(index, pixel[0], pixel[1], pixel[2], pixel[3])){ //don&#x27;t fill on same colour!
+				return;
+			}
+			var rightBorder = this._layout.getWidth() &lt;&lt; 2;
+			var startIndex = 0;
+			var widthOffset = rightBorder;
+			var pixelOffset = 4;
+			var tmpIndex = 0;
+			var tokenPixel = this.pixelAt(index); //pixel before changes
+			var oldR = tokenPixel[0];
+			var oldG = tokenPixel[1];
+			var oldB = tokenPixel[2];
+			var oldA = tokenPixel[3];
+			this[options.isMix === true ? &quot;mixAt&quot; : &quot;setAt&quot;](
+				index, pixel[0], pixel[1], pixel[2], pixel[3]);
+			tokenPixel = this.pixelAt(index); //pixel after changes
+			var r = tokenPixel[0];
+			var g = tokenPixel[1];
+			var b = tokenPixel[2];
+			var a = tokenPixel[3];
+			var stack = _stack; //move reference to the current scope
+			stack.push(index);
+			if (options.start &amp;&amp; options.offset){
+				startIndex = pxl.clamp(
+					this._layout.indexAt(options.start), 0, endIndex) &lt;&lt; 2;
+				endIndex = pxl.clamp(this._layout.indexAt(
+					new pxl.Point(options.start).add(options.offset)),
+					0, endIndex) &lt;&lt; 2;
+				leftBorder = options.start.x &lt;&lt; 2;
+				rightBorder = (options.start.x + options.offset.x) &lt;&lt; 2;
+			}
+			do{
+				index = stack.pop();
+				tmpIndex = index + pixelOffset; //move right
+				if (tmpIndex % widthOffset &lt;= rightBorder){
+					_fill();
+				}
+				tmpIndex = index + widthOffset; //move down
+				if (tmpIndex &lt; endIndex){
+					_fill();
+				}
+				tmpIndex = index - pixelOffset; //move left
+				if (tmpIndex % widthOffset &gt;= leftBorder){
+					_fill();
+				}
+				tmpIndex = index - widthOffset; //move up
+				if (tmpIndex &gt; startIndex){
+					_fill();
+				}
+			} while(stack.length);
+
+			//Helper:
+			function _fill(){
+				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
+					self.setAt(tmpIndex, r, g, b, a);
+					stack.push(tmpIndex);
+				}
+			};
+		};
+	})();
+
+	/**
+	 * @method insertData
+	 * @param options {Object} [in]
+	 * @param data {ImageDataArray}
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
+	 */
+	layerProto.insertData = function(options){
+		var thisData = this.data;
+		var otherData = options.data;
+		var offsetIndex = this._layout.indexAt(options.start);
+		this._layout.__process(options, function(i, length){
+			while (i &lt; length){
+				thisData[i] = otherData[(i++) - offsetIndex];
+			}
+		});
+	};
+
+	/**
+	 * @method setAt
+	 * @param i {Number} index where to apply.
+	 * @param r {Number}
+	 * @param g {Number}
+	 * @param b {Number}
+	 * @param a {Number}
+	 */
+	layerProto.setAt = function(i, r, g, b, a){
+		var data = this.data;
+		data[i] = r;
+		data[i + 1] = g;
+		data[i + 2] = b;
+		data[i + 3] = a;
+	};
+
+	/**
+	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
+	 * @method mixAt
+	 * @param i {Number} index where to apply.
+	 * @param r {Number}
+	 * @param g {Number}
+	 * @param b {Number}
+	 * @param a {Number}
+	 */
+	layerProto.mixAt = function(i, r, g, b, a){
+		if (a !== 0){ //don&#x27;t waste time on transparent pixels
+			var data = this.data;
+			var thisA = data[i + 3];
+			if (thisA === 0){ //same as above ^
+				data[i] = r;
+				data[i + 1] = g;
+				data[i + 2] = b;
+				data[i + 3] = a;
+			} else{
+				thisA /= 255.0; //cast alpha channels to 0.0..1.0 format
+				a /= 255.0;
+				var aMul = thisA * (1 - a);
+				var newA = a + aMul; //new alpha
+				var op1 = a / newA;
+				var op2 = aMul / newA;
+				data[i] = data[i++] * op1 + r * op2;
+				data[i] = data[i++] * op1 + g * op2;
+				data[i] = data[i++] * op1 + b * op2;
+				data[i] = newA * 255;
+			}
+		}
+	};
+
+	/**
+	 * @method compareAt
+	 * @param i {Number} index where to apply.
+	 * @param r {Number}
+	 * @param g {Number}
+	 * @param b {Number}
+	 * @param a {Number}
+	 * @return {Boolean}
+	 */
+	layerProto.compareAt = function(i, r, g, b, a){
+		var data = this.data;
+		return (data[i] === r &amp;&amp;
+				data[i + 1] === g &amp;&amp;
+				data[i + 2] === b &amp;&amp;
+				data[i + 3] === a);
+	};
+
+	/**
+	 * @method pixelFromPosition
+	 * @param position {Point} [in]
+	 * @return {ImageDataArray}
+	 */
+	layerProto.pixelFromPosition = function(position){
+		return this.pixelAt(this._layout.indexAt(position) &lt;&lt; 2);
+	};
+
+	/**
+	 * Warn: index without color-offset!
+	 *
+	 * @see layerProto.pixelAt
+	 * @method pixelFromIndex
+	 * @param index {Number} [in]
+	 * @return {ImageDataArray}
+	 */
+	layerProto.pixelFromIndex = function(index){
+		return this.pixelAt(index &lt;&lt; 2);
+	};
+
+	/**
+	 * Index with color-offset (which equal to x4 (rgba)).
+	 *
+	 * @method pixelAt
+	 * @param index {Number} [in]
+	 * @return {ImageDataArray}
+	 */
+	layerProto.pixelAt = function(index){
+		var pixel = new pxl.ImageDataArray(4);
+		var data = this.data;
+		pixel[0] = data[index];
+		pixel[1] = data[++index];
+		pixel[2] = data[++index];
+		pixel[3] = data[++index];
+		return pixel;
+	};
+
+	/**
+	 * @method generateImageData
+	 * @param options {Object} [in]
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @return {ImageData}
+	 */
+	layerProto.generateImageData = function(options){
+		var layout = this._layout;
+		var imageData = (options.start &amp;&amp; options.offset
+			? pxl.createImageData(options.offset.x, options.offset.y)
+			: pxl.createImageData(layout.getWidth(), layout.getHeight())
+		);
+		this._generateData(imageData.data, this.data, options);
+		return imageData;
+	};
+
+	/**
+	 * @method cloneData
+	 * @param options {Object} [in]
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @return {ImageDataArray}
+	 */
+	layerProto.cloneData = function(options){
+		return this._generateData(null, this.data, options);
+	};
+
+	/**
+	 * @method getLayout
+	 * @return {Layout}
+	 */
+	layerProto.getLayout = function(){
+		return this._layout;
+	};
+
+	/**
+	 * @method _generateData
+	 * @private
+	 * @param destData {ImageDataArray|null} [out]
+	 * @param sourceData {ImageDataArray} [in]
+	 * @param options {Object} [in]
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
+	 * @return {ImageDataArray}
+	 */
+	layerProto._generateData = function(destData, sourceData, options){
+		var index = 0;
+		if (options.start &amp;&amp; options.offset){
+			destData = destData || new pxl.ImageDataArray(
+				(options.offset.x * options.offset.y) &lt;&lt; 2);
+			this._layout.__process(options, function(i, length){
+				while (i &lt; length){
+					destData[index++] = sourceData[i++];
+				}
+			});
+		} else{
+			if (destData){
+				destData.set(sourceData);
+			} else{
+				destData = new pxl.ImageDataArray(sourceData); //copy constructor
+			}
+		}
+		return destData;
+	};
+
+	/**
+	 * Destructor.
+	 *
+	 * @method destroy
+	 */
+	layerProto.destroy = function(){
+		this._layout = this.data = null;
+		this.isVisible = false;
+		pxl.Layout.history.clean();
 	};
 })();
     </pre>

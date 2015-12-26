@@ -43,9 +43,11 @@
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
+                                <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
+                                <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
                 
@@ -90,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l1905"><code>pxl.js:1905</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1471"><code>pxl.js:1471</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -136,7 +138,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_rec">rec</a>
+                                <a href="#method_isRecording">isRecording</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_record">record</a>
 
                             </li>
                             <li class="index-item method">
@@ -159,6 +165,10 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property private">
+                                <a href="#property__isRecording">_isRecording</a>
+
+                            </li>
+                            <li class="index-item property private">
                                 <a href="#property__lastSession">_lastSession</a>
 
                             </li>
@@ -170,12 +180,16 @@
                                 <a href="#property__stack">_stack</a>
 
                             </li>
-                            <li class="index-item property private">
-                                <a href="#property_isRecording">isRecording</a>
+                            <li class="index-item property">
+                                <a href="#property_DYNAMIC_SHOT">DYNAMIC_SHOT</a>
 
                             </li>
                             <li class="index-item property">
                                 <a href="#property_MAX_HISTORY_SIZE">MAX_HISTORY_SIZE</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_STATIC_SHOT">STATIC_SHOT</a>
 
                             </li>
                     </ul>
@@ -202,7 +216,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2029"><code>pxl.js:2029</code></a>
+        <a href="../files/pxl.js.html#l1647"><code>pxl.js:1647</code></a>
         </p>
 
 
@@ -224,7 +238,10 @@
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>layer</code>
+                        <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>layout</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -239,7 +256,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1985"><code>pxl.js:1985</code></a>
+        <a href="../files/pxl.js.html#l1579"><code>pxl.js:1579</code></a>
         </p>
 
 
@@ -255,8 +272,18 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">layer</code>
-                        <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
+                        <code class="param-name">options</code>
+                        <span class="type">Options</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">layout</code>
+                        <span class="type"><a href="../classes/Layout.html" class="crosslink">Layout</a></span>
 
 
                     <div class="param-description">
@@ -288,7 +315,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1951"><code>pxl.js:1951</code></a>
+        <a href="../files/pxl.js.html#l1537"><code>pxl.js:1537</code></a>
         </p>
 
 
@@ -328,7 +355,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1959"><code>pxl.js:1959</code></a>
+        <a href="../files/pxl.js.html#l1545"><code>pxl.js:1545</code></a>
         </p>
 
 
@@ -350,13 +377,56 @@
 
 
 </div>
-<div id="method_rec" class="method item">
-    <h3 class="name"><code>rec</code></h3>
+<div id="method_isRecording" class="method item">
+    <h3 class="name"><code>isRecording</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1553"><code>pxl.js:1553</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_record" class="method item">
+    <h3 class="name"><code>record</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
-                        <code>layer</code>
+                        <code>layout</code>
+                </li>
+                <li class="arg">
+                        <code>flag</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -371,7 +441,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1996"><code>pxl.js:1996</code></a>
+        <a href="../files/pxl.js.html#l1600"><code>pxl.js:1600</code></a>
         </p>
 
 
@@ -388,12 +458,23 @@
 
             <ul class="params-list">
                 <li class="param">
-                        <code class="param-name">layer</code>
-                        <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a> | Undefined</span>
+                        <code class="param-name">layout</code>
+                        <span class="type"><a href="../classes/Layout.html" class="crosslink">Layout</a></span>
 
 
                     <div class="param-description">
                          
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">flag</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>STATIC_SHOT or DYNAMIC_SHOT</p>
+
                     </div>
 
                 </li>
@@ -406,7 +487,7 @@
 
             <div class="throws-description">
                         <span class="type">Error</span>:
-                    <p>Raise an error if already is under recording.</p>
+                    <p>Raise an error if already is under recording; Or if flag is unknown.</p>
 
             </div>
         </div>
@@ -427,7 +508,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1976"><code>pxl.js:1976</code></a>
+        <a href="../files/pxl.js.html#l1570"><code>pxl.js:1570</code></a>
         </p>
 
 
@@ -457,7 +538,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2010"><code>pxl.js:2010</code></a>
+        <a href="../files/pxl.js.html#l1624"><code>pxl.js:1624</code></a>
         </p>
 
 
@@ -471,6 +552,15 @@
 
 
 
+        <div class="throws">
+            <h4>Throws:</h4>
+
+            <div class="throws-description">
+                        <span class="type">Error</span>:
+                    <p>Raise an error if recording has not been started.</p>
+
+            </div>
+        </div>
 
 </div>
 <div id="method_undo" class="method item">
@@ -488,7 +578,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1967"><code>pxl.js:1967</code></a>
+        <a href="../files/pxl.js.html#l1561"><code>pxl.js:1561</code></a>
         </p>
 
 
@@ -508,6 +598,32 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
+<div id="property__isRecording" class="property item private">
+    <h3 class="name"><code>_isRecording</code></h3>
+    <span class="type">Boolean</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1529"><code>pxl.js:1529</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> false</p>
+
+
+</div>
 <div id="property__lastSession" class="property item private">
     <h3 class="name"><code>_lastSession</code></h3>
     <span class="type">Object | Null</span>
@@ -520,7 +636,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1935"><code>pxl.js:1935</code></a>
+        <a href="../files/pxl.js.html#l1521"><code>pxl.js:1521</code></a>
         </p>
 
 
@@ -546,7 +662,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1925"><code>pxl.js:1925</code></a>
+        <a href="../files/pxl.js.html#l1511"><code>pxl.js:1511</code></a>
         </p>
 
 
@@ -573,7 +689,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1917"><code>pxl.js:1917</code></a>
+        <a href="../files/pxl.js.html#l1503"><code>pxl.js:1503</code></a>
         </p>
 
 
@@ -587,29 +703,30 @@
 
 
 </div>
-<div id="property_isRecording" class="property item private">
-    <h3 class="name"><code>isRecording</code></h3>
-    <span class="type">Boolean</span>
+<div id="property_DYNAMIC_SHOT" class="property item">
+    <h3 class="name"><code>DYNAMIC_SHOT</code></h3>
+    <span class="type">Number</span>
 
 
-        <span class="flag private">private</span>
 
+        <span class="flag final">final</span>
 
 
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1943"><code>pxl.js:1943</code></a>
+        <a href="../files/pxl.js.html#l1493"><code>pxl.js:1493</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        
+        <p>Special recording flag. Cache method may be used as many times as possible.
+Use case: user draw lines.</p>
+
     </div>
 
-        <p><strong>Default:</strong> false</p>
 
 
 </div>
@@ -625,7 +742,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1909"><code>pxl.js:1909</code></a>
+        <a href="../files/pxl.js.html#l1475"><code>pxl.js:1475</code></a>
         </p>
 
 
@@ -635,7 +752,34 @@
         
     </div>
 
-        <p><strong>Default:</strong> 20</p>
+        <p><strong>Default:</strong> 30</p>
+
+
+</div>
+<div id="property_STATIC_SHOT" class="property item">
+    <h3 class="name"><code>STATIC_SHOT</code></h3>
+    <span class="type">Number</span>
+
+
+
+        <span class="flag final">final</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1483"><code>pxl.js:1483</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>Special recording flag. Cache method have to be used once on session.
+Use case: methods like fill or replaceColor.</p>
+
+    </div>
+
 
 
 </div>

@@ -4,54 +4,54 @@
 	/**
 	 * @constructor
 	 * @class View
-	 * @param options {Object} [in]
-	 * @param options.buffer {CanvasRenderingContext2D}
-	 * @param options.ctx {CanvasRenderingContext2D}
-	 * @param options.layout {Layout}
-	 * @param options.isOwner {Boolean}
+	 * @param ctx {CanvasRenderingContext2D}
+	 * @param buffer {CanvasRenderingContext2D}
+	 * @param layout {Layout}
+	 * @param isOwner {Boolean}
 	 */
-	var View = pxl.View = function(options){
+	var View = pxl.View = function(ctx, buffer, layout, isOwner){
 		/**
 		 * @property _buffer
 		 * @private
 		 * @type {CanvasRenderingContext2D}
 		 */
-		this._buffer = options.buffer;
+		this._buffer = buffer;
 
 		/**
 		 * @property _ctx
 		 * @private
 		 * @type {CanvasRenderingContext2D}
 		 */
-		this._ctx = options.ctx;
+		this._ctx = ctx;
 
 		/**
 		 * @property _layoutOwner
 		 * @private
 		 * @type {Boolean}
 		 */
-		this._layoutOwner = options.isOwner;
+		this._layoutOwner = isOwner;
 
 		/**
 		 * @property _imagePoint
 		 * @private
-		 * @type {Vector2}
+		 * @type {Point}
 		 */
-		this._imagePoint = new pxl.Vector2;
+		this._imagePoint = new pxl.Point;
 
 		/**
 		 * @property _scale
 		 * @private
 		 * @type {Number}
+		 * @default 1
 		 */
-		this._scale = View.MIN_SCALE_RATE;
+		this._scale = 1;
 
 		/**
 		 * @property _layout
 		 * @private
 		 * @type {Layout}
 		 */
-		this._layout = options.layout;
+		this._layout = layout;
 
 		/**
 		 * @property _boundedRender
@@ -62,16 +62,16 @@
 	};
 
 	/**
-	 * Simple factory-like method
-	 * Take care about view creating and DOM manipulations
-	 * Also put new instance into static "instances" list
+	 * Simple factory-like method;
+	 * Take care about view creating and DOM manipulations;
+	 * Also put new instance into static "instances" list.
 	 *
 	 * @static
 	 * @method create
 	 * @param options {Object} [in]
-	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or other element as parent.
+	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or any other element as a parent.
 	 * @param options.source {View|undefined} New instance will listen all changes on source.
-	 * @param options.canvasSize {Object} Size of the model.
+	 * @param options.canvasSize {Object|undefined} Size of the model.
 	 * @param options.canvasSize.width {Number}
 	 * @param options.canvasSize.height {Number}
 	 * @return {View}
@@ -100,12 +100,12 @@
 			bufferCanvas.height = options.canvasSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
-		var view = new View({
-			"buffer": _setupContext(bufferCanvas.getContext("2d")),
-			"ctx": _setupContext(canvas.getContext("2d")),
-			"isOwner": isOwner,
-			"layout": layout
-		});
+		var view = new View(
+			_setupContext(canvas.getContext("2d")),
+			_setupContext(bufferCanvas.getContext("2d")),
+			layout,
+			isOwner
+		);
 		View.instances.push(view);
 		return view;
 	};
@@ -119,24 +119,6 @@
 	 * @default []
 	 */
 	View.instances = [];
-
-	/**
-	 * @property MIN_SCALE_RATE
-	 * @static
-	 * @final
-	 * @type {Number}
-	 * @default 1
-	 */
-	View.MIN_SCALE_RATE = 1;
-
-	/**
-	 * @property MAX_SCALE_RATE
-	 * @static
-	 * @final
-	 * @type {Number}
-	 * @default 128
-	 */
-	View.MAX_SCALE_RATE = 128;
 
 	/**
 	 * Reference onto the currently active view instance.
@@ -157,7 +139,7 @@
 	 * @see update
 	 * @see redraw
 	 * @method render
-	 * @param options {Object|undefined}
+	 * @param options {Object} [in]
 	 * @chainable
 	 */
 	viewProto.render = function(options){
@@ -169,9 +151,9 @@
 	 *
 	 * @method drawRect
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
-	 * @param options.pixel {ImageDataArray}
+	 * @param options.start {Point}
+	 * @param options.offset {Point}
+	 * @param options.pixel {ImageDataArray|Array}
 	 * @chainable
 	 */
 	viewProto.drawRect = function(options){
@@ -180,7 +162,7 @@
 			pixel[0] + "," + 	//r
 			pixel[1] + "," + 	//g
 			pixel[2] + "," + 	//b
-			(pixel[3] / 255) +	//a
+			(pixel[3] / 255) +	//a, somehow its require 0.0..1.0 format
 		")";
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
@@ -196,8 +178,8 @@
 	 *
 	 * @method redraw
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.redraw = function(options){
@@ -225,8 +207,8 @@
 	 *
 	 * @method clear
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.clear = function(options){
@@ -249,8 +231,8 @@
 	 *
 	 * @method update
 	 * @param options {Object} [in]
-	 * @param options.start {Vector2}
-	 * @param options.offset {Vector2}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @chainable
 	 */
 	viewProto.update = function(options){
@@ -333,7 +315,7 @@
 
 	/**
 	 * @method getImagePoint
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	viewProto.getImagePoint = function(){
 		return this._imagePoint;
@@ -341,25 +323,29 @@
 
 	/**
 	 * @method getScaleOffset
-	 * @return {Vector2}
+	 * @return {Point}
 	 */
 	viewProto.getScaleOffset = function(){
-		return new pxl.Vector2(
+		return new pxl.Point(
 			_offset(this._scale, this._ctx.canvas.width),
 			_offset(this._scale, this._ctx.canvas.height)
 		);
 	};
 
 	/**
-	 * Change current scale rate value.
+	 * Change current scale rate value;
+	 * Only an integer part will be taken.
+	 *
+	 * Warn: scale can't be lower then 1.
 	 *
 	 * @method setScale
-	 * @param scale {Number} [in]
+	 * @param value {Number} [in]
 	 * @chainable
 	 */
-	viewProto.setScale = function(scale){
-		this._scale = pxl.clamp(
-			scale, View.MIN_SCALE_RATE, View.MAX_SCALE_RATE);
+	viewProto.setScale = function(value){
+		if (value >= 1){
+			this._scale = value | 0;
+		}
 		return this;
 	};
 
@@ -398,7 +384,7 @@
 	 * Transform position according to the current scale offset.
 	 *
 	 * @method fitToTransition
-	 * @param position {Vector2} [out]
+	 * @param position {Point} [out]
 	 * @chainable
 	 */
 	viewProto.fitToTransition = function(position){

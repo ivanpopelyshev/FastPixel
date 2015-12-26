@@ -29,6 +29,7 @@
 					});
 					var layout = View.activeView.getLayout().appendLayer();
 
+					pxl.bresenham.rectangle(0, 0, 1024 - 1, 1024 - 1, setPixel);
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
 
 					//listen for some of user movements:
@@ -40,11 +41,11 @@
 				}
 
 				function userDownMouse(e){
-					fill(Math.floor(e.pageX), Math.floor(e.pageY));
+					setColor(Math.floor(e.pageX), Math.floor(e.pageY));
 				};
 
 				function userDownTouch(e){
-					fill(Math.floor(e.pageX), Math.floor(e.pageY));
+					setColor(Math.floor(e.pageX), Math.floor(e.pageY));
 				};
 
 				function userKey(e){
@@ -55,19 +56,18 @@
 					});
 				};
 
-				function fill(x, y){
+				function setColor(x, y){
 					if (x >= 0 && x < layout.getWidth() &&
 						y >= 0 && y < layout.getHeight()){
 						history.record(layout.activeLayer, history.STATIC_SHOT);
-						layout.fill({
-							"position": new pxl.Point(x, y),
+						layout.set({
 							"pixel": new pxl.ImageDataArray([
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0
 							]),
-							"isMix": true,
+							"isMix": false,
 							"isNotifyView": true
 						});
 						history.stop();
@@ -85,6 +85,6 @@
 				}
 			})();
 		</script>
-		<p class="noselect">click on different zones to see how invoke "fill" method</p>
+		<p class="noselect">click where you want to invoke "force-fill"</p>
 	</body>
 </html>

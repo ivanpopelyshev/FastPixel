@@ -43,9 +43,11 @@
                                 <li><a href="../classes/Layer.html">Layer</a></li>
                                 <li><a href="../classes/Layout.html">Layout</a></li>
                                 <li><a href="../classes/Observer.html">Observer</a></li>
+                                <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
-                                <li><a href="../classes/Vector2.html">Vector2</a></li>
+                                <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
+                                <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
                                 <li><a href="../classes/View.html">View</a></li>
                             </ul>
                 
@@ -127,6 +129,14 @@
                                 <a href="#method_createCanvas">createCanvas</a>
 
                             </li>
+                            <li class="index-item method">
+                                <a href="#method_createImageData">createImageData</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_extend">extend</a>
+
+                            </li>
                     </ul>
                 </div>
 
@@ -135,7 +145,7 @@
 
                     <ul class="index-list properties">
                             <li class="index-item property">
-                                <a href="#property_createImageData">createImageData</a>
+                                <a href="#property_controller">controller</a>
 
                             </li>
                             <li class="index-item property">
@@ -185,7 +195,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l63"><code>pxl.js:63</code></a>
+        <a href="../files/pxl.js.html#l70"><code>pxl.js:70</code></a>
         </p>
 
 
@@ -262,7 +272,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l76"><code>pxl.js:76</code></a>
+        <a href="../files/pxl.js.html#l83"><code>pxl.js:83</code></a>
         </p>
 
 
@@ -285,14 +295,25 @@
 
 
 </div>
-            </div>
-
-            <div id="properties" class="api-class-tabpanel">
-                <h2 class="off-left">Properties</h2>
-
-<div id="property_createImageData" class="property item">
+<div id="method_createImageData" class="method item">
     <h3 class="name"><code>createImageData</code></h3>
-    <span class="type">Unknown</span>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>arguments[0]</code>
+                </li>
+                <li class="arg">
+                        <code>arguments[1]</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type">ImageData</span>
+        </span>
+
+
 
 
 
@@ -301,8 +322,9 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l51"><code>pxl.js:51</code></a>
+        <a href="../files/pxl.js.html#l58"><code>pxl.js:58</code></a>
         </p>
+
 
 
     </div>
@@ -312,32 +334,139 @@
 
     </div>
 
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">arguments[0]</code>
+                        <span class="type">ImageData | Number</span>
 
 
-        <h4>Sub-properties:</h4>
+                    <div class="param-description">
+                        <p>[in]</p>
 
-        <ul class="params-list">
-            <li class="param">
-                    <code class="param-name">arguments[0]</code>
-                    <span class="type">ImageData | Number</span>
+                    </div>
 
-                <div class="param-description">
-                    <p>[in]</p>
+                </li>
+                <li class="param">
+                        <code class="param-name">arguments[1]</code>
+                        <span class="type">Undefined | Number</span>
 
-                </div>
 
-            </li>
-            <li class="param">
-                    <code class="param-name">arguments[1]</code>
-                    <span class="type">Undefined | Number</span>
+                    <div class="param-description">
+                        <p>[in]</p>
 
-                <div class="param-description">
-                    <p>[in]</p>
+                    </div>
 
-                </div>
+                </li>
+            </ul>
+        </div>
 
-            </li>
-        </ul>
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">ImageData</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_extend" class="method item">
+    <h3 class="name"><code>extend</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>child</code>
+                </li>
+                <li class="arg">
+                        <code>parent</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l93"><code>pxl.js:93</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">child</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">parent</code>
+                        <span class="type">Function</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+            </div>
+
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_controller" class="property item">
+    <h3 class="name"><code>controller</code></h3>
+    <span class="type">HAVE_TO_BE_REDEFINED_BY_USER</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l35"><code>pxl.js:35</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> null</p>
+
+
 </div>
 <div id="property_ImageDataArray" class="property item">
     <h3 class="name"><code>ImageDataArray</code></h3>
@@ -350,7 +479,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l35"><code>pxl.js:35</code></a>
+        <a href="../files/pxl.js.html#l42"><code>pxl.js:42</code></a>
         </p>
 
 
@@ -375,7 +504,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l43"><code>pxl.js:43</code></a>
+        <a href="../files/pxl.js.html#l50"><code>pxl.js:50</code></a>
         </p>
 
 

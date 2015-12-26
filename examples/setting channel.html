@@ -32,8 +32,8 @@
 
 				function setPixel(x, y){
 					layout.set({
-						"start": new pxl.Vector2(x, y),
-						"offset": new pxl.Vector2(1),
+						"start": new pxl.Point(x, y),
+						"offset": new pxl.Point(1),
 						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
 						"isMix": false,
 						"isNotifyView": true
@@ -48,7 +48,7 @@
 					});
 				};
 
-				View.activeView.setImagePoint(new pxl.Vector2(200, 200));
+				View.activeView.setImagePoint(new pxl.Point(200, 200));
 
 				//set line on bottom layer
 				pxl.bresenham.line(0, 0, 128 - 1, 128 - 1, setPixel);

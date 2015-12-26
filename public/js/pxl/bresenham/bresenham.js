@@ -57,12 +57,16 @@
 		rectangle: function(x0, y0, x1, y1, callback){
 			//FIXME
 			if (x0 === x1 || y0 === y1){
-				bresenham.line(x0, y0, x1, y0, callback);
+				if (x0 === x1 && y0 === y1){
+					callback(x0, y0);
+				} else{
+					bresenham.line(x0, y0, x1, y0, callback);
+				}
 			} else{
-				bresenham.line(x0, y0, x1, y0, callback);
-				bresenham.line(x1, y0, x1, y1, callback);
-				bresenham.line(x1, y1, x0, y1, callback);
-				bresenham.line(x0, y1, x0, y0, callback);
+				bresenham.line(x0, y0, x1 - 1, y0, callback);
+				bresenham.line(x1, y0, x1, y1 - 1, callback);
+				bresenham.line(x1, y1, x0 + 1, y1, callback);
+				bresenham.line(x0, y1, x0, y0 + 1, callback);
 			}
 		},
 
@@ -100,8 +104,8 @@
 			y0 += (b + 1) >> 1;
 			y1 = y0 - b1;
 			a = 8 * a * a;
-			b1 = 8 * b * b;                               
-			do {
+			b1 = 8 * b * b;
+			do{
 				callback(x1, y0);
 				callback(x0, y0);
 				callback(x0, y1);
@@ -117,8 +121,8 @@
 					--x1;
 					err += dx += b1;
 				}
-			} while (x0 <= x1);
-			while (y0-y1 <= b){
+			} while(x0 <= x1);
+			while (y0 - y1 <= b){
 				callback(x0 - 1, y0);
 				callback(x1 + 1, y0++);
 				callback(x0 - 1, y1);

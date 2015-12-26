@@ -16,10 +16,10 @@ describe("pxl", function(){
 	});
 
 	describe("clamp method", function(){
-		it("number should be clamped to minimum border", function(){
-			var num = 3.14;
-
-			expect(pxl.clamp(num, 4, 10)).to.equal(4);
+		it("number should be clamped correctly", function(){
+			expect(pxl.clamp(3.14, 4, 10)).to.equal(4);
+			expect(pxl.clamp(11, 4, 10)).to.equal(10);
+			expect(pxl.clamp(6, 4, 10)).to.equal(6);
 		});
 	});
 

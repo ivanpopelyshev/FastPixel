@@ -5,14 +5,14 @@ var cache = require("gulp-cache");
 
 var FILE_LIST = [
 	"./public/js/pxl/pxl.js",
-	"./public/js/pxl/Vector2/Vector2.js",
+	"./public/js/pxl/Point/Point.js",
 	"./public/js/pxl/Observer/Observer.js",
 	"./public/js/pxl/bresenham/bresenham.js",
 	"./public/js/pxl/View/View.js",
 	"./public/js/pxl/Layout/Layout.js",
-	"./public/js/pxl/Layout/Layer/Layer.js",
-	"./public/js/pxl/Layout/Layer/history/history.js",
-	"./public/js/pxl/Layout/Layer/history/Session/Session.js"
+	"./public/js/pxl/Layout/history/history.js",
+	"./public/js/pxl/Layout/history/Session/Session.js",
+	"./public/js/pxl/Layout/Layer/Layer.js"
 ];
 
 var APP_NAME = "pxl";
