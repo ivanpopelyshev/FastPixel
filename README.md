@@ -1,13 +1,14 @@
 # FastPixel
 
-Fast &amp; flexible API for creating awesome pixel-art tool
+Fast &amp; flexible API for creating awesome pixel-art tool!
 
 Currently in progress (stable beta).
+Very close to stable release.
 
 ## It is just works!
 
 ```javascript
-//create view instance and make it active:
+// Create view instance and make it active:
 pxl.View.activeView = pxl.View.create({
 	canvasSize: {
 		width: 128,
@@ -16,15 +17,17 @@ pxl.View.activeView = pxl.View.create({
 	element: document.querySelector("CANVAS")
 });
 
+// Get the model:
 var layout = pxl.View.activeView.getLayout();
 
+// Create the first layer:
 layout.appendLayer();
 
-//draws line from 25:25 to 50:100
+// Draw line from 25:25 to 50:100
 pxl.bresenham.line(25, 25, 50, 100, function(x, y){
 	layout.set({
-		"start": new pxl.Vector2(x, y), //position where to apply
-		"offset": new pxl.Vector2(1), //size of the pixel
+		"start": new pxl.Point(x, y), //position where to apply
+		"offset": new pxl.Point(1), //size of the pixel
 		"pixel": new pxl.ImageDataArray([0, 0, 0, 255]), //pixel's color (black)
 		"isMix": true, //ability to mix colors
 		"isNotifyView": true //update view
@@ -42,14 +45,14 @@ No! At all! Everything is you need is just a one file: [pxl.js][] or [pxl.min.js
 
 API is completely synchronous & single thread (no timers and no workers).
 Based on different modules, separated by files (thanks to gulp).
-There are few absolutely independence modules:
-- [Vector2][]
+Also there are few absolutely independence modules:
+- [Point][]
 - [Observer][]
 - [bresenham][]
 
 Main logic is based on MVC design pattern.
-"Model" is a group of classes: Layout and Layer. The  View component has obvious name "View".
-The "Controller" have to be implemented by you. By default it equal to null and called as "controller".
+"Model" is a group of Layout and Layer classes. The  View component has obvious name "View".
+The "Controller" have to be implemented by you. By default it null and called as "controller".
 
 ## Feedback
 
@@ -58,6 +61,6 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [examples]: ./examples
 [pxl.js]: ./pxl.js
 [pxl.min.js]: ./pxl.min.js
-[Vector2]: ./public/js/pxl/Vector2/Vector2.js
+[Point]: ./public/js/pxl/Point/Point.js
 [Observer]: ./public/js/pxl/Observer/Observer.js
 [bresenham]: ./public/js/pxl/bresenham/bresenham.js
