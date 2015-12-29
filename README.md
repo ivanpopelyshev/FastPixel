@@ -36,6 +36,10 @@ pxl.bresenham.line(25, 25, 50, 100, function(x, y){
 ```
 
 Look at [examples][] to see more!
+Few of them available by link below:
+- [Pixel carrying][]
+- [Color replacing][]
+- [Channel setting][]
 
 ## Dependencies
 
@@ -64,3 +68,6 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [Point]: ./public/js/pxl/Point/Point.js
 [Observer]: ./public/js/pxl/Observer/Observer.js
 [bresenham]: ./public/js/pxl/bresenham/bresenham.js
+[Pixel carrying]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/carry%20pixel.html
+[Color replacing]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/color%20replace.html
+[Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting%20channel.html
