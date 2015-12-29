@@ -1984,22 +1984,20 @@
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @param options.pixel {ImageDataArray|Array}
+	 * @param options.oldPixel {ImageDataArray|Array}
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
-	 * @param options.position {Point}
-	 * @param options.isMix {Boolean}
 	 */
 	layerProto.colorReplace = function(options){
 		var self = this;
-		var pixel = this.pixelFromPosition(options.position);
 		var r = options.pixel[0];
 		var g = options.pixel[1];
 		var b = options.pixel[2];
 		var a = options.pixel[3];
-		var oldR = pixel[0];
-		var oldG = pixel[1];
-		var oldB = pixel[2];
-		var oldA = pixel[3];
+		var oldR = options.oldPixel[0];
+		var oldG = options.oldPixel[1];
+		var oldB = options.oldPixel[2];
+		var oldA = options.oldPixel[3];
 		this._layout.__process(options, function(i, length){
 			for (; i < length; i += 4){
 				if (self.compareAt(i, oldR, oldG, oldB, oldA)){
@@ -2148,12 +2146,12 @@
 	 * @param options.offset {Point}
 	 */
 	layerProto.insertData = function(options){
+		var index = 0;
 		var thisData = this.data;
 		var otherData = options.data;
-		var offsetIndex = this._layout.indexAt(options.start);
 		this._layout.__process(options, function(i, length){
 			while (i < length){
-				thisData[i] = otherData[(i++) - offsetIndex];
+				thisData[i++] = otherData[index++];
 			}
 		});
 	};
@@ -2330,12 +2328,12 @@
 
 	/**
 	 * Destructor.
+	 * Tip: don't forget to clean the history cache.
 	 *
 	 * @method destroy
 	 */
 	layerProto.destroy = function(){
 		this._layout = this.data = null;
 		this.isVisible = false;
-		pxl.Layout.history.clean();
 	};
 })();

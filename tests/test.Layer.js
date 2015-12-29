@@ -27,6 +27,20 @@ describe("Layer", function(){
 			expect(layer.data.length).to.equal(8 * 16 * 4);
 		});
 	});
+	
+	describe("constructor with too large size", function(){
+		it("should be OK", function(){
+			
+			try{
+				new pxl.Layout.Layer(pxl.Layout.Layer.MAX_BUFFER_SIZE + 1);
+			} catch(err){
+				expect(err instanceof RangeError).to.equal(true);
+				return;
+			}
+			
+			expect(false).to.equal(true);
+		});
+	});
 
 	describe("default name", function(){
 		it("should be empty", function(){
@@ -70,7 +84,7 @@ describe("Layer", function(){
 	});
 
 	describe("copy layer", function(){
-		it("each pixel prom layer1 have to be copied to layer2", function(){
+		it("should be OK", function(){
 			var layer1 = new pxl.Layout.Layer(8 * 16);
 			var layer2 = new pxl.Layout.Layer(8 * 16);
 
@@ -88,7 +102,7 @@ describe("Layer", function(){
 	});
 
 	describe("full copy layer", function(){
-		it("all properties are copied from layer1 to layer2", function(){
+		it("should be OK", function(){
 			var layer1 = new pxl.Layout.Layer(8 * 16, null, "Origin");
 			var layer2 = new pxl.Layout.Layer(8 * 16);
 			layer2.isVisible = false;
@@ -110,7 +124,7 @@ describe("Layer", function(){
 	});
 
 	describe("merge whole layers (no mix)", function(){
-		it("each pixel prom layer1 have to be copied to layer2", function(){
+		it("should be OK", function(){
 			var layer1 = new pxl.Layout.Layer(8 * 16);
 			var layer2 = new pxl.Layout.Layer(8 * 16);
 			
@@ -131,7 +145,7 @@ describe("Layer", function(){
 	});
 
 	describe("merge layers (with mix, but no start/offset)", function(){
-		it("each pixel prom layer1 have to be mixed to layer2", function(){
+		it("should be OK", function(){
 			var COLOR1 = 200;
 			var COLOR2 = 155;
 			
@@ -159,7 +173,7 @@ describe("Layer", function(){
 	});
 
 	describe("merge layers (no mix, within start/offset)", function(){
-		it("each pixel from area within start/offset of layer1 have to be copied to same area to layer2", function(){
+		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer1 = new pxl.Layout.Layer(8 * 16, layout);
 			var layer2 = new pxl.Layout.Layer(8 * 16, layout);
@@ -178,12 +192,18 @@ describe("Layer", function(){
 
 			layer2.merge(options);
 
-			expect(true).is.equal(true);
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer2.data[i]).is.equal(layer1.data[i]);
+					++i;
+				}
+			});
+			
 		});
 	});
 
 	describe("flood fill", function(){
-		it("flood fill whole layer", function(){
+		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
 
@@ -203,41 +223,259 @@ describe("Layer", function(){
 	});
 
 	describe("flood fill within area", function(){
-		it("flood fill whole layer", function(){
+		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
 
 			var options = {
 				"position": new pxl.Point(5, 5),
-				"pixel": new pxl.ImageDataArray([222, 111, 25, 255]),
+				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
 				"isMix": false,
 				"start": new pxl.Point(4, 5),
 				"offset": new pxl.Point(2, 2)
 			};
+
 			layer.fill(options);
 
-			
-			//check pixel outside the area:
-			expect(layer.data[500]).to.equal(0);
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer.data[i]).is.equal(255);
+
+					++i;
+				}
+			});
 		});
 	});
 
-	describe("plot pixel", function(){
-		it("flood fill whole layer", function(){
+	describe("set pixel", function(){
+		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
 
 			var options = {
-				"position": new pxl.Point(5, 5),
-				"pixel": new pxl.ImageDataArray([222, 111, 25, 255]),
-				"isMix": false,
-				"start": new pxl.Point(4, 5),
-				"offset": new pxl.Point(2, 2)
+				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"isMix": false
 			};
-			layer.fill(options);
+
+			layer.set(options);
 			
-			//check pixel outside the area:
-			expect(layer.data[500]).to.equal(0);
+			for (var i = 0; i < layer.data.length; i += 4){
+				expect(layer.data[i]).to.equal(255);
+			}
+		});
+	});
+
+	describe("set pixel (within area)", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var options = {
+				"start": new pxl.Point(2, 2),
+				"offset": new pxl.Point(2, 2),
+				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"isMix": false
+			};
+
+			layer.set(options);
+			
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer.data[i]).is.equal(255);
+
+					++i;
+				}
+			});
+		});
+	});
+
+	describe("replace color", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var options = {
+				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"oldPixel": new pxl.ImageDataArray([0, 0, 0, 0])
+			};
+
+			layer.colorReplace(options);
+			
+			for (var i = 0; i < layer.data.length; i += 4){
+				expect(layer.data[i]).to.equal(255);
+			}
+		});
+	});
+
+	describe("replace color (within area)", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var options = {
+				"start": new pxl.Point(2, 2),
+				"offset": new pxl.Point(2, 2),
+				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"oldPixel": new pxl.ImageDataArray([0, 0, 0, 0])
+			};
+
+			layer.colorReplace(options);
+
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer.data[i]).is.equal(255);
+
+					++i;
+				}
+			});
+		});
+	});
+
+	describe("set channel", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var options = {
+				"channelOffset": 2,
+				"value": 255
+			};
+
+			layer.setChannel(options);
+
+			for (var i = 0; i < layer.data.length; i += 4){
+				expect(layer.data[i + 2]).to.equal(255);
+			}
+		});
+	});
+
+	describe("set channel (within area)", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var options = {
+				"start": new pxl.Point(2, 2),
+				"offset": new pxl.Point(2, 2),
+				"channelOffset": 2,
+				"value": 255
+			};
+
+			layer.setChannel(options);
+
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer.data[i + 2]).is.equal(255);
+
+					i += 4;
+				}
+			});
+		});
+	});
+
+	describe("insert data", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			var layer = new pxl.Layout.Layer(8 * 16, layout);
+
+			var index = 0;
+			var data = new pxl.ImageDataArray([ // 2x2 white pixel
+				255, 255, 255, 255, 255, 255, 255, 255,
+				255, 255, 255, 255, 255, 255, 255, 255
+			]);
+			var options = {
+				"start": new pxl.Point(0, 0),
+				"offset": new pxl.Point(2, 2),
+				"data": data
+			};
+
+			layer.insertData(options);
+
+			layout.__process(options, function(i, length){
+				while (i < length){
+					expect(layer.data[i++]).is.equal(data[index++]);
+				}
+			});
+		});
+	});
+
+	describe("set color", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16);
+
+			layer.setAt(4, 255, 255, 255, 255);
+			
+			expect(layer.data[4]).is.equal(255);
+			expect(layer.data[5]).is.equal(255);
+			expect(layer.data[6]).is.equal(255);
+			expect(layer.data[7]).is.equal(255);
+		});
+	});
+
+	describe("compare color", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16);
+
+			layer.setAt(4, 255, 255, 255, 255);
+			
+			expect(layer.compareAt(4, 255, 255, 255, 255)).is.equal(true);
+		});
+	});
+
+	describe("pixel from position", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16, new pxl.Layout(8, 16));
+			
+			layer.setAt(9 * 4, 255, 255, 255, 255);
+			
+			var tokenPixel = layer.pixelFromPosition(new pxl.Point(1, 1));
+			
+			expect(tokenPixel[0]).to.equal(255);
+			expect(tokenPixel[1]).to.equal(255);
+			expect(tokenPixel[2]).to.equal(255);
+			expect(tokenPixel[3]).to.equal(255);
+		});
+	});
+
+	describe("pixel from index", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16);
+			
+			layer.setAt(9 * 4, 255, 255, 255, 255);
+			
+			var tokenPixel = layer.pixelFromIndex(9);
+			
+			expect(tokenPixel[0]).to.equal(255);
+			expect(tokenPixel[1]).to.equal(255);
+			expect(tokenPixel[2]).to.equal(255);
+			expect(tokenPixel[3]).to.equal(255);
+		});
+	});
+
+	describe("pixel at index", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16);
+			
+			layer.setAt(9 * 4, 255, 255, 255, 255);
+			
+			var tokenPixel = layer.pixelAt(9 * 4);
+			
+			expect(tokenPixel[0]).to.equal(255);
+			expect(tokenPixel[1]).to.equal(255);
+			expect(tokenPixel[2]).to.equal(255);
+			expect(tokenPixel[3]).to.equal(255);
+		});
+	});
+
+	describe("destroy", function(){
+		it("should be OK", function(){
+			var layer = new pxl.Layout.Layer(8 * 16, new pxl.Layout(8, 16));
+			
+			layer.destroy();
+			
+			expect(layer.data).to.equal(null);
+			expect(layer.getLayout()).to.equal(null);
+			expect(layer.isVisible).to.equal(false);
 		});
 	});
 

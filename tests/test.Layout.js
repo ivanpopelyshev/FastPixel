@@ -118,12 +118,68 @@ describe("Layout", function(){
 			expect(options.start.cmp(oldStart)).to.equal(true);
 			expect(options.offset.cmp(oldOffset)).to.equal(true);
 			
-			
-			oldStart.set(-1, 0);
+
+			oldStart.set(-1, 0); //let's move our start point here
 			options.start.set(oldStart);
+
 			expect(layout.fixRange(options)).to.equal(true); //Ok, and will be changed
 			expect(options.start.cmp(oldStart)).to.equal(false);
 			expect(options.offset.cmp(oldOffset)).to.equal(false);
+		});
+	});
+
+	describe("__process single pixel", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(5, 5);
+
+			var count = 0;
+			var indexes = [48, 49, 50, 51];
+
+			layout.__process({
+				"start": new pxl.Point(2, 2),
+				"offset": new pxl.Point(1, 1)
+			}, function(i, length){
+				while (i < length){
+					expect(indexes[count]).to.equal(i);
+					++count;
+					++i;
+				}
+			});
+		});
+	});
+
+	describe("__process whole layout", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(2, 2);
+
+			var count = 0;
+			var indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+			layout.__process({
+				"start": new pxl.Point(0, 0),
+				"offset": new pxl.Point(2, 2)
+			}, function(i, length){
+				while (i < length){
+					expect(indexes[count]).to.equal(i);
+					++count;
+					++i;
+				}
+			});
+		});
+	});
+
+	describe("destroy", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+
+			layout.appendLayer();
+			layout.appendLayer();
+			
+			layout.destroy();
+			
+			expect(layout.layerList.length).to.equal(0);
+			expect(layout.activeLayer).to.equal(null);
+			expect(layout.dataLayer).to.equal(null);
 		});
 	});
 
