@@ -47,15 +47,15 @@
 	};
 
 	/**
-	 * Maximum number of layers per layout.
+	 * Maximum count of layers (per layout).
 	 *
 	 * @property MAX_LAYER_COUNT
 	 * @type {Number}
 	 * @static
 	 * @final
-	 * @default 8
+	 * @default 20
 	 */
-	Layout.MAX_LAYER_COUNT = 8;
+	Layout.MAX_LAYER_COUNT = 20;
 
 	/**
 	 * Model event name.

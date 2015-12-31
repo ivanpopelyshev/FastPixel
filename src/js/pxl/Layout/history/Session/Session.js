@@ -148,7 +148,6 @@
 	 * Will cache the whole token array.
 	 *
 	 * @method push
-	 * @param data {ImageDataArray} [in/out]
 	 * @param options {Object} [in]
 	 */
 	sessionStaticProto.push = function(options){

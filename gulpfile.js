@@ -4,15 +4,15 @@ var uglify = require("gulp-uglify");
 var cache = require("gulp-cache");
 
 var FILE_LIST = [
-	"./public/js/pxl/pxl.js",
-	"./public/js/pxl/Point/Point.js",
-	"./public/js/pxl/Observer/Observer.js",
-	"./public/js/pxl/bresenham/bresenham.js",
-	"./public/js/pxl/View/View.js",
-	"./public/js/pxl/Layout/Layout.js",
-	"./public/js/pxl/Layout/history/history.js",
-	"./public/js/pxl/Layout/history/Session/Session.js",
-	"./public/js/pxl/Layout/Layer/Layer.js"
+	"./src/js/pxl/pxl.js",
+	"./src/js/pxl/Point/Point.js",
+	"./src/js/pxl/Observer/Observer.js",
+	"./src/js/pxl/bresenham/bresenham.js",
+	"./src/js/pxl/View/View.js",
+	"./src/js/pxl/Layout/Layout.js",
+	"./src/js/pxl/Layout/Layer/Layer.js",
+	"./src/js/pxl/Layout/history/history.js",
+	"./src/js/pxl/Layout/history/Session/Session.js"	
 ];
 
 var APP_NAME = "pxl";
@@ -31,7 +31,7 @@ gulp.task("compress", function(){
 });
 
 gulp.task("watch", function(){
-	gulp.watch("./public/js/pxl/**/*.js", ["default"]);
+	gulp.watch("./src/js/pxl/**/*.js", ["default"]);
 });
 
 gulp.task("clear", function(done){

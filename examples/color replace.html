@@ -73,7 +73,7 @@
 						};
 
 						history.record(layout, history.STATIC_SHOT);
-						history._lastSession.push(options);
+						history.cache(options);
 						layout.colorReplace(options);
 						history.stop();
 					}

@@ -110,25 +110,12 @@
 		},
 
 		/**
-		 * @method getSession
-		 * @param options {Options}
-		 * @param layout {Layout}
+		 * @method cache
+		 * @param param {Object|Number}
 		 */
-		cache: (function(){ //anonymos
-			var _diffPos = new pxl.Point;
-			return function(options, layout){
-				if (options.start && options.offset){
-					_diffPos.set(options.start).sub(options.offset);
-					if (_diffPos.x === 1 && _diffPos.y === 1){
-						this._lastSession.pushIndex(
-							layout.indexAt(options.start));
-						return; //stop.
-					}
-				}
-				this._lastSession.pushArray(
-					layout.activeLayer.cloneData(options), options);
-			}
-		})(),
+		cache: function(param){
+			this._lastSession.push(param);
+		},
 
 		/**
 		 * Start Layer recording.

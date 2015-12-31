@@ -29,7 +29,7 @@
 		 * @private
 		 * @type {Boolean}
 		 */
-		this._layoutOwner = isOwner;
+		this._layoutOwner = !!isOwner;
 
 		/**
 		 * @property _imagePoint
@@ -56,8 +56,9 @@
 		/**
 		 * @property _boundedRender
 		 * @private
-		 * @type {Function}
+		 * @type {Function|null}
 		 */
+		this._boundedRender = null;
 		this._subscribe();
 	};
 
@@ -81,14 +82,10 @@
 		var bufferCanvas = null;
 		var layout = null;
 		var isOwner = true;
-		if (options.element){
-			if (options.element.nodeName.toUpperCase() === "CANVAS"){
-				canvas = options.element;
-			} else{
-				canvas = options.element.appendChild(pxl.createCanvas());
-			}
+		if (options.element.nodeName.toUpperCase() === "CANVAS"){
+			canvas = options.element;
 		} else{
-			canvas = document.body.appendChild(pxl.createCanvas());
+			canvas = options.element.appendChild(pxl.createCanvas());
 		}
 		if (options.source){
 			bufferCanvas = options.source._buffer.canvas;
