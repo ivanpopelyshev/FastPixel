@@ -24,7 +24,7 @@
 	 * @module pxl
 	 * @main
 	 */
-	return {
+	return{
 		//Not "linked" yet objects:
 		Layout: null,
 		View: null,

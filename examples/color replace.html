@@ -30,6 +30,8 @@
 					var layout = View.activeView.getLayout().appendLayer();
 
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
+					pxl.bresenham.rectangle(300, 600, 800, 800, setPixel);
+					pxl.bresenham.rectangle(700, 100, 900, 300, setPixel);
 
 					//listen for some of user movements:
 					document.addEventListener("mousedown", userDownMouse, false);
@@ -90,6 +92,6 @@
 				}
 			})();
 		</script>
-		<p class="noselect">click on different zones to see how invoke "fill" method</p>
+		<p class="noselect">click on different zones to see how replace method is worked</p>
 	</body>
 </html>

@@ -1196,7 +1196,7 @@
 		return dest;
 	};
 
-	//remove _layout and _buffer properties
+	//clear _layout and _buffer properties
 	function _removeLayout(view){
 		view._buffer = view._layout = null;
 	}
@@ -2233,6 +2233,15 @@
 				}
 				++i;
 			}
+		},
+
+		/**
+		 * @method free
+		 */
+		free: function(){
+			this._lastSession = null;
+			this._stack.length = 0;
+			this._pointer = 0;
 		}
 	};
 })();
@@ -2255,7 +2264,7 @@
 
 		/**
 		 * @property _list
-		 * @private
+		 * @protected
 		 * @type {Array}
 		 * @default []
 		 */
@@ -2390,15 +2399,19 @@
 	 */
 	sessionStaticProto.push = function(options){
 		var layout = this.layer.getLayout();
-		this._list.push({
-			&quot;data&quot;: this.layer.cloneData(options),
-			&quot;start&quot;: (options.start
-				? new pxl.Point(options.start)
-				: new pxl.Point(0, 0)),
-			&quot;offset&quot;: (options.offset
-				? new pxl.Point(options.offset)
-				: new pxl.Point(layout.getWidth(), layout.getHeight()))
-		});
+		if (options.start &amp;&amp; options.offset){
+			this._list.push({
+				&quot;data&quot;: this.layer.cloneData(options),
+				&quot;start&quot;: new pxl.Point(0, 0),
+				&quot;offset&quot;: new pxl.Point(layout.getWidth(), layout.getHeight())
+			});
+		} else{
+			this._list.push({
+				&quot;data&quot;: this.layer.cloneData(options),
+				&quot;start&quot;: new pxl.Point(options.start),
+				&quot;offset&quot;: new pxl.Point(options.offset)
+			});
+		}
 	};
 
 	/**

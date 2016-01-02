@@ -45,7 +45,7 @@
             "namespaces": {},
             "tag": "module",
             "file": "pxl.js",
-            "line": 2278
+            "line": 2287
         }
     },
     "classes": {
@@ -245,7 +245,7 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 2149,
+            "line": 2158,
             "is_constructor": 1,
             "params": [
                 {
@@ -266,7 +266,7 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 2182,
+            "line": 2191,
             "is_constructor": 1,
             "extends": "Session",
             "params": [
@@ -288,7 +288,7 @@
             "module": "pxl",
             "namespace": "",
             "file": "pxl.js",
-            "line": 2278,
+            "line": 2287,
             "is_constructor": 1,
             "extends": "Session",
             "params": [
@@ -2601,7 +2601,15 @@
         },
         {
             "file": "pxl.js",
-            "line": 2155,
+            "line": 2145,
+            "itemtype": "method",
+            "name": "free",
+            "class": "history",
+            "module": "pxl"
+        },
+        {
+            "file": "pxl.js",
+            "line": 2164,
             "description": "Reference on the layer.",
             "itemtype": "property",
             "name": "layer",
@@ -2611,10 +2619,10 @@
         },
         {
             "file": "pxl.js",
-            "line": 2163,
+            "line": 2172,
             "itemtype": "property",
             "name": "_list",
-            "access": "private",
+            "access": "protected",
             "tagname": "",
             "type": "{Array}",
             "default": "[]",
@@ -2623,7 +2631,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2174,
+            "line": 2183,
             "itemtype": "method",
             "name": "isEmpty",
             "return": {
@@ -2635,7 +2643,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2191,
+            "line": 2200,
             "itemtype": "property",
             "name": "_sessionMap",
             "access": "private",
@@ -2647,7 +2655,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2204,
+            "line": 2213,
             "description": "Will cache an index and the color from one.",
             "itemtype": "method",
             "name": "push",
@@ -2663,7 +2671,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2224,
+            "line": 2233,
             "description": "Swap data from session to current layer's data.",
             "itemtype": "method",
             "name": "rewrite",
@@ -2672,7 +2680,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2292,
+            "line": 2301,
             "description": "Will cache the whole token array.",
             "itemtype": "method",
             "name": "push",
@@ -2688,7 +2696,7 @@
         },
         {
             "file": "pxl.js",
-            "line": 2311,
+            "line": 2324,
             "description": "Swap data from session to current layer's data.",
             "itemtype": "method",
             "name": "rewrite",

@@ -491,7 +491,7 @@
 		return dest;
 	};
 
-	//remove _layout and _buffer properties
+	//clear _layout and _buffer properties
 	function _removeLayout(view){
 		view._buffer = view._layout = null;
 	}

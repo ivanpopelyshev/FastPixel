@@ -1,9 +1,8 @@
 # FastPixel
 
-Fast &amp; flexible API for creating awesome pixel-art tool!
+Fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-Currently in progress (stable beta).
-Very close to stable release.
+Stable version!
 
 ## It is just works!
 
@@ -36,7 +35,7 @@ pxl.bresenham.line(25, 25, 50, 100, function(x, y){
 ```
 
 Look at [examples][] to see more!
-Few of them available by link below:
+Few of them available online by links below:
 - [Pixel carrying][]
 - [Color replacing][]
 - [Channel setting][]
@@ -45,18 +44,15 @@ Few of them available by link below:
 
 No! At all! Everything is you need is just a one file: [pxl.js][] or [pxl.min.js][]
 
-## Modules
+## Short description
 
 API is completely synchronous & single thread (no timers and no workers).
-Based on different modules, separated by files (thanks to gulp).
-Also there are few absolutely independence modules:
-- [Point][]
-- [Observer][]
-- [bresenham][]
 
-Main logic is based on MVC design pattern.
-"Model" is a group of Layout and Layer classes. The  View component has obvious name "View".
-The "Controller" have to be implemented by you. By default it null and called as "controller".
+"Model" is a close cooperation of Layout and Layer classes.
+
+The View component has obvious name "View".
+
+The "Controller" have to be implemented by developer. By default it null and called as "controller".
 
 ## Feedback
 
@@ -65,9 +61,6 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [examples]: ./examples
 [pxl.js]: ./pxl.js
 [pxl.min.js]: ./pxl.min.js
-[Point]: ./public/js/pxl/Point/Point.js
-[Observer]: ./public/js/pxl/Observer/Observer.js
-[bresenham]: ./public/js/pxl/bresenham/bresenham.js
 [Pixel carrying]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/carry%20pixel.html
 [Color replacing]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/color%20replace.html
 [Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting%20channel.html

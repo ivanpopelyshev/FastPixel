@@ -191,6 +191,15 @@
 				}
 				++i;
 			}
+		},
+
+		/**
+		 * @method free
+		 */
+		free: function(){
+			this._lastSession = null;
+			this._stack.length = 0;
+			this._pointer = 0;
 		}
 	};
 })();

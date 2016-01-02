@@ -17,7 +17,7 @@
 
 		/**
 		 * @property _list
-		 * @private
+		 * @protected
 		 * @type {Array}
 		 * @default []
 		 */
@@ -103,7 +103,7 @@
 			g = pixel[1];
 			b = pixel[2];
 			a = pixel[3];
-			indexes = this._colorMap[color];
+			indexes = this._sessionMap[color];
 			length = indexes.length;
 			for (i = 0; i < length; ++i){
 				tokenIndex = indexes[i];
@@ -126,7 +126,7 @@
 				data[tokenIndex + 3] = a;
 			}
 		}
-		this._colorMap = swappedMap;
+		this._sessionMap = swappedMap;
 		this._list = swappedOrder;
 	};
 
@@ -152,15 +152,19 @@
 	 */
 	sessionStaticProto.push = function(options){
 		var layout = this.layer.getLayout();
-		this._list.push({
-			"data": this.layer.cloneData(options),
-			"start": (options.start
-				? new pxl.Point(options.start)
-				: new pxl.Point(0, 0)),
-			"offset": (options.offset
-				? new pxl.Point(options.offset)
-				: new pxl.Point(layout.getWidth(), layout.getHeight()))
-		});
+		if (options.start && options.offset){
+			this._list.push({
+				"data": this.layer.cloneData(options),
+				"start": new pxl.Point(options.start),
+				"offset": new pxl.Point(options.offset)
+			});
+		} else{
+			this._list.push({
+				"data": this.layer.cloneData(options),
+				"start": new pxl.Point(0, 0),
+				"offset": new pxl.Point(layout.getWidth(), layout.getHeight())
+			});
+		}
 	};
 
 	/**
