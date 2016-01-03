@@ -24,7 +24,7 @@
 	 * @module pxl
 	 * @main
 	 */
-	return {
+	return{
 		//Not "linked" yet objects:
 		Layout: null,
 		View: null,
@@ -534,7 +534,7 @@
 		 * @param callback {Function}
 		 */
 		rectangle: function(x0, y0, x1, y1, callback){
-			//FIXME
+			var tmp = 0;
 			if (x0 === x1 || y0 === y1){
 				if (x0 === x1 && y0 === y1){
 					callback(x0, y0);
@@ -542,6 +542,16 @@
 					bresenham.line(x0, y0, x1, y0, callback);
 				}
 			} else{
+				if (x1 < x0){
+					tmp = x0;
+					x0 = x1;
+					x1 = tmp;
+				}
+				if (y1 < y0){
+					tmp = y0;
+					y0 = y1;
+					y1 = tmp;
+				}
 				bresenham.line(x0, y0, x1 - 1, y0, callback);
 				bresenham.line(x1, y0, x1, y1 - 1, callback);
 				bresenham.line(x1, y1, x0 + 1, y1, callback);
