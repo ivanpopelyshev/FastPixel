@@ -2,7 +2,7 @@
 
 Fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-Stable version!
+Stable version! (v. 0.1.0)
 
 ## It is just works!
 
