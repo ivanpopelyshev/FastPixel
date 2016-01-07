@@ -996,7 +996,7 @@
 	 * @chainable
 	 */
 	viewProto.setImagePoint = function(x, y){
-		return this.fitToTransition(this._imagePoint.set(x, y));
+		return this._imagePoint.set(x, y);
 	};
 
 	/**
