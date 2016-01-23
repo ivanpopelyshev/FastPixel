@@ -71,9 +71,9 @@
 		 * Clamp a number according to min-max borders.
 		 *
 		 * @method clamp
-		 * @param dest {Number}
-		 * @param min {Number}
-		 * @param max {Number}
+		 * @param dest {Number} [in]
+		 * @param min {Number} [in]
+		 * @param max {Number} [in]
 		 * @return {Number}
 		 */
 		clamp: function(dest, min, max){
@@ -92,14 +92,69 @@
 
 		/**
 		 * @method extend
-		 * @param child {Function}
-		 * @param parent {Function}
+		 * @param child {Function} [out]
+		 * @param parent {Function} [in]
 		 */
 		extend: function(child, parent){
 			var F = function(){};
 			F.prototype = parent.prototype;
 			child.prototype = new F;
 			child.prototype.constructor = child;
+		},
+
+		/**
+		 * Warn: make sure that parameters are fit to range 0..255!
+		 *
+		 * @method toRGBA
+		 * @param r {Number} [in]
+		 * @param g {Number} [in]
+		 * @param b {Number} [in]
+		 * @param a {Number} [in]
+		 * @return {Number}
+		 */
+		toRGBA: function(r, g, b, a){
+			return r | (g << 8) | (b << 16) | (a << 24);
+		},
+
+		/**
+		 * @method getR
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getR: function(rgba){
+			return rgba & 0xFF;
+		},
+
+		/**
+		 * @method getG
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getG: function(rgba){
+			return (rgba & 0xFF00) >> 8;
+		},
+
+		/**
+		 * @method getB
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getB: function(rgba){
+			return (rgba & 0xFF0000) >> 16;
+		},
+
+		/**
+		 * @method getA
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getA: function(rgba){
+			//According to standart the integer can contain only 32 bits.
+			//Also, there is no way to set signed/unsigned numbers,
+			//so the first bit (big endian) is always for a sign:
+			return (rgba < 0 //detect is there a sign.
+				? 0xFF - ~((rgba & 0xFF000000) >> 24)
+				: (rgba & 0xFF000000) >> 24);
 		}
 	};
 })(document);
@@ -136,6 +191,7 @@
 	 * Floating point error for comparison method.
 	 *
 	 * @static
+	 * @property
 	 * @type {Number}
 	 */
 	Point.EPSILON = 1e-10;
@@ -671,7 +727,7 @@
 		/**
 		 * @property _layout
 		 * @private
-		 * @type {Layout}
+		 * @type {Layout|null}
 		 */
 		this._layout = layout;
 
@@ -1171,17 +1227,6 @@
 	};
 
 	/**
-	 * Maximum count of layers (per layout).
-	 *
-	 * @property MAX_LAYER_COUNT
-	 * @type {Number}
-	 * @static
-	 * @final
-	 * @default 20
-	 */
-	Layout.MAX_LAYER_COUNT = 20;
-
-	/**
 	 * Model event name.
 	 *
 	 * @property PIXELS_CHANGED_EVENT
@@ -1195,21 +1240,20 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance into the layerList (if possible);
+	 * Append new Layer instance into the layerList;
 	 * activeLayer point on new instance.
 	 *
 	 * @method appendLayer
+	 * @param name {String|undefined} [in]
 	 * @chainable
 	 */
-	layoutProto.appendLayer = function(){
-		if (this.layerList.length < Layout.MAX_LAYER_COUNT){
-			this.activeLayer = new Layout.Layer(
-				this.getWidth() * this.getHeight(),
-				this,
-				"Layer " + this.layerList.length
-			);
-			this.layerList.push(this.activeLayer);
-		}
+	layoutProto.appendLayer = function(name){
+		this.activeLayer = new Layout.Layer(
+			this.getWidth() * this.getHeight(),
+			this,
+			typeof name === "string" ? name : "Layer " + this.layerList.length
+		);
+		this.layerList.push(this.activeLayer);
 		return this;
 	};
 
@@ -1357,7 +1401,7 @@
 	 * Get whole image data or just a part of it (according to options).
 	 *
 	 * @method getImageData
-	 * @param options {Object|undefined} [in]
+	 * @param options {Object} [in]
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
@@ -1381,6 +1425,14 @@
 	 */
 	layoutProto.getHeight = function(){
 		return this._imageData.height;
+	};
+
+	/**
+	 * @method getLayersCount
+	 * @return {Number}
+	 */
+	layoutProto.getLayersCount = function(){
+		return this.layerList.length;
 	};
 
 	/**
@@ -1481,7 +1533,7 @@
 	 *
 	 * @constructor
 	 * @class Layer
-	 * @throws {RangeError} Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.
+	 * @throws {RangeError} "Buffer limit has been reached!"
 	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param layout {Layout|undefined}
 	 * @param name {String|undefined}
@@ -1496,7 +1548,7 @@
 
 		if (this.data.length > Layer.MAX_BUFFER_SIZE){
 			this.data = null; //free memory
-			throw new RangeError;
+			throw new RangeError("Buffer limit has been reached!");
 		}
 
 		/**
@@ -1962,16 +2014,9 @@
 
 	/**
 	 * @class history
+	 * @static
 	 */
 	pxl.Layout.history = {
-		/**
-		 * @property MAX_HISTORY_SIZE
-		 * @type {Number}
-		 * @final
-		 * @default 30
-		 */
-		MAX_HISTORY_SIZE: 30,
-
 		/**
 		 * Special recording flag. Cache method have to be used once on session.
 		 * Use case: methods like fill or replaceColor.
@@ -2001,7 +2046,7 @@
 		_stack: [],
 
 		/**
-		 * Point on the current index in container
+		 * Point on the current active index in container
 		 *
 		 * @property _pointer
 		 * @private
@@ -2027,19 +2072,11 @@
 		_isRecording: false,
 
 		/**
-		 * @method isHistoryEmpty
-		 * @return {Boolean}
-		 */
-		isHistoryEmpty: function(){
-			return this._stack.length === 0;
-		},
-
-		/**
 		 * @method isHistoryFull
-		 * @return {Boolean}
+		 * @return {Number}
 		 */
-		isHistoryFull: function(){
-			return this._stack.length === this.MAX_HISTORY_SIZE;
+		getHistorySize: function(){
+			return this._stack.length;
 		},
 
 		/**
@@ -2054,7 +2091,7 @@
 		 * @method undo
 		 */
 		undo: function(){
-			if (this._pointer !== 0){
+			if (this._pointer > 0){
 				this._stack[--this._pointer].rewrite();
 			}
 		},
@@ -2070,23 +2107,23 @@
 
 		/**
 		 * @method cache
-		 * @param param {Object|Number}
+		 * @param param {Object|Number} [in]
 		 */
 		cache: function(param){
-			this._lastSession.push(param);
+			this._lastSession.cache(param);
 		},
 
 		/**
 		 * Start Layer recording.
 		 *
 		 * @method record
-		 * @throws {Error} Raise an error if already is under recording; Or if flag is unknown.
-		 * @param layout {Layout}
-		 * @param flag {Number} STATIC_SHOT or DYNAMIC_SHOT
+		 * @throws {Error} "Recording has been started before!" | "Unknown flag!"
+		 * @param layout {Layout} [in]
+		 * @param flag {STATIC_SHOT|DYNAMIC_SHOT} [in]
 		 */
 		record: function(layout, flag){
 			if (this._isRecording === true){
-				throw new Error;
+				throw new Error("Recording has been started before!");
 			}
 			if (flag === pxl.Layout.history.STATIC_SHOT){
 				this._lastSession = new pxl.Layout.history.SessionStatic(
@@ -2095,32 +2132,54 @@
 				this._lastSession = new pxl.Layout.history.SessionDynamic(
 					layout.activeLayer);
 			} else{
-				throw new Error;
+				throw new Error("Unknown flag!");
 			}
 			this._isRecording = true;
 		},
 
 		/**
-		 * Stop recording and save session.
+		 * Stop recording and save session;
+		 * Note: empty sessions may not saved!
+		 * Also, keep in mind that each session is stored in RAM.
 		 *
-		 * @throws {Error} Raise an error if recording has not been started.
+		 * @throws {Error} "Recording has not been started!"
+		 * @param forgetFirst {Boolean} [in] When new session is saved, the first one is removed.
 		 * @method stop
 		 */
-		stop: function(){
+		stop: function(forgetFirst){
 			if (this._isRecording !== true){
-				throw new Error;
+				this.resetRecording();
+				throw new Error("Recording has not been started!");
 			}
 			if (this._lastSession.isEmpty() === false){
-				if (this._pointer < this.MAX_HISTORY_SIZE){ //prevent overflow
-					this._stack[this._pointer++] = this._lastSession;
-					this._stack.splice(this._pointer, this._stack.length);
-				} else{
+				if (forgetFirst === true){ //prevent overflow
 					this._stack.push(this._lastSession);
 					this._stack.shift();
+				} else{
+					this._stack[this._pointer++] = this._lastSession;
+					this._stack.splice(this._pointer, this._stack.length);
 				}
 			}
+			this.resetRecording();
+		},
+
+		/**
+		 * Clear the current session.
+		 *
+		 * @method resetRecording
+		 */
+		resetRecording: function(){
 			this._isRecording = false;
 			this._lastSession = null;
+		},
+
+		/**
+		 * @method free
+		 */
+		free: function(){
+			this._lastSession = null;
+			this._stack.length = 0;
+			this._pointer = 0;
 		},
 
 		/**
@@ -2150,15 +2209,6 @@
 				}
 				++i;
 			}
-		},
-
-		/**
-		 * @method free
-		 */
-		free: function(){
-			this._lastSession = null;
-			this._stack.length = 0;
-			this._pointer = 0;
 		}
 	};
 })();
@@ -2178,24 +2228,6 @@
 		 * @type {Layer}
 		 */
 		this.layer = layer;
-
-		/**
-		 * @property _list
-		 * @protected
-		 * @type {Array}
-		 * @default []
-		 */
-		this._list = [];
-	};
-
-	var sessionProto = Session.prototype;
-
-	/**
-	 * @method isEmpty
-	 * @return {Boolean}
-	 */
-	sessionProto.isEmpty = function(){
-		return this._list.length === 0;
 	};
 
 	/**
@@ -2208,36 +2240,74 @@
 		Session.call(this, layer);
 
 		/**
-		 * @property _sessionMap
-		 * @private
-		 * @type {Array}
-		 * @default []
+		 * Reference on the layer.
+		 *
+		 * @property layer
+		 * @type {Layer}
 		 */
-		this._sessionMap = {};
-	};
+		this.layer = layer;
 
-	pxl.extend(SessionDynamic, Session);
+		/**
+		 * @property _indexMap
+		 * @private
+		 * @type {Object}
+		 * @default {}
+		 */
+		this._indexMap = {};
+	};
 	
+	pxl.extend(SessionDynamic, Session);
+
 	var sessionDynamicProto = SessionDynamic.prototype;
+
+	/**
+	 * @method isEmpty
+	 * @return {Boolean}
+	 */
+	sessionDynamicProto.isEmpty = function(){
+		for (var _ in this._indexMap){
+			return true;
+		}
+		return false;
+	};
 
 	/**
 	 * Will cache an index and the color from one.
 	 *
-	 * @method push
-	 * @param index {Number} [in]
+	 * @method cache
+	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.
 	 */
-	sessionDynamicProto.push = function(index){
+	sessionDynamicProto.cache = function(param){
 		var data = this.layer.data;
-		var color = data[index] + ","
-					+ data[index + 1] + ","
-					+ data[index + 2] + ","
-					+ data[index + 3];
-		if (color in this._sessionMap){
-			this._sessionMap[color].push(index);
+        var indexMap = this._indexMap;
+        if (param.constructor === Number){
+            _cachePixel(param);
+	    } else if(param.start && param.offset){
+			if (param.offset.x === 1 && param.offset.y === 1){
+				_cachePixel(this.layer.getLayout().indexAt(param.start));
+			} else{
+				this.layer.getLayout().__process(param, _processLine);
+			}
 		} else{
-			this._list.push(color);
-			this._sessionMap[color] = [index];
+			this.layer.getLayout().__process({}, _processLine);
 		}
+
+		//Helpers:
+        function _cachePixel(index){
+			if (!(index in indexMap)){
+				indexMap[index] = pxl.toRGBA(data[index],
+											 data[index + 1],
+											 data[index + 2],
+											 data[index + 3]);
+			}
+		};
+
+		function _processLine(i, length){
+			while (i < length){
+				_cachePixel(i);
+				i += 4;
+			}
+		};
 	};
 
 	/**
@@ -2246,52 +2316,28 @@
 	 * @method rewrite
 	 */
 	sessionDynamicProto.rewrite = function(){
-		var pixel = null;
-		var data = this.layer.data;
-		var indexes = null;
-		var color = null;
-		var tokenIndex = 0;
-		var length = 0;
-		var i = 0;
-		var r = 0;
-		var g = 0;
-		var b = 0;
-		var a = 0;
-		var usedIndexes = {};
-		var swappedMap = {};
-		var swappedOrder = [];
-		while (this._list.length){
-			color = this._list.pop();
-			pixel = color.split(",");
-			r = pixel[0];
-			g = pixel[1];
-			b = pixel[2];
-			a = pixel[3];
-			indexes = this._sessionMap[color];
-			length = indexes.length;
-			for (i = 0; i < length; ++i){
-				tokenIndex = indexes[i];
-				if (!(tokenIndex in usedIndexes)){
-					usedIndexes[tokenIndex] = false;
-					color = data[tokenIndex] + "," +
-							data[tokenIndex + 1] + "," +
-							data[tokenIndex + 2] + "," +
-							data[tokenIndex + 3];
-					if (color in swappedMap){
-						swappedMap[color].push(tokenIndex);
-					} else{
-						swappedOrder.push(color);
-						swappedMap[color] = [tokenIndex];
-					}
-				}
-				data[tokenIndex] = r;
-				data[tokenIndex + 1] = g;
-				data[tokenIndex + 2] = b;
-				data[tokenIndex + 3] = a;
+		var colorMap = {};
+		var packedColor = 0;
+		var tokenColor = null;
+		var layer = this.layer;
+		var indexMap = this._indexMap;
+		for (var index in indexMap){
+			packedColor = indexMap[index];
+			if (packedColor in colorMap){
+				tokenColor = colorMap[packedColor];
+			} else{
+				tokenColor = [pxl.getR(packedColor),
+							  pxl.getG(packedColor),
+							  pxl.getB(packedColor),
+							  pxl.getA(packedColor)];
+				colorMap[packedColor] = tokenColor;
 			}
+			layer.setAt(+index, //cast to Number, since "index" is a String
+						tokenColor[0],
+						tokenColor[1],
+						tokenColor[2],
+						tokenColor[3]);
 		}
-		this._sessionMap = swappedMap;
-		this._list = swappedOrder;
 	};
 
 	/**
@@ -2302,32 +2348,61 @@
 	 */
 	var SessionStatic = pxl.Layout.history.SessionStatic = function(layer){
 		Session.call(this, layer);
+
+        /**
+    	 * @property _cached
+		 * @private
+		 * @type {Boolean}
+		 * @default false
+		 */
+        this._cached = false;
+
+        /**
+         * @property _cachedOption
+		 * @private
+		 * @type {Object|null}
+		 * @default null
+		 */
+        this._cachedOption = null;
 	};
 
 	pxl.extend(SessionStatic, Session);
 
 	var sessionStaticProto = SessionStatic.prototype;
 
+    /**
+     * @method isEmpty
+	 * @return {Boolean}
+	 */
+	sessionStaticProto.isEmpty = function(){
+		return this._cachedOption === null;
+	};
+
 	/**
 	 * Will cache the whole token array.
 	 *
-	 * @method push
+	 * @method cache
+	 * @throws {Error} "Static sessions can be cached only once!"
 	 * @param options {Object} [in]
 	 */
-	sessionStaticProto.push = function(options){
-		var layout = this.layer.getLayout();
+	sessionStaticProto.cache = function(options){
+        if (this._cached === true){
+            throw new Error("Static sessions can be cached only once!");
+        }
+        this._cached = true;
 		if (options.start && options.offset){
-			this._list.push({
+			//process part of the data:
+			this._cachedOption = {
 				"data": this.layer.cloneData(options),
-				"start": new pxl.Point(options.start),
-				"offset": new pxl.Point(options.offset)
-			});
+				"start": options.start.clone(),
+				"offset": options.offset.clone()
+			};
 		} else{
-			this._list.push({
-				"data": this.layer.cloneData(options),
-				"start": new pxl.Point(0, 0),
-				"offset": new pxl.Point(layout.getWidth(), layout.getHeight())
-			});
+			//process the whole data:
+			this._cachedOption = {
+				"data": this.layer.cloneData(options)
+				//no need to store "start" and "offset" options
+			};
 		}
 	};
 
@@ -2337,9 +2412,11 @@
 	 * @method rewrite
 	 */
 	sessionStaticProto.rewrite = function(){
-		var lastData = this._list[this._list.length - 1];
-		var tokenData = this.layer.cloneData(lastData);
-		this.layer.insertData(lastData);
-		lastData.data = tokenData;
+        var cachedOption = this._cachedOption;
+		var tokenData = this.layer.cloneData(cachedOption);
+
+        //swap:
+		this.layer.insertData(cachedOption);
+		cachedOption.data = tokenData;
 	};
 })();

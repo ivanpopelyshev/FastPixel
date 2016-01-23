@@ -31,6 +31,7 @@
 	 * Floating point error for comparison method.
 	 *
 	 * @static
+	 * @property
 	 * @type {Number}
 	 */
 	Point.EPSILON = 1e-10;

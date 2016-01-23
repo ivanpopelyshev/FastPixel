@@ -95,7 +95,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l2191"><code>pxl.js:2191</code></a>
+            Defined in: <a href="../files/pxl.js.html#l2233"><code>pxl.js:2233</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -130,7 +130,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2191"><code>pxl.js:2191</code></a>
+        <a href="../files/pxl.js.html#l2233"><code>pxl.js:2233</code></a>
         </p>
 
 
@@ -180,12 +180,12 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_isEmpty">isEmpty</a>
+                            <li class="index-item method">
+                                <a href="#method_cache">cache</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_push">push</a>
+                                <a href="#method_isEmpty">isEmpty</a>
 
                             </li>
                             <li class="index-item method">
@@ -199,12 +199,8 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property protected inherited">
-                                <a href="#property__list">_list</a>
-
-                            </li>
                             <li class="index-item property private">
-                                <a href="#property__sessionMap">_sessionMap</a>
+                                <a href="#property__indexMap">_indexMap</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -220,7 +216,61 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_isEmpty" class="method item inherited">
+<div id="method_cache" class="method item">
+    <h3 class="name"><code>cache</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>param</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2274"><code>pxl.js:2274</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Will cache an index and the color from one.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">param</code>
+                        <span class="type">Object | Number</span>
+
+
+                    <div class="param-description">
+                        <p>[in] Pass the usual options or an index of the pixel.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_isEmpty" class="method item">
     <h3 class="name"><code>isEmpty</code></h3>
 
         <span class="paren">()</span>
@@ -236,9 +286,9 @@
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Session.html#method_isEmpty">Session</a>:
-        <a href="../files/pxl.js.html#l2183"><code>pxl.js:2183</code></a>
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2263"><code>pxl.js:2263</code></a>
         </p>
 
 
@@ -260,60 +310,6 @@
 
 
 </div>
-<div id="method_push" class="method item">
-    <h3 class="name"><code>push</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>index</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2213"><code>pxl.js:2213</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Will cache an index and the color from one.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">index</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_rewrite" class="method item">
     <h3 class="name"><code>rewrite</code></h3>
 
@@ -329,7 +325,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2233"><code>pxl.js:2233</code></a>
+        <a href="../files/pxl.js.html#l2313"><code>pxl.js:2313</code></a>
         </p>
 
 
@@ -350,35 +346,9 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property__list" class="property item protected inherited">
-    <h3 class="name"><code>_list</code></h3>
-    <span class="type">Array</span>
-
-
-        <span class="flag protected">protected</span>
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Session.html#property__list">Session</a>:
-        <a href="../files/pxl.js.html#l2172"><code>pxl.js:2172</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> []</p>
-
-
-</div>
-<div id="property__sessionMap" class="property item private">
-    <h3 class="name"><code>_sessionMap</code></h3>
-    <span class="type">Array</span>
+<div id="property__indexMap" class="property item private">
+    <h3 class="name"><code>_indexMap</code></h3>
+    <span class="type">Object</span>
 
 
         <span class="flag private">private</span>
@@ -388,7 +358,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2200"><code>pxl.js:2200</code></a>
+        <a href="../files/pxl.js.html#l2250"><code>pxl.js:2250</code></a>
         </p>
 
 
@@ -398,11 +368,11 @@
         
     </div>
 
-        <p><strong>Default:</strong> []</p>
+        <p><strong>Default:</strong> {}</p>
 
 
 </div>
-<div id="property_layer" class="property item inherited">
+<div id="property_layer" class="property item">
     <h3 class="name"><code>layer</code></h3>
     <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a></span>
 
@@ -411,9 +381,12 @@
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Session.html#property_layer">Session</a>:
-        <a href="../files/pxl.js.html#l2164"><code>pxl.js:2164</code></a>
+            <p>Inherited from
+            <a href="../classes/Session.html#property_layer">
+                Session
+            </a>
+            but overwritten in
+        <a href="../files/pxl.js.html#l2242"><code>pxl.js:2242</code></a>
         </p>
 
 

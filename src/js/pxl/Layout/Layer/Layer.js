@@ -7,7 +7,7 @@
 	 *
 	 * @constructor
 	 * @class Layer
-	 * @throws {RangeError} Raise an error if data size larger than the size of the MAX_BUFFER_SIZE.
+	 * @throws {RangeError} "Buffer limit has been reached!"
 	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param layout {Layout|undefined}
 	 * @param name {String|undefined}
@@ -22,7 +22,7 @@
 
 		if (this.data.length > Layer.MAX_BUFFER_SIZE){
 			this.data = null; //free memory
-			throw new RangeError;
+			throw new RangeError("Buffer limit has been reached!");
 		}
 
 		/**

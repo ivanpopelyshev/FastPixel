@@ -71,9 +71,9 @@
 		 * Clamp a number according to min-max borders.
 		 *
 		 * @method clamp
-		 * @param dest {Number}
-		 * @param min {Number}
-		 * @param max {Number}
+		 * @param dest {Number} [in]
+		 * @param min {Number} [in]
+		 * @param max {Number} [in]
 		 * @return {Number}
 		 */
 		clamp: function(dest, min, max){
@@ -92,14 +92,69 @@
 
 		/**
 		 * @method extend
-		 * @param child {Function}
-		 * @param parent {Function}
+		 * @param child {Function} [out]
+		 * @param parent {Function} [in]
 		 */
 		extend: function(child, parent){
 			var F = function(){};
 			F.prototype = parent.prototype;
 			child.prototype = new F;
 			child.prototype.constructor = child;
+		},
+
+		/**
+		 * Warn: make sure that parameters are fit to range 0..255!
+		 *
+		 * @method toRGBA
+		 * @param r {Number} [in]
+		 * @param g {Number} [in]
+		 * @param b {Number} [in]
+		 * @param a {Number} [in]
+		 * @return {Number}
+		 */
+		toRGBA: function(r, g, b, a){
+			return r | (g << 8) | (b << 16) | (a << 24);
+		},
+
+		/**
+		 * @method getR
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getR: function(rgba){
+			return rgba & 0xFF;
+		},
+
+		/**
+		 * @method getG
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getG: function(rgba){
+			return (rgba & 0xFF00) >> 8;
+		},
+
+		/**
+		 * @method getB
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getB: function(rgba){
+			return (rgba & 0xFF0000) >> 16;
+		},
+
+		/**
+		 * @method getA
+		 * @param rgba {Number} [in]
+		 * @return {Number}
+		 */
+		getA: function(rgba){
+			//According to standart the integer can contain only 32 bits.
+			//Also, there is no way to set signed/unsigned numbers,
+			//so the first bit (big endian) is always for a sign:
+			return (rgba < 0 //detect is there a sign.
+				? 0xFF - ~((rgba & 0xFF000000) >> 24)
+				: (rgba & 0xFF000000) >> 24);
 		}
 	};
 })(document);

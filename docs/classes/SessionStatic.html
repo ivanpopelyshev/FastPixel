@@ -95,7 +95,7 @@
         </div>
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l2287"><code>pxl.js:2287</code></a>
+            Defined in: <a href="../files/pxl.js.html#l2343"><code>pxl.js:2343</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -130,7 +130,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2287"><code>pxl.js:2287</code></a>
+        <a href="../files/pxl.js.html#l2343"><code>pxl.js:2343</code></a>
         </p>
 
 
@@ -180,12 +180,12 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
-                            <li class="index-item method inherited">
-                                <a href="#method_isEmpty">isEmpty</a>
+                            <li class="index-item method">
+                                <a href="#method_cache">cache</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_push">push</a>
+                                <a href="#method_isEmpty">isEmpty</a>
 
                             </li>
                             <li class="index-item method">
@@ -199,8 +199,12 @@
                     <h3>Properties</h3>
 
                     <ul class="index-list properties extends">
-                            <li class="index-item property protected inherited">
-                                <a href="#property__list">_list</a>
+                            <li class="index-item property private">
+                                <a href="#property__cached">_cached</a>
+
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__cachedOption">_cachedOption</a>
 
                             </li>
                             <li class="index-item property inherited">
@@ -216,48 +220,8 @@
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
-<div id="method_isEmpty" class="method item inherited">
-    <h3 class="name"><code>isEmpty</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Session.html#method_isEmpty">Session</a>:
-        <a href="../files/pxl.js.html#l2183"><code>pxl.js:2183</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_push" class="method item">
-    <h3 class="name"><code>push</code></h3>
+<div id="method_cache" class="method item">
+    <h3 class="name"><code>cache</code></h3>
 
         <div class="args">
             <span class="paren">(</span><ul class="args-list inline commas">
@@ -277,7 +241,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2301"><code>pxl.js:2301</code></a>
+        <a href="../files/pxl.js.html#l2381"><code>pxl.js:2381</code></a>
         </p>
 
 
@@ -308,6 +272,55 @@
         </div>
 
 
+        <div class="throws">
+            <h4>Throws:</h4>
+
+            <div class="throws-description">
+                        <span class="type">Error</span>:
+                    <p>&quot;Static sessions can be cached only once!&quot;</p>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_isEmpty" class="method item">
+    <h3 class="name"><code>isEmpty</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Boolean</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2373"><code>pxl.js:2373</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Boolean</span>:
+            </div>
+        </div>
+
 
 </div>
 <div id="method_rewrite" class="method item">
@@ -325,7 +338,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2324"><code>pxl.js:2324</code></a>
+        <a href="../files/pxl.js.html#l2409"><code>pxl.js:2409</code></a>
         </p>
 
 
@@ -346,19 +359,19 @@
             <div id="properties" class="api-class-tabpanel">
                 <h2 class="off-left">Properties</h2>
 
-<div id="property__list" class="property item protected inherited">
-    <h3 class="name"><code>_list</code></h3>
-    <span class="type">Array</span>
+<div id="property__cached" class="property item private">
+    <h3 class="name"><code>_cached</code></h3>
+    <span class="type">Boolean</span>
 
 
-        <span class="flag protected">protected</span>
+        <span class="flag private">private</span>
 
 
 
     <div class="meta">
-                <p>Inherited from
-                <a href="../classes/Session.html#property__list">Session</a>:
-        <a href="../files/pxl.js.html#l2172"><code>pxl.js:2172</code></a>
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2352"><code>pxl.js:2352</code></a>
         </p>
 
 
@@ -368,7 +381,33 @@
         
     </div>
 
-        <p><strong>Default:</strong> []</p>
+        <p><strong>Default:</strong> false</p>
+
+
+</div>
+<div id="property__cachedOption" class="property item private">
+    <h3 class="name"><code>_cachedOption</code></h3>
+    <span class="type">Object | Null</span>
+
+
+        <span class="flag private">private</span>
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2360"><code>pxl.js:2360</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <p><strong>Default:</strong> null</p>
 
 
 </div>
@@ -383,7 +422,7 @@
     <div class="meta">
                 <p>Inherited from
                 <a href="../classes/Session.html#property_layer">Session</a>:
-        <a href="../files/pxl.js.html#l2164"><code>pxl.js:2164</code></a>
+        <a href="../files/pxl.js.html#l2224"><code>pxl.js:2224</code></a>
         </p>
 
 

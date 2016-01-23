@@ -92,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l1953"><code>pxl.js:1953</code></a>
+            Defined in: <a href="../files/pxl.js.html#l2015"><code>pxl.js:2015</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -134,10 +134,6 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_isHistoryEmpty">isHistoryEmpty</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_isHistoryFull">isHistoryFull</a>
 
                             </li>
@@ -151,6 +147,10 @@
                             </li>
                             <li class="index-item method">
                                 <a href="#method_redo">redo</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_resetRecording">resetRecording</a>
 
                             </li>
                             <li class="index-item method">
@@ -189,10 +189,6 @@
 
                             </li>
                             <li class="index-item property">
-                                <a href="#property_MAX_HISTORY_SIZE">MAX_HISTORY_SIZE</a>
-
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_STATIC_SHOT">STATIC_SHOT</a>
 
                             </li>
@@ -226,7 +222,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2061"><code>pxl.js:2061</code></a>
+        <a href="../files/pxl.js.html#l2108"><code>pxl.js:2108</code></a>
         </p>
 
 
@@ -247,7 +243,8 @@
 
 
                     <div class="param-description">
-                         
+                        <p>[in]</p>
+
                     </div>
 
                 </li>
@@ -272,7 +269,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2116"><code>pxl.js:2116</code></a>
+        <a href="../files/pxl.js.html#l2185"><code>pxl.js:2185</code></a>
         </p>
 
 
@@ -303,7 +300,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2145"><code>pxl.js:2145</code></a>
+        <a href="../files/pxl.js.html#l2176"><code>pxl.js:2176</code></a>
         </p>
 
 
@@ -315,46 +312,6 @@
     </div>
 
 
-
-
-</div>
-<div id="method_isHistoryEmpty" class="method item">
-    <h3 class="name"><code>isHistoryEmpty</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2019"><code>pxl.js:2019</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-            </div>
-        </div>
 
 
 </div>
@@ -364,7 +321,7 @@
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type">Boolean</span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -376,7 +333,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2027"><code>pxl.js:2027</code></a>
+        <a href="../files/pxl.js.html#l2074"><code>pxl.js:2074</code></a>
         </p>
 
 
@@ -392,7 +349,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">Boolean</span>:
+                        <span class="type">Number</span>:
             </div>
         </div>
 
@@ -416,7 +373,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2035"><code>pxl.js:2035</code></a>
+        <a href="../files/pxl.js.html#l2082"><code>pxl.js:2082</code></a>
         </p>
 
 
@@ -462,7 +419,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2069"><code>pxl.js:2069</code></a>
+        <a href="../files/pxl.js.html#l2116"><code>pxl.js:2116</code></a>
         </p>
 
 
@@ -484,17 +441,18 @@
 
 
                     <div class="param-description">
-                         
+                        <p>[in]</p>
+
                     </div>
 
                 </li>
                 <li class="param">
                         <code class="param-name">flag</code>
-                        <span class="type">Number</span>
+                        <span class="type">STATIC_SHOT | DYNAMIC_SHOT</span>
 
 
                     <div class="param-description">
-                        <p>STATIC_SHOT or DYNAMIC_SHOT</p>
+                        <p>[in]</p>
 
                     </div>
 
@@ -508,7 +466,7 @@
 
             <div class="throws-description">
                         <span class="type">Error</span>:
-                    <p>Raise an error if already is under recording; Or if flag is unknown.</p>
+                    <p>&quot;Recording has been started before!&quot; | &quot;Unknown flag!&quot;</p>
 
             </div>
         </div>
@@ -529,7 +487,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2052"><code>pxl.js:2052</code></a>
+        <a href="../files/pxl.js.html#l2099"><code>pxl.js:2099</code></a>
         </p>
 
 
@@ -544,8 +502,8 @@
 
 
 </div>
-<div id="method_stop" class="method item">
-    <h3 class="name"><code>stop</code></h3>
+<div id="method_resetRecording" class="method item">
+    <h3 class="name"><code>resetRecording</code></h3>
 
         <span class="paren">()</span>
 
@@ -559,7 +517,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2093"><code>pxl.js:2093</code></a>
+        <a href="../files/pxl.js.html#l2166"><code>pxl.js:2166</code></a>
         </p>
 
 
@@ -567,10 +525,66 @@
     </div>
 
     <div class="description">
-        <p>Stop recording and save session.</p>
+        <p>Clear the current session.</p>
 
     </div>
 
+
+
+
+</div>
+<div id="method_stop" class="method item">
+    <h3 class="name"><code>stop</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>forgetFirst</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2140"><code>pxl.js:2140</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Stop recording and save session;
+Note: empty sessions may not saved!
+Also, keep in mind that each session is stored in RAM.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">forgetFirst</code>
+                        <span class="type">Boolean</span>
+
+
+                    <div class="param-description">
+                        <p>[in] When new session is saved, the first one is removed.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
 
 
         <div class="throws">
@@ -578,7 +592,7 @@
 
             <div class="throws-description">
                         <span class="type">Error</span>:
-                    <p>Raise an error if recording has not been started.</p>
+                    <p>&quot;Recording has not been started!&quot;</p>
 
             </div>
         </div>
@@ -599,7 +613,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2043"><code>pxl.js:2043</code></a>
+        <a href="../files/pxl.js.html#l2090"><code>pxl.js:2090</code></a>
         </p>
 
 
@@ -631,7 +645,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2011"><code>pxl.js:2011</code></a>
+        <a href="../files/pxl.js.html#l2066"><code>pxl.js:2066</code></a>
         </p>
 
 
@@ -657,7 +671,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2003"><code>pxl.js:2003</code></a>
+        <a href="../files/pxl.js.html#l2058"><code>pxl.js:2058</code></a>
         </p>
 
 
@@ -683,14 +697,14 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1993"><code>pxl.js:1993</code></a>
+        <a href="../files/pxl.js.html#l2048"><code>pxl.js:2048</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Point on the current index in container</p>
+        <p>Point on the current active index in container</p>
 
     </div>
 
@@ -710,7 +724,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1985"><code>pxl.js:1985</code></a>
+        <a href="../files/pxl.js.html#l2040"><code>pxl.js:2040</code></a>
         </p>
 
 
@@ -736,7 +750,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1975"><code>pxl.js:1975</code></a>
+        <a href="../files/pxl.js.html#l2030"><code>pxl.js:2030</code></a>
         </p>
 
 
@@ -748,32 +762,6 @@ Use case: user draw lines.</p>
 
     </div>
 
-
-
-</div>
-<div id="property_MAX_HISTORY_SIZE" class="property item">
-    <h3 class="name"><code>MAX_HISTORY_SIZE</code></h3>
-    <span class="type">Number</span>
-
-
-
-        <span class="flag final">final</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l1957"><code>pxl.js:1957</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <p><strong>Default:</strong> 30</p>
 
 
 </div>
@@ -789,7 +777,7 @@ Use case: user draw lines.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1965"><code>pxl.js:1965</code></a>
+        <a href="../files/pxl.js.html#l2020"><code>pxl.js:2020</code></a>
         </p>
 
 

@@ -49,7 +49,7 @@
 		/**
 		 * @property _layout
 		 * @private
-		 * @type {Layout}
+		 * @type {Layout|null}
 		 */
 		this._layout = layout;
 

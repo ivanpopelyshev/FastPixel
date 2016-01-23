@@ -16,13 +16,19 @@ describe("Layer", function(){
 
 	describe("constructor with image buffer", function(){
 		it("should be OK", function(){
-			var layer = new pxl.Layout.Layer(
-				new pxl.createImageData(8, 16).data.buffer);
+			var data = new pxl.createImageData(8, 16).data;
+			data[0] = 255;
+			data[4] = 255;
+			data[8] = 255;
 
-			var data = layer.data;
-			for (var i = 0; i < data.length; ++i){
-				expect(data[i]).to.equal(0);
-			}
+			var layer = new pxl.Layout.Layer(data.buffer);
+			
+			layer.data[16] = 255;
+
+			expect(layer.data[0]).to.equal(data[0]);
+			expect(layer.data[4]).to.equal(data[4]);
+			expect(layer.data[8]).to.equal(data[8]);
+			expect(layer.data[16]).to.equal(data[16]);
 	
 			expect(layer.data.length).to.equal(8 * 16 * 4);
 		});
@@ -30,7 +36,6 @@ describe("Layer", function(){
 	
 	describe("constructor with too large size", function(){
 		it("should be OK", function(){
-			
 			try{
 				new pxl.Layout.Layer(pxl.Layout.Layer.MAX_BUFFER_SIZE + 1);
 			} catch(err){

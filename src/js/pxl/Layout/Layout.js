@@ -47,17 +47,6 @@
 	};
 
 	/**
-	 * Maximum count of layers (per layout).
-	 *
-	 * @property MAX_LAYER_COUNT
-	 * @type {Number}
-	 * @static
-	 * @final
-	 * @default 20
-	 */
-	Layout.MAX_LAYER_COUNT = 20;
-
-	/**
 	 * Model event name.
 	 *
 	 * @property PIXELS_CHANGED_EVENT
@@ -71,21 +60,20 @@
 	var layoutProto = Layout.prototype;
 
 	/**
-	 * Append new Layer instance into the layerList (if possible);
+	 * Append new Layer instance into the layerList;
 	 * activeLayer point on new instance.
 	 *
 	 * @method appendLayer
+	 * @param name {String|undefined} [in]
 	 * @chainable
 	 */
-	layoutProto.appendLayer = function(){
-		if (this.layerList.length < Layout.MAX_LAYER_COUNT){
-			this.activeLayer = new Layout.Layer(
-				this.getWidth() * this.getHeight(),
-				this,
-				"Layer " + this.layerList.length
-			);
-			this.layerList.push(this.activeLayer);
-		}
+	layoutProto.appendLayer = function(name){
+		this.activeLayer = new Layout.Layer(
+			this.getWidth() * this.getHeight(),
+			this,
+			typeof name === "string" ? name : "Layer " + this.layerList.length
+		);
+		this.layerList.push(this.activeLayer);
 		return this;
 	};
 
@@ -233,7 +221,7 @@
 	 * Get whole image data or just a part of it (according to options).
 	 *
 	 * @method getImageData
-	 * @param options {Object|undefined} [in]
+	 * @param options {Object} [in]
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
@@ -257,6 +245,14 @@
 	 */
 	layoutProto.getHeight = function(){
 		return this._imageData.height;
+	};
+
+	/**
+	 * @method getLayersCount
+	 * @return {Number}
+	 */
+	layoutProto.getLayersCount = function(){
+		return this.layerList.length;
 	};
 
 	/**

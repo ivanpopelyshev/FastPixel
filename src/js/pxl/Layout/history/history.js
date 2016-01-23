@@ -3,16 +3,9 @@
 
 	/**
 	 * @class history
+	 * @static
 	 */
 	pxl.Layout.history = {
-		/**
-		 * @property MAX_HISTORY_SIZE
-		 * @type {Number}
-		 * @final
-		 * @default 30
-		 */
-		MAX_HISTORY_SIZE: 30,
-
 		/**
 		 * Special recording flag. Cache method have to be used once on session.
 		 * Use case: methods like fill or replaceColor.
@@ -42,7 +35,7 @@
 		_stack: [],
 
 		/**
-		 * Point on the current index in container
+		 * Point on the current active index in container
 		 *
 		 * @property _pointer
 		 * @private
@@ -68,19 +61,11 @@
 		_isRecording: false,
 
 		/**
-		 * @method isHistoryEmpty
-		 * @return {Boolean}
-		 */
-		isHistoryEmpty: function(){
-			return this._stack.length === 0;
-		},
-
-		/**
 		 * @method isHistoryFull
-		 * @return {Boolean}
+		 * @return {Number}
 		 */
-		isHistoryFull: function(){
-			return this._stack.length === this.MAX_HISTORY_SIZE;
+		getHistorySize: function(){
+			return this._stack.length;
 		},
 
 		/**
@@ -95,7 +80,7 @@
 		 * @method undo
 		 */
 		undo: function(){
-			if (this._pointer !== 0){
+			if (this._pointer > 0){
 				this._stack[--this._pointer].rewrite();
 			}
 		},
@@ -111,23 +96,23 @@
 
 		/**
 		 * @method cache
-		 * @param param {Object|Number}
+		 * @param param {Object|Number} [in]
 		 */
 		cache: function(param){
-			this._lastSession.push(param);
+			this._lastSession.cache(param);
 		},
 
 		/**
 		 * Start Layer recording.
 		 *
 		 * @method record
-		 * @throws {Error} Raise an error if already is under recording; Or if flag is unknown.
-		 * @param layout {Layout}
-		 * @param flag {Number} STATIC_SHOT or DYNAMIC_SHOT
+		 * @throws {Error} "Recording has been started before!" | "Unknown flag!"
+		 * @param layout {Layout} [in]
+		 * @param flag {STATIC_SHOT|DYNAMIC_SHOT} [in]
 		 */
 		record: function(layout, flag){
 			if (this._isRecording === true){
-				throw new Error;
+				throw new Error("Recording has been started before!");
 			}
 			if (flag === pxl.Layout.history.STATIC_SHOT){
 				this._lastSession = new pxl.Layout.history.SessionStatic(
@@ -136,32 +121,54 @@
 				this._lastSession = new pxl.Layout.history.SessionDynamic(
 					layout.activeLayer);
 			} else{
-				throw new Error;
+				throw new Error("Unknown flag!");
 			}
 			this._isRecording = true;
 		},
 
 		/**
-		 * Stop recording and save session.
+		 * Stop recording and save session;
+		 * Note: empty sessions may not saved!
+		 * Also, keep in mind that each session is stored in RAM.
 		 *
-		 * @throws {Error} Raise an error if recording has not been started.
+		 * @throws {Error} "Recording has not been started!"
+		 * @param forgetFirst {Boolean} [in] When new session is saved, the first one is removed.
 		 * @method stop
 		 */
-		stop: function(){
+		stop: function(forgetFirst){
 			if (this._isRecording !== true){
-				throw new Error;
+				this.resetRecording();
+				throw new Error("Recording has not been started!");
 			}
 			if (this._lastSession.isEmpty() === false){
-				if (this._pointer < this.MAX_HISTORY_SIZE){ //prevent overflow
-					this._stack[this._pointer++] = this._lastSession;
-					this._stack.splice(this._pointer, this._stack.length);
-				} else{
+				if (forgetFirst === true){ //prevent overflow
 					this._stack.push(this._lastSession);
 					this._stack.shift();
+				} else{
+					this._stack[this._pointer++] = this._lastSession;
+					this._stack.splice(this._pointer, this._stack.length);
 				}
 			}
+			this.resetRecording();
+		},
+
+		/**
+		 * Clear the current session.
+		 *
+		 * @method resetRecording
+		 */
+		resetRecording: function(){
 			this._isRecording = false;
 			this._lastSession = null;
+		},
+
+		/**
+		 * @method free
+		 */
+		free: function(){
+			this._lastSession = null;
+			this._stack.length = 0;
+			this._pointer = 0;
 		},
 
 		/**
@@ -191,15 +198,6 @@
 				}
 				++i;
 			}
-		},
-
-		/**
-		 * @method free
-		 */
-		free: function(){
-			this._lastSession = null;
-			this._stack.length = 0;
-			this._pointer = 0;
 		}
 	};
 })();

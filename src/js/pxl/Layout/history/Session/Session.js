@@ -14,24 +14,6 @@
 		 * @type {Layer}
 		 */
 		this.layer = layer;
-
-		/**
-		 * @property _list
-		 * @protected
-		 * @type {Array}
-		 * @default []
-		 */
-		this._list = [];
-	};
-
-	var sessionProto = Session.prototype;
-
-	/**
-	 * @method isEmpty
-	 * @return {Boolean}
-	 */
-	sessionProto.isEmpty = function(){
-		return this._list.length === 0;
 	};
 
 	/**
@@ -44,36 +26,74 @@
 		Session.call(this, layer);
 
 		/**
-		 * @property _sessionMap
-		 * @private
-		 * @type {Array}
-		 * @default []
+		 * Reference on the layer.
+		 *
+		 * @property layer
+		 * @type {Layer}
 		 */
-		this._sessionMap = {};
-	};
+		this.layer = layer;
 
-	pxl.extend(SessionDynamic, Session);
+		/**
+		 * @property _indexMap
+		 * @private
+		 * @type {Object}
+		 * @default {}
+		 */
+		this._indexMap = {};
+	};
 	
+	pxl.extend(SessionDynamic, Session);
+
 	var sessionDynamicProto = SessionDynamic.prototype;
+
+	/**
+	 * @method isEmpty
+	 * @return {Boolean}
+	 */
+	sessionDynamicProto.isEmpty = function(){
+		for (var _ in this._indexMap){
+			return true;
+		}
+		return false;
+	};
 
 	/**
 	 * Will cache an index and the color from one.
 	 *
-	 * @method push
-	 * @param index {Number} [in]
+	 * @method cache
+	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.
 	 */
-	sessionDynamicProto.push = function(index){
+	sessionDynamicProto.cache = function(param){
 		var data = this.layer.data;
-		var color = data[index] + ","
-					+ data[index + 1] + ","
-					+ data[index + 2] + ","
-					+ data[index + 3];
-		if (color in this._sessionMap){
-			this._sessionMap[color].push(index);
+        var indexMap = this._indexMap;
+        if (param.constructor === Number){
+            _cachePixel(param);
+	    } else if(param.start && param.offset){
+			if (param.offset.x === 1 && param.offset.y === 1){
+				_cachePixel(this.layer.getLayout().indexAt(param.start));
+			} else{
+				this.layer.getLayout().__process(param, _processLine);
+			}
 		} else{
-			this._list.push(color);
-			this._sessionMap[color] = [index];
+			this.layer.getLayout().__process({}, _processLine);
 		}
+
+		//Helpers:
+        function _cachePixel(index){
+			if (!(index in indexMap)){
+				indexMap[index] = pxl.toRGBA(data[index],
+											 data[index + 1],
+											 data[index + 2],
+											 data[index + 3]);
+			}
+		};
+
+		function _processLine(i, length){
+			while (i < length){
+				_cachePixel(i);
+				i += 4;
+			}
+		};
 	};
 
 	/**
@@ -82,52 +102,28 @@
 	 * @method rewrite
 	 */
 	sessionDynamicProto.rewrite = function(){
-		var pixel = null;
-		var data = this.layer.data;
-		var indexes = null;
-		var color = null;
-		var tokenIndex = 0;
-		var length = 0;
-		var i = 0;
-		var r = 0;
-		var g = 0;
-		var b = 0;
-		var a = 0;
-		var usedIndexes = {};
-		var swappedMap = {};
-		var swappedOrder = [];
-		while (this._list.length){
-			color = this._list.pop();
-			pixel = color.split(",");
-			r = pixel[0];
-			g = pixel[1];
-			b = pixel[2];
-			a = pixel[3];
-			indexes = this._sessionMap[color];
-			length = indexes.length;
-			for (i = 0; i < length; ++i){
-				tokenIndex = indexes[i];
-				if (!(tokenIndex in usedIndexes)){
-					usedIndexes[tokenIndex] = false;
-					color = data[tokenIndex] + "," +
-							data[tokenIndex + 1] + "," +
-							data[tokenIndex + 2] + "," +
-							data[tokenIndex + 3];
-					if (color in swappedMap){
-						swappedMap[color].push(tokenIndex);
-					} else{
-						swappedOrder.push(color);
-						swappedMap[color] = [tokenIndex];
-					}
-				}
-				data[tokenIndex] = r;
-				data[tokenIndex + 1] = g;
-				data[tokenIndex + 2] = b;
-				data[tokenIndex + 3] = a;
+		var colorMap = {};
+		var packedColor = 0;
+		var tokenColor = null;
+		var layer = this.layer;
+		var indexMap = this._indexMap;
+		for (var index in indexMap){
+			packedColor = indexMap[index];
+			if (packedColor in colorMap){
+				tokenColor = colorMap[packedColor];
+			} else{
+				tokenColor = [pxl.getR(packedColor),
+							  pxl.getG(packedColor),
+							  pxl.getB(packedColor),
+							  pxl.getA(packedColor)];
+				colorMap[packedColor] = tokenColor;
 			}
+			layer.setAt(+index, //cast to Number, since "index" is a String
+						tokenColor[0],
+						tokenColor[1],
+						tokenColor[2],
+						tokenColor[3]);
 		}
-		this._sessionMap = swappedMap;
-		this._list = swappedOrder;
 	};
 
 	/**
@@ -138,32 +134,61 @@
 	 */
 	var SessionStatic = pxl.Layout.history.SessionStatic = function(layer){
 		Session.call(this, layer);
+
+        /**
+    	 * @property _cached
+		 * @private
+		 * @type {Boolean}
+		 * @default false
+		 */
+        this._cached = false;
+
+        /**
+         * @property _cachedOption
+		 * @private
+		 * @type {Object|null}
+		 * @default null
+		 */
+        this._cachedOption = null;
 	};
 
 	pxl.extend(SessionStatic, Session);
 
 	var sessionStaticProto = SessionStatic.prototype;
 
+    /**
+     * @method isEmpty
+	 * @return {Boolean}
+	 */
+	sessionStaticProto.isEmpty = function(){
+		return this._cachedOption === null;
+	};
+
 	/**
 	 * Will cache the whole token array.
 	 *
-	 * @method push
+	 * @method cache
+	 * @throws {Error} "Static sessions can be cached only once!"
 	 * @param options {Object} [in]
 	 */
-	sessionStaticProto.push = function(options){
-		var layout = this.layer.getLayout();
+	sessionStaticProto.cache = function(options){
+        if (this._cached === true){
+            throw new Error("Static sessions can be cached only once!");
+        }
+        this._cached = true;
 		if (options.start && options.offset){
-			this._list.push({
+			//process part of the data:
+			this._cachedOption = {
 				"data": this.layer.cloneData(options),
-				"start": new pxl.Point(options.start),
-				"offset": new pxl.Point(options.offset)
-			});
+				"start": options.start.clone(),
+				"offset": options.offset.clone()
+			};
 		} else{
-			this._list.push({
-				"data": this.layer.cloneData(options),
-				"start": new pxl.Point(0, 0),
-				"offset": new pxl.Point(layout.getWidth(), layout.getHeight())
-			});
+			//process the whole data:
+			this._cachedOption = {
+				"data": this.layer.cloneData(options)
+				//no need to store "start" and "offset" options
+			};
 		}
 	};
 
@@ -173,9 +198,11 @@
 	 * @method rewrite
 	 */
 	sessionStaticProto.rewrite = function(){
-		var lastData = this._list[this._list.length - 1];
-		var tokenData = this.layer.cloneData(lastData);
-		this.layer.insertData(lastData);
-		lastData.data = tokenData;
+        var cachedOption = this._cachedOption;
+		var tokenData = this.layer.cloneData(cachedOption);
+
+        //swap:
+		this.layer.insertData(cachedOption);
+		cachedOption.data = tokenData;
 	};
 })();
