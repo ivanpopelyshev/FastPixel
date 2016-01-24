@@ -139,5 +139,8 @@
 				callback(x1 + 1, y1--);
 			}
 		}
-	};
+	}
+
+	Object.seal(bresenham);
+
 })(pxl);

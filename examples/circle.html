@@ -42,9 +42,9 @@
 
 				View.activeView
 					.setScale(5) //specify new scale
-					.clear({}) //clear old state
+					.clear(pxl.emptyOptions) //clear old state
 					.begin() //begin view transformation according to new scale
-					.redraw({}) //redraw everything
+					.redraw(pxl.emptyOptions) //redraw everything
 					.end(); //turn view transfromation back
 
 			} else{

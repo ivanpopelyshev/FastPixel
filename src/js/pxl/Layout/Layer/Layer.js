@@ -46,6 +46,8 @@
 		 * @default null
 		 */
 		this._layout = layout || null;
+
+		Object.seal(this);
 	};
 
 	/**
@@ -171,7 +173,7 @@
 		var g = options.pixel[1];
 		var b = options.pixel[2];
 		var a = options.pixel[3];
-		var method = options.isMix === true ? "mixAt" : "setAt";
+		var method = (options.isMix === true ? "mixAt" : "setAt");
 		this._layout.__process(options, function(i, length){
 			for (; i < length; i += 4){
 				self[method](i, r, g, b, a);

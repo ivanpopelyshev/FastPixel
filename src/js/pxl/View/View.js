@@ -60,6 +60,8 @@
 		 */
 		this._boundedRender = null;
 		this._subscribe();
+		
+		Object.seal(this);
 	};
 
 	/**
@@ -385,9 +387,7 @@
 	 * @chainable
 	 */
 	viewProto.fitToTransition = function(position){
-		position.sub(this.getScaleOffset())
-		.div(this._scale)
-		.floor();
+		position.sub(this.getScaleOffset()).div(this._scale).floor();
 		return this;
 	};
 
@@ -405,7 +405,7 @@
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
 		_setupContext(this._ctx);
-		return this.redraw({});
+		return this.redraw(pxl.emptyOptions);
     };
 
 	/**

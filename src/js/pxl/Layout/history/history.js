@@ -6,6 +6,10 @@
 	 * @static
 	 */
 	pxl.Layout.history = {
+		Session: null,
+		SessionDynamic: null,
+		SessionStatic: null,
+
 		/**
 		 * Special recording flag. Cache method have to be used once on session.
 		 * Use case: methods like fill or replaceColor.
@@ -200,4 +204,6 @@
 			}
 		}
 	};
+
+	Object.seal(pxl.Layout.history);
 })();

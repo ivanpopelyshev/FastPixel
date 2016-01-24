@@ -54,7 +54,11 @@
 				pxl.bresenham.line(0, 0, 128 - 1, 128 - 1, setPixel);
 				pxl.bresenham.ellipse(100, 100, 25, 25, setPixel);
 
-				View.activeView.setScale(5).clear({}).begin().redraw({});
+				View.activeView
+				.setScale(5)
+				.clear(pxl.emptyOptions)
+				.begin()
+				.redraw(pxl.emptyOptions);
 
 			} else{
 				alert("Not supported!"); //old IE or something like that

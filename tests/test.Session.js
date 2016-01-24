@@ -12,6 +12,15 @@ describe("Sessions", function(){
 		});
 	});
 
+	describe("empty dynamic session", function(){
+		it("should be OK", function(){
+			var session = new pxl.Layout.history.SessionDynamic(
+				new pxl.Layout.Layer(1, null));
+
+			expect(session.isEmpty()).to.equal(true);
+		});
+	});
+
 	describe("dynamic session (check rewrite (index))", function(){
 		it("should be OK", function(){
 			var layer = new pxl.Layout.Layer(1);
@@ -70,6 +79,15 @@ describe("Sessions", function(){
 			var session = new SessionStatic(null);
 			expect(session instanceof SessionStatic).to.equal(true);
 			expect(session instanceof Session).to.equal(true);
+		});
+	});
+
+	describe("empty static session", function(){
+		it("should be OK", function(){
+			var session = new pxl.Layout.history.SessionStatic(
+				new pxl.Layout.Layer(1, null));
+
+			expect(session.isEmpty()).to.equal(true);
 		});
 	});
 

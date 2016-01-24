@@ -40,6 +40,8 @@
 		 * @default {}
 		 */
 		this._indexMap = {};
+
+		Object.seal(this);
 	};
 	
 	pxl.extend(SessionDynamic, Session);
@@ -52,9 +54,9 @@
 	 */
 	sessionDynamicProto.isEmpty = function(){
 		for (var _ in this._indexMap){
-			return true;
+			return false;
 		}
-		return false;
+		return true;
 	};
 
 	/**
@@ -75,7 +77,7 @@
 				this.layer.getLayout().__process(param, _processLine);
 			}
 		} else{
-			this.layer.getLayout().__process({}, _processLine);
+			this.layer.getLayout().__process(pxl.emptyOptions, _processLine);
 		}
 
 		//Helpers:
@@ -150,6 +152,8 @@
 		 * @default null
 		 */
         this._cachedOption = null;
+
+		Object.seal(this);
 	};
 
 	pxl.extend(SessionStatic, Session);

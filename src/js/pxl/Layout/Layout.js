@@ -44,6 +44,8 @@
 		 * @type {Observer}
 		 */
 		this.observer = new pxl.Observer;
+
+		Object.seal(this);
 	};
 
 	/**

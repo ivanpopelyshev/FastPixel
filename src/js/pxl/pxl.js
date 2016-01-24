@@ -3,10 +3,12 @@
 
 	var _isSupported = true;
 	var _imgDataCtor = null;
+	var _emptyOptions = {};
 	var _canvas = null;
 	var _ctx = null;
 
 	try{
+		Object.seal(_emptyOptions);
 		_canvas = document.createElement("CANVAS");
 		_canvas.width = _canvas.height = 1; //reduce the amount of memory
 		_ctx = _canvas.getContext("2d");
@@ -24,7 +26,7 @@
 	 * @module pxl
 	 * @main
 	 */
-	return{
+	var _pxl = {
 		//Not "linked" yet objects:
 		Layout: null,
 		View: null,
@@ -38,6 +40,16 @@
 		 * @default null
 		 */
 		controller: null,
+
+		/**
+		 * Helpful in case when method can take an object without options.
+		 *
+		 * @property emptyOptions
+		 * @type {Object}
+		 * @final
+		 * @default {}
+		 */
+		emptyOptions: _emptyOptions,
 
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
@@ -103,6 +115,21 @@
 		},
 
 		/**
+		 * @method imageDataFromImg
+		 * @param img {Image} [in]
+		 * @return {ImageData}
+		 */
+		imageDataFromImage: function(img){
+			var imageData = null;
+			_canvas.width = img.width;
+			_canvas.height = img.height;
+			_ctx.drawImage(img, 0, 0);
+			imageData = _ctx.getImageData(0, 0, _canvas.width, _canvas.height);
+			_canvas.width = _canvas.height = 1; //reduce the amount of memory
+			return imageData;
+		},
+
+		/**
 		 * Warn: make sure that parameters are fit to range 0..255!
 		 *
 		 * @method toRGBA
@@ -149,12 +176,14 @@
 		 * @return {Number}
 		 */
 		getA: function(rgba){
-			//According to standart the integer can contain only 32 bits.
-			//Also, there is no way to set signed/unsigned numbers,
-			//so the first bit (big endian) is always for a sign:
 			return (rgba < 0 //detect is there a sign.
-				? 0xFF - ~((rgba & 0xFF000000) >> 24)
-				: (rgba & 0xFF000000) >> 24);
+				? 0xFF - ~((rgba & 0xFF000000) >> 24) //invert negative
+				: (rgba & 0xFF000000) >> 24); //usual case
 		}
-	};
+	}
+
+	Object.seal(_pxl);
+
+	return _pxl;
+
 })(document);
