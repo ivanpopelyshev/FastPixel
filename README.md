@@ -2,7 +2,7 @@
 
 Fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-Stable version! (v.0.2.1)
+Stable version! (v.0.3.0)
 
 Few examples are available online by links below:
 - [Pixel carrying][]
