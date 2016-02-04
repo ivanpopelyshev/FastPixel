@@ -19,6 +19,19 @@ describe("history", function(){
 		});
 	});
 
+	describe("history size", function(){
+		it("should be OK", function(){
+			var history = pxl.Layout.history;
+			
+			history.record(new pxl.Layout(8, 16), history.STATIC_SHOT);
+			history.stop();
+
+			expect(pxl.Layout.history.getHistorySize()).to.equal(0); //empty sessions don't pass
+
+			history.free();
+		});
+	});
+
 	describe("reset recording", function(){
 		it("should be OK", function(){
 			var history = pxl.Layout.history;

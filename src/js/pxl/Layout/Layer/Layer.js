@@ -11,6 +11,9 @@
 	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param layout {Layout|undefined}
 	 * @param name {String|undefined}
+	 * @example
+		var layer = new pxl.Layout.Layer(8 * 16, layout, "Background");
+		//if suppose that layout is 8x16
 	 */
 	var Layer = pxl.Layout.Layer = function(source, layout, name){
 		/**
@@ -57,7 +60,7 @@
 	 * @type {Number}
 	 * @static
 	 * @final
-	 * @default 2048*2048*4
+	 * @default 2048x2048x4
 	 */
 	Layer.MAX_BUFFER_SIZE = 2048 * 2048 * 4;
 
@@ -71,7 +74,7 @@
 	layerProto.reset = function(){
 		var data = this.data;
 		if ("fill" in pxl.ImageDataArray.prototype){ //ES6
-			data.fill(0);
+			data.fill(0); //much faster
 		} else{
 			for (var i = 0, length = data.length; i < length; ++i){
 				data[i] = 0;
@@ -82,11 +85,11 @@
 	/**
 	 * Warn: layers have to be from same layout or at least have equal size.
 	 *
-	 * @method copy
+	 * @method copyFrom
 	 * @param other {Layer} [in]
 	 * @param fullCopy {Boolean|undefined} [in]
 	 */
-	layerProto.copy = function(other, fullCopy){
+	layerProto.copyFrom = function(other, fullCopy){
 		this.data.set(other.data);
 		if (fullCopy === true){
 			this.name = other.name;
@@ -123,10 +126,12 @@
 				}
 			});
 		}
+		//try to avoid possible memory leaks that commes from closure:
+		otherData = self = method = null;
 	};
 
 	/**
-	 * Replace specific color from position with new one on whole layer;
+	 * Replace specific color by the new one on whole layer;
 	 * Or just on area within start and offset options.
 	 *
 	 * @method colorReplace
@@ -153,6 +158,7 @@
 				}
 			}
 		});
+		self = null;
 	};
 
 	/**
@@ -179,6 +185,7 @@
 				self[method](i, r, g, b, a);
 			}
 		});
+		self = data = method = null;
 	};
 
 	/**
@@ -187,8 +194,8 @@
 	 *
 	 * @method setChannel
 	 * @param options {Object} [in]
-	 * @param options.channelOffset {Number} 0-3 (rgba)
-	 * @param options.value {Number} 0-255
+	 * @param options.channelOffset {Number} 0..3 (rgba index)
+	 * @param options.value {Number} 0..255 (byte)
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 */
@@ -201,6 +208,7 @@
 				data[i + channelOffset] = value;
 			}
 		});
+		data = null;
 	};
 
 	/**
@@ -276,6 +284,8 @@
 				}
 			} while(stack.length);
 
+			self = null;
+
 			//Helper:
 			function _fill(){
 				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
@@ -302,6 +312,7 @@
 				thisData[i++] = otherData[index++];
 			}
 		});
+		thisData = otherData = null;
 	};
 
 	/**
@@ -321,7 +332,8 @@
 	};
 
 	/**
-	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
+	 * Look at: http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
+	 *
 	 * @method mixAt
 	 * @param i {Number} index where to apply.
 	 * @param r {Number}
@@ -421,7 +433,7 @@
 			? pxl.createImageData(options.offset.x, options.offset.y)
 			: pxl.createImageData(layout.getWidth(), layout.getHeight())
 		);
-		this._generateData(imageData.data, this.data, options);
+		void this._generateData(imageData.data, this.data, options);
 		return imageData;
 	};
 
@@ -471,6 +483,7 @@
 				destData = new pxl.ImageDataArray(sourceData); //copy constructor
 			}
 		}
+		sourceData = null;
 		return destData;
 	};
 

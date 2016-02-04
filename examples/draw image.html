@@ -17,15 +17,14 @@
 
 				//create the new View instance, and set it as active:
 				var activeView = pxl.View.activeView = pxl.View.create({
-					canvasSize: { //size (in pixels) of your "off-screen" canvas
+					layoutSize: { //size (in pixels) of your "off-screen" canvas
 						width: 256,
 						height: 256
 					},
 					element: document.querySelector("CANVAS")
 				});
-				
-				var layout = activeView.getLayout();
-				layout.appendLayer("myLayer");
+				var layout = pxl.View.activeView.getLayout();
+				layout.activeLayer = layout.insertLayer();
 				
 				var img = new Image;
 				img.onload = function(){

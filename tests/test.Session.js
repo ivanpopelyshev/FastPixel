@@ -46,7 +46,7 @@ describe("Sessions", function(){
 	describe("dynamic session (check rewrite (options))", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(1, 1);
-			layout.appendLayer();
+			layout.activeLayer = layout.insertLayer();
 
 			var layer = layout.activeLayer;
 

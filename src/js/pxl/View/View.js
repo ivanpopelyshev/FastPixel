@@ -74,9 +74,9 @@
 	 * @param options {Object} [in]
 	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or any other element as a parent.
 	 * @param options.source {View|undefined} New instance will listen all changes on source.
-	 * @param options.canvasSize {Object|undefined} Size of the model.
-	 * @param options.canvasSize.width {Number}
-	 * @param options.canvasSize.height {Number}
+	 * @param options.layoutSize {Object|undefined} Size of the model.
+	 * @param options.layoutSize.width {Number}
+	 * @param options.layoutSize.height {Number}
 	 * @return {View}
 	 */
 	View.create = function(options){
@@ -95,8 +95,8 @@
 			isOwner = false;
 		} else{
 			bufferCanvas = pxl.createCanvas();
-			bufferCanvas.width = options.canvasSize.width;
-			bufferCanvas.height = options.canvasSize.height;
+			bufferCanvas.width = options.layoutSize.width;
+			bufferCanvas.height = options.layoutSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
 		var view = new View(
@@ -392,7 +392,7 @@
 	};
 
 	/**
-     * Resize and redraw.
+     * Note: changes style too.
 	 *
 	 * @method resizeElement
 	 * @param width {Number}
@@ -405,7 +405,7 @@
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
 		_setupContext(this._ctx);
-		return this.redraw(pxl.emptyOptions);
+		return this;
     };
 
 	/**

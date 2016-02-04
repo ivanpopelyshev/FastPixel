@@ -92,7 +92,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l1216"><code>pxl.js:1216</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1235"><code>pxl.js:1235</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -132,7 +132,7 @@ Or just already existing ImageData as a source.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1216"><code>pxl.js:1216</code></a>
+        <a href="../files/pxl.js.html#l1235"><code>pxl.js:1235</code></a>
         </p>
 
 
@@ -174,6 +174,14 @@ Or just already existing ImageData as a source.</p>
 
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    var layout = pxl.Layout(8, 16);</code></pre>
+
+            </div>
+        </div>
 </div>
     </div>
 
@@ -195,10 +203,6 @@ Or just already existing ImageData as a source.</p>
                     <ul class="index-list methods">
                             <li class="index-item method private">
                                 <a href="#method___process">__process</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_appendLayer">appendLayer</a>
 
                             </li>
                             <li class="index-item method">
@@ -234,11 +238,19 @@ Or just already existing ImageData as a source.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_getVisibleLayers">getVisibleLayers</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_getWidth">getWidth</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_indexAt">indexAt</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_insertLayer">insertLayer</a>
 
                             </li>
                             <li class="index-item method">
@@ -250,15 +262,19 @@ Or just already existing ImageData as a source.</p>
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_removeAllLayers">removeAllLayers</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_set">set</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_setChannel">setChannel</a>
+                                <a href="#method_setActiveTo">setActiveTo</a>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_visibleLayers">visibleLayers</a>
+                                <a href="#method_setChannel">setChannel</a>
 
                             </li>
                     </ul>
@@ -327,7 +343,7 @@ Or just already existing ImageData as a source.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1521"><code>pxl.js:1521</code></a>
+        <a href="../files/pxl.js.html#l1593"><code>pxl.js:1593</code></a>
         </p>
 
 
@@ -390,62 +406,6 @@ Or just already existing ImageData as a source.</p>
 
 
 </div>
-<div id="method_appendLayer" class="method item">
-    <h3 class="name"><code>appendLayer</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>name</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-        <span class="flag chainable">chainable</span>
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l1276"><code>pxl.js:1276</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Append new Layer instance into the layerList;
-activeLayer point on new instance.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">name</code>
-                        <span class="type">String | Undefined</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
 <div id="method_colorReplace" class="method item">
     <h3 class="name"><code>colorReplace</code></h3>
 
@@ -468,7 +428,7 @@ activeLayer point on new instance.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1351"><code>pxl.js:1351</code></a>
+        <a href="../files/pxl.js.html#l1411"><code>pxl.js:1411</code></a>
         </p>
 
 
@@ -477,7 +437,7 @@ activeLayer point on new instance.</p>
 
     <div class="description">
         <p>Replace old colour by new one;
-delegate processing to the activeLayer.</p>
+Delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -518,7 +478,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1294"><code>pxl.js:1294</code></a>
+        <a href="../files/pxl.js.html#l1352"><code>pxl.js:1352</code></a>
         </p>
 
 
@@ -549,7 +509,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1548"><code>pxl.js:1548</code></a>
+        <a href="../files/pxl.js.html#l1620"><code>pxl.js:1620</code></a>
         </p>
 
 
@@ -587,7 +547,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1396"><code>pxl.js:1396</code></a>
+        <a href="../files/pxl.js.html#l1456"><code>pxl.js:1456</code></a>
         </p>
 
 
@@ -596,7 +556,7 @@ delegate processing to the activeLayer.</p>
 
     <div class="description">
         <p>Flood fill;
-delegate processing to the activeLayer.</p>
+Delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -645,7 +605,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1487"><code>pxl.js:1487</code></a>
+        <a href="../files/pxl.js.html#l1555"><code>pxl.js:1555</code></a>
         </p>
 
 
@@ -705,6 +665,16 @@ delegate processing to the activeLayer.</p>
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
+    layout.fixRange(options);
+    //in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0}, offset: {x: 8, y: 16}};</code></pre>
+
+            </div>
+        </div>
 </div>
 <div id="method_getHeight" class="method item">
     <h3 class="name"><code>getHeight</code></h3>
@@ -724,7 +694,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1456"><code>pxl.js:1456</code></a>
+        <a href="../files/pxl.js.html#l1524"><code>pxl.js:1524</code></a>
         </p>
 
 
@@ -770,7 +740,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1434"><code>pxl.js:1434</code></a>
+        <a href="../files/pxl.js.html#l1500"><code>pxl.js:1500</code></a>
         </p>
 
 
@@ -796,6 +766,26 @@ delegate processing to the activeLayer.</p>
 
                     </div>
 
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">start</code>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                        </ul>
                 </li>
             </ul>
         </div>
@@ -828,7 +818,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1464"><code>pxl.js:1464</code></a>
+        <a href="../files/pxl.js.html#l1532"><code>pxl.js:1532</code></a>
         </p>
 
 
@@ -845,6 +835,46 @@ delegate processing to the activeLayer.</p>
 
             <div class="returns-description">
                         <span class="type">Number</span>:
+            </div>
+        </div>
+
+
+</div>
+<div id="method_getVisibleLayers" class="method item">
+    <h3 class="name"><code>getVisibleLayers</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Array</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1540"><code>pxl.js:1540</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type">Array</span>:
             </div>
         </div>
 
@@ -868,7 +898,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1448"><code>pxl.js:1448</code></a>
+        <a href="../files/pxl.js.html#l1516"><code>pxl.js:1516</code></a>
         </p>
 
 
@@ -914,7 +944,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1411"><code>pxl.js:1411</code></a>
+        <a href="../files/pxl.js.html#l1471"><code>pxl.js:1471</code></a>
         </p>
 
 
@@ -953,6 +983,90 @@ delegate processing to the activeLayer.</p>
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    var index = layout.indexAt(new pxl.Point(1, 1));
+    //in 8x16 layout, an index would be equal to 9</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_insertLayer" class="method item">
+    <h3 class="name"><code>insertLayer</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+        <span class="returns-inline">
+            <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a> | Null</span>
+        </span>
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1296"><code>pxl.js:1296</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Append new Layer instance into the layerList;
+activeLayer point on new instance.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Number | Undefined</span>
+
+
+                    <div class="param-description">
+                        <p>[in] Index where to insert. Or it would be added to top if no index passed.</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                        <span class="type"><a href="../classes/Layer.html" class="crosslink">Layer</a> | Null</span>:
+                    <p>The newly created layer.</p>
+
+            </div>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    var layer = layout.insertLayer(0); //push to front</code></pre>
+
+            </div>
+        </div>
 </div>
 <div id="method_mergeLayers" class="method item">
     <h3 class="name"><code>mergeLayers</code></h3>
@@ -961,6 +1075,9 @@ delegate processing to the activeLayer.</p>
             <span class="paren">(</span><ul class="args-list inline commas">
                 <li class="arg">
                         <code>options</code>
+                </li>
+                <li class="arg">
+                        <code>layerList</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -976,7 +1093,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1316"><code>pxl.js:1316</code></a>
+        <a href="../files/pxl.js.html#l1371"><code>pxl.js:1371</code></a>
         </p>
 
 
@@ -984,8 +1101,10 @@ delegate processing to the activeLayer.</p>
     </div>
 
     <div class="description">
-        <p>Each visible layer &quot;drawn&quot; to main dataLayer layer (Back-to-front);
-Notify subscribers.</p>
+        <p>&quot;Drawn&quot; each layer to main dataLayer layer (Back-to-front);
+Will use layers from &quot;layerList&quot; parameter or visible layers if parameter is not passed;
+Note: if &quot;layerList&quot; is empty array or if there are novisible layers the model would be reseted;
+Also, will notify subscribers.</p>
 
     </div>
 
@@ -1015,7 +1134,7 @@ Notify subscribers.</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1024,7 +1143,7 @@ Notify subscribers.</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a></span>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
 
                                 <div class="param-description">
                                     
@@ -1042,11 +1161,30 @@ Notify subscribers.</p>
                             </li>
                         </ul>
                 </li>
+                <li class="param">
+                        <code class="param-name">layerList</code>
+                        <span class="type">Array | Undefined</span>
+
+
+                    <div class="param-description">
+                        <p>[in] List of layers to merge.</p>
+
+                    </div>
+
+                </li>
             </ul>
         </div>
 
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    layout.mergeLayers({isNotifyView: true, isMix: true});</code></pre>
+
+            </div>
+        </div>
 </div>
 <div id="method_positionFrom" class="method item">
     <h3 class="name"><code>positionFrom</code></h3>
@@ -1072,7 +1210,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1422"><code>pxl.js:1422</code></a>
+        <a href="../files/pxl.js.html#l1485"><code>pxl.js:1485</code></a>
         </p>
 
 
@@ -1111,6 +1249,46 @@ Notify subscribers.</p>
         </div>
 
 
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code prettyprint"><code>    var position = layout.positionFrom(9);
+    //in 8x16 layout, the position would be equal to {x: 1, y: 1}</code></pre>
+
+            </div>
+        </div>
+</div>
+<div id="method_removeAllLayers" class="method item">
+    <h3 class="name"><code>removeAllLayers</code></h3>
+
+        <span class="paren">()</span>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1340"><code>pxl.js:1340</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+
+
+
 </div>
 <div id="method_set" class="method item">
     <h3 class="name"><code>set</code></h3>
@@ -1134,7 +1312,7 @@ Notify subscribers.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1366"><code>pxl.js:1366</code></a>
+        <a href="../files/pxl.js.html#l1426"><code>pxl.js:1426</code></a>
         </p>
 
 
@@ -1143,7 +1321,7 @@ Notify subscribers.</p>
 
     <div class="description">
         <p>Set pixel or group of pixels (force-fill);
-delegate processing to the activeLayer.</p>
+Delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -1158,6 +1336,61 @@ delegate processing to the activeLayer.</p>
 
                     <div class="param-description">
                         <p>[in]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_setActiveTo" class="method item">
+    <h3 class="name"><code>setActiveTo</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>index</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+        <span class="flag chainable">chainable</span>
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1325"><code>pxl.js:1325</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Change an active layer.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">index</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                        <p>[in] Index where to apply.</p>
 
                     </div>
 
@@ -1190,7 +1423,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1381"><code>pxl.js:1381</code></a>
+        <a href="../files/pxl.js.html#l1441"><code>pxl.js:1441</code></a>
         </p>
 
 
@@ -1199,7 +1432,7 @@ delegate processing to the activeLayer.</p>
 
     <div class="description">
         <p>Setting the value for specific channel;
-delegate processing to the activeLayer.</p>
+Delegate processing to the activeLayer.</p>
 
     </div>
 
@@ -1224,46 +1457,6 @@ delegate processing to the activeLayer.</p>
 
 
 </div>
-<div id="method_visibleLayers" class="method item">
-    <h3 class="name"><code>visibleLayers</code></h3>
-
-        <span class="paren">()</span>
-
-        <span class="returns-inline">
-            <span class="type">Array</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l1472"><code>pxl.js:1472</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Array</span>:
-            </div>
-        </div>
-
-
-</div>
             </div>
 
             <div id="properties" class="api-class-tabpanel">
@@ -1281,7 +1474,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1226"><code>pxl.js:1226</code></a>
+        <a href="../files/pxl.js.html#l1247"><code>pxl.js:1247</code></a>
         </p>
 
 
@@ -1305,7 +1498,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1247"><code>pxl.js:1247</code></a>
+        <a href="../files/pxl.js.html#l1268"><code>pxl.js:1268</code></a>
         </p>
 
 
@@ -1330,7 +1523,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1233"><code>pxl.js:1233</code></a>
+        <a href="../files/pxl.js.html#l1254"><code>pxl.js:1254</code></a>
         </p>
 
 
@@ -1354,7 +1547,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1240"><code>pxl.js:1240</code></a>
+        <a href="../files/pxl.js.html#l1261"><code>pxl.js:1261</code></a>
         </p>
 
 
@@ -1379,7 +1572,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1254"><code>pxl.js:1254</code></a>
+        <a href="../files/pxl.js.html#l1275"><code>pxl.js:1275</code></a>
         </p>
 
 
@@ -1405,7 +1598,7 @@ delegate processing to the activeLayer.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1263"><code>pxl.js:1263</code></a>
+        <a href="../files/pxl.js.html#l1283"><code>pxl.js:1283</code></a>
         </p>
 
 

@@ -35,8 +35,9 @@
 		bresenham: null,
 
 		/**
+		 * User defined type.
+		 *
 		 * @property controller
-		 * @type {HAVE_TO_BE_REDEFINED_BY_USER}
 		 * @default null
 		 */
 		controller: null,
@@ -54,6 +55,8 @@
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
 		 *
+		 * @example
+			var data = pxl.ImageDataArray(4);
 		 * @property ImageDataArray
 		 * @type {Uint8ClampedArray|Uint8Array|Uint16Array|Uint32Array}
 		 */
@@ -70,6 +73,8 @@
 		/**
 		 * More safest and fastest method to create ImageData.
 		 *
+		 * @example
+			var imgData = pxl.createImageData(8, 16);
 		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number} [in]
 		 * @param arguments[1] {undefined|Number} [in]
@@ -80,8 +85,10 @@
 		},
 
 		/**
-		 * Clamp a number according to min-max borders.
+		 * Clamp a number to min/max borders.
 		 *
+		 * @example
+			var number = pxl.clamp(5, 6, 8); //returns 6
 		 * @method clamp
 		 * @param dest {Number} [in]
 		 * @param min {Number} [in]

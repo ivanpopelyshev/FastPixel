@@ -5,6 +5,8 @@
 	 * Pass width and height parameters;
 	 * Or just already existing ImageData as a source.
 	 *
+	 * @example
+		var layout = pxl.Layout(8, 16);
 	 * @constructor
 	 * @class Layout
 	 * @param param1 {ImageData|Number} [out]
@@ -44,7 +46,6 @@
 		 * @type {Observer}
 		 */
 		this.observer = new pxl.Observer;
-
 		Object.seal(this);
 	};
 
@@ -65,17 +66,55 @@
 	 * Append new Layer instance into the layerList;
 	 * activeLayer point on new instance.
 	 *
-	 * @method appendLayer
-	 * @param name {String|undefined} [in]
+	 * @example
+		var layer = layout.insertLayer(0); //push to front
+	 * @method insertLayer
+	 * @param index {Number|undefined} [in] Index where to insert. Or it would be added to top if no index passed.
+	 * @return {Layer|null} The newly created layer.
+	 */
+	layoutProto.insertLayer = function(index){
+		var layer = null;
+		if (arguments.length){
+			layer = _makeLayer.call(this);
+			if (index >= 0 && index <= this.layerList.length){
+				this.layerList.splice(index, 0, layer);
+			}
+		} else{
+			layer = _makeLayer.call(this);
+			this.layerList.push(layer);
+		}
+		return layer;
+
+		//Helper:
+		function _makeLayer(){
+			return new Layout.Layer(this.getWidth() * this.getHeight(), this);
+		};
+	};
+
+	/**
+	 * Change an active layer.
+	 *
+	 * @method setActiveTo
+	 * @param index {Number} [in] Index where to apply.
 	 * @chainable
 	 */
-	layoutProto.appendLayer = function(name){
-		this.activeLayer = new Layout.Layer(
-			this.getWidth() * this.getHeight(),
-			this,
-			typeof name === "string" ? name : "Layer " + this.layerList.length
-		);
-		this.layerList.push(this.activeLayer);
+	layoutProto.setActiveTo = function(index){
+		var tokenLayer = this.layerList[index];
+		if (tokenLayer){
+			this.activeLayer = tokenLayer;
+		}
+		return this;
+	};
+
+	/**
+	 * @method removeAllLayers
+	 * @chainable
+	 */
+	layoutProto.removeAllLayers = function(){
+		this.activeLayer = null;
+		while (this.layerList.length){
+			this.layerList.pop().destroy();
+		}
 		return this;
 	};
 
@@ -91,10 +130,7 @@
 			if (layerList[i] === this.activeLayer){
 				layerList.splice(i, 1);
 				this.activeLayer.destroy();
-				this.activeLayer = (layerList.length === 0
-					? null
-					: layerList[layerList.length - 1] //top layer become active
-				);
+				this.activeLayer = null;
 				break;
 			}
 		}
@@ -102,30 +138,35 @@
 	};
 
 	/**
-	 * Each visible layer "drawn" to main dataLayer layer (Back-to-front);
-	 * Notify subscribers.
+	 * "Drawn" each layer to main dataLayer layer (Back-to-front);
+	 * Will use layers from "layerList" parameter or visible layers if parameter is not passed;
+	 * Note: if "layerList" is empty array or if there are novisible layers the model would be reseted;
+	 * Also, will notify subscribers.
 	 *
+	 * @example
+		layout.mergeLayers({isNotifyView: true, isMix: true});
 	 * @method mergeLayers
 	 * @param options {Object} [in]
 	 * @param options.isMix {Boolean}
-	 * @param options.start {Point}
-	 * @param options.offset {Point}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @param options.isNotifyView {Boolean}
+	 * @param layerList {Array|undefined} [in] List of layers to merge.
 	 * @chainable
 	 */
-	layoutProto.mergeLayers = function(options){
+	layoutProto.mergeLayers = function(options, layerList){
 		var clonedOpts = {};
-		var visibleLayers = this.visibleLayers();
-		var layerCount = visibleLayers.length;
+		var layers = layerList || this.getVisibleLayers();
+		var layerCount = layers.length;
 		var dataLayer = this.dataLayer;
-		if (!layerCount){
+		if (layerCount === 0){
 			dataLayer.reset();
 		} else{
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.isMix = false; //it's important to disable mix first time!
+			clonedOpts.isMix = false; //it's important to disable mix first time (enable force-copy)!
 			for (var i = 0; i < layerCount; ++i){
-				clonedOpts.other = visibleLayers[i];
+				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
 				clonedOpts.isMix = !!options.isMix; //other layers have processed properly
 			}
@@ -138,7 +179,7 @@
 
     /**
      * Replace old colour by new one;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.colorReplace
 	 * @method colorReplace
@@ -153,7 +194,7 @@
 
     /**
      * Set pixel or group of pixels (force-fill);
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.set
 	 * @method set
@@ -168,7 +209,7 @@
 
     /**
      * Setting the value for specific channel;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.setChannel
 	 * @method setChannel
@@ -183,7 +224,7 @@
 
     /**
      * Flood fill;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.fill
 	 * @method fill
@@ -202,6 +243,9 @@
 	 * @method indexAt
 	 * @param position {Point} [in]
 	 * @return {Number}
+	 * @example
+		var index = layout.indexAt(new pxl.Point(1, 1));
+		//in 8x16 layout, an index would be equal to 9
 	 */
 	layoutProto.indexAt = function(position){
 		return position.x + position.y * this.getWidth();
@@ -213,6 +257,9 @@
 	 * @method positionFrom
 	 * @param index {Number} [in]
 	 * @return {Point}
+	 * @example
+		var position = layout.positionFrom(9);
+		//in 8x16 layout, the position would be equal to {x: 1, y: 1}
 	 */
 	layoutProto.positionFrom = function(index){
 		var width = this.getWidth();
@@ -224,6 +271,8 @@
 	 *
 	 * @method getImageData
 	 * @param options {Object} [in]
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
@@ -258,21 +307,25 @@
 	};
 
 	/**
-	 * @method visibleLayers
+	 * @method getVisibleLayers
 	 * @return {Array}
 	 */
-	layoutProto.visibleLayers = function(){
-		var visibleLayers = [];
+	layoutProto.getVisibleLayers = function(){
+		var getVisibleLayers = [];
 		var layerList = this.layerList;
 		for (var i = 0; i < layerList.length; ++i){
-			if (layerList[i].isVisible){
-				visibleLayers.push(layerList[i]);
+			if (layerList[i].isVisible === true){
+				getVisibleLayers.push(layerList[i]);
 			}
 		}
-		return visibleLayers;
+		return getVisibleLayers;
 	};
 
 	/**
+	 * @example
+		var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
+		layout.fixRange(options);
+		//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
 	 * @method fixRange
 	 * @param options {Object} [out]
 	 * @param options.start {Point}
@@ -340,9 +393,7 @@
 	 */
 	layoutProto.destroy = function(){
 		this.dataLayer.destroy();
-		this._imageData = this.dataLayer = this.activeLayer = null;
-		while (this.layerList.length){
-			this.layerList.pop().destroy();
-		}
+		this._imageData = this.dataLayer = null;
+		this.removeAllLayers();
 	};
 })();

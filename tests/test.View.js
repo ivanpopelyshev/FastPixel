@@ -23,7 +23,7 @@ describe("View", function(){
 			
 			var view = pxl.View.create({
 				"element": canvas,
-				"canvasSize": {
+				"layoutSize": {
 					"width": 64,
 					"height": 48
 				}

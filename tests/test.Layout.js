@@ -29,24 +29,76 @@ describe("Layout", function(){
 		});
 	});
 
-	describe("append new layer", function(){
+	describe("insert new layer", function(){
 		it("should properly added", function(){
 			var layout = new pxl.Layout(8, 16);
-			layout.appendLayer();
+			layout.activeLayer = layout.insertLayer();
 
 			expect(layout.layerList.length).to.equal(1);
 			expect(layout.layerList[0].data.length).to.equal(8 * 16 * 4);
 		});
 	});
 
-	describe("delete active layer", function(){
-		it("should properly removed", function(){
+	describe("try to insert new layer out of range", function(){
+		it("shouldn't be added", function(){
 			var layout = new pxl.Layout(8, 16);
-			layout.appendLayer();
-			layout.deleteLayer();
+			layout.insertLayer(666);
+			layout.insertLayer(-1);
+
+			expect(layout.layerList.length).to.equal(0);
+		});
+	});
+
+	describe("insert new layer by index", function(){
+		it("should properly added", function(){
+			var layout = new pxl.Layout(8, 16);
+			layout.insertLayer(0);
+			layout.insertLayer(1);
+
+			expect(layout.layerList.length).to.equal(2);
+		});
+	});
+
+	describe("set active layer to", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			layout.insertLayer();
+			layout.insertLayer();
+			layout.insertLayer();
+			
+			layout.setActiveTo(666);
+			expect(layout.activeLayer).to.equal(null);
+			
+			layout.setActiveTo(1);
+			expect(layout.activeLayer instanceof pxl.Layout.Layer).to.equal(true);
+		});
+	});
+
+	describe("remove all layers", function(){
+		it("should be OK", function(){
+			var layout = new pxl.Layout(8, 16);
+			layout.activeLayer = layout.insertLayer();
+			layout.insertLayer();
+			layout.insertLayer();
+			
+			layout.removeAllLayers();
 
 			expect(layout.layerList.length).to.equal(0);
 			expect(layout.activeLayer).to.equal(null);
+		});
+	});
+
+	describe("delete active layer", function(){
+		it("should properly removed", function(){
+			var layout = new pxl.Layout(8, 16);
+			layout.activeLayer = layout.insertLayer();
+			var nonActive = layout.insertLayer();
+			
+			layout.deleteLayer();
+
+			expect(layout.layerList.length).to.equal(1);
+			expect(layout.activeLayer).to.equal(null);
+			expect(layout.getVisibleLayers()[0] === nonActive).to.equal(true);
 		});
 	});
 
@@ -93,13 +145,13 @@ describe("Layout", function(){
 		it("two layers are visible", function(){
 			var layout = new pxl.Layout(8, 16);
 		
-			layout.appendLayer();
-			layout.appendLayer();
-			layout.appendLayer();
+			layout.insertLayer();
+			layout.activeLayer = layout.insertLayer();
+			layout.insertLayer();
 			
 			layout.activeLayer.isVisible = false;
 
-			expect(layout.visibleLayers().length).to.equal(2);
+			expect(layout.getVisibleLayers().length).to.equal(2);
 		});
 	});
 
@@ -172,8 +224,8 @@ describe("Layout", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 
-			layout.appendLayer();
-			layout.appendLayer();
+			layout.insertLayer();
+			layout.insertLayer();
 			
 			layout.destroy();
 			

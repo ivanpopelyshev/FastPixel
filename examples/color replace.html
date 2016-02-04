@@ -21,13 +21,14 @@
 
 					//create the new View instance, and set it as active:
 					View.activeView = View.create({
-						canvasSize: {
+						layoutSize: {
 							width: 2048,
 							height: 2048
 						},
 						element: document.querySelector("#canvas")
 					});
-					var layout = View.activeView.getLayout().appendLayer();
+					var layout = View.activeView.getLayout();
+					layout.activeLayer = layout.insertLayer();
 
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
 					pxl.bresenham.rectangle(300, 600, 800, 800, setPixel);

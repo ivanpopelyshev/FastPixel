@@ -88,7 +88,7 @@ describe("Layer", function(){
 		});
 	});
 
-	describe("copy layer", function(){
+	describe("copy layer from another", function(){
 		it("should be OK", function(){
 			var layer1 = new pxl.Layout.Layer(8 * 16);
 			var layer2 = new pxl.Layout.Layer(8 * 16);
@@ -98,7 +98,7 @@ describe("Layer", function(){
 				layer1.data[i] = Math.floor(Math.random() * 256); //fill with random values
 			}
 
-			layer2.copy(layer1);
+			layer2.copyFrom(layer1);
 
 			for (i = 0; i < layer1.data.length; ++i){
 				expect(layer1.data[i]).to.equal(layer2.data[i]);
@@ -117,7 +117,7 @@ describe("Layer", function(){
 				layer1.data[i] = Math.floor(Math.random() * 255);
 			}
 
-			layer2.copy(layer1, true);
+			layer2.copyFrom(layer1, true);
 
 			for (i = 0; i < layer1.data.length; ++i){
 				expect(layer1.data[i]).to.equal(layer2.data[i]);

@@ -35,8 +35,9 @@
 		bresenham: null,
 
 		/**
+		 * User defined type.
+		 *
 		 * @property controller
-		 * @type {HAVE_TO_BE_REDEFINED_BY_USER}
 		 * @default null
 		 */
 		controller: null,
@@ -54,6 +55,8 @@
 		/**
 		 * Type of an array that uses by ImageData. Depends on browser.
 		 *
+		 * @example
+			var data = pxl.ImageDataArray(4);
 		 * @property ImageDataArray
 		 * @type {Uint8ClampedArray|Uint8Array|Uint16Array|Uint32Array}
 		 */
@@ -70,6 +73,8 @@
 		/**
 		 * More safest and fastest method to create ImageData.
 		 *
+		 * @example
+			var imgData = pxl.createImageData(8, 16);
 		 * @method createImageData
 		 * @param arguments[0] {ImageData|Number} [in]
 		 * @param arguments[1] {undefined|Number} [in]
@@ -80,8 +85,10 @@
 		},
 
 		/**
-		 * Clamp a number according to min-max borders.
+		 * Clamp a number to min/max borders.
 		 *
+		 * @example
+			var number = pxl.clamp(5, 6, 8); //returns 6
 		 * @method clamp
 		 * @param dest {Number} [in]
 		 * @param min {Number} [in]
@@ -495,6 +502,8 @@
 	if (!parent){
 		return;
 	}
+	
+	var ERR_MESSAGE = "'method' is not a function!";
 
     /**
 	 * Simple observer-pattern implementation.
@@ -516,48 +525,58 @@
 
     /**
 	 * @method subscribe
+	 * @throws {Error} "'method' is not a function!"
      * @param event {String} [in] Name of event.
      * @param method {Function} [out] The method to execute when event is fired.
      */
     observerProto.subscribe = function(event, method){
-        if (event in this._eventBook){
-            var list = this._eventBook[event];
-			if (list.indexOf(method) === -1){
-				list.push(method);
+		if (method instanceof Function){
+			if (event in this._eventBook){
+				var list = this._eventBook[event];
+				if (list.indexOf(method) === -1){
+					list.push(method);
+				}
+			} else{
+				this._eventBook[event] = [method];
 			}
-        } else{
-			this._eventBook[event] = [method];
+		} else{
+			throw new Error(ERR_MESSAGE);
 		}
     };
 
     /**
 	 * @method unsubscribe
+	 * @throws {Error} "'method' is not a function!"
      * @param event {String} [in] Name of event.
      * @param method {Function} [in] Have to be same reference that passed in subscribe method.
      */
     observerProto.unsubscribe = function(event, method){
-        if (event in this._eventBook){
-            var list = this._eventBook[event];
-            var index = list.indexOf(method);
-            if (index !== -1){
-                list.splice(index, 1);
-				if (list.length === 0){
-					delete this._eventBook[event];
+		if (method instanceof Function){
+			if (event in this._eventBook){
+				var list = this._eventBook[event];
+				var index = list.indexOf(method);
+				if (index !== -1){
+					list.splice(index, 1);
+					if (list.length === 0){
+						delete this._eventBook[event];
+					}
 				}
-            }
-        }
+			}
+		} else{
+			throw new Error(ERR_MESSAGE);
+		}
     };
 
     /**
 	 * @method notify
      * @param event {String} [in] Name of event.
-     * @param eventObj {Object} [in/out] Special event data.
+     * @param eventMessage {*} [in/out] Specific event data.
      */
-    observerProto.notify = function(event, eventObj){
+    observerProto.notify = function(event, eventMessage){
         if (event in this._eventBook){
             var list = this._eventBook[event];
             for (var i = 0; i < list.length; ++i){
-                list[i](eventObj); //callback
+                list[i](eventMessage); //callback
             }
         }
     };
@@ -784,9 +803,9 @@
 	 * @param options {Object} [in]
 	 * @param options.element {HTMLCanvasElement|HTML*Element} The canvas for drawing, or any other element as a parent.
 	 * @param options.source {View|undefined} New instance will listen all changes on source.
-	 * @param options.canvasSize {Object|undefined} Size of the model.
-	 * @param options.canvasSize.width {Number}
-	 * @param options.canvasSize.height {Number}
+	 * @param options.layoutSize {Object|undefined} Size of the model.
+	 * @param options.layoutSize.width {Number}
+	 * @param options.layoutSize.height {Number}
 	 * @return {View}
 	 */
 	View.create = function(options){
@@ -805,8 +824,8 @@
 			isOwner = false;
 		} else{
 			bufferCanvas = pxl.createCanvas();
-			bufferCanvas.width = options.canvasSize.width;
-			bufferCanvas.height = options.canvasSize.height;
+			bufferCanvas.width = options.layoutSize.width;
+			bufferCanvas.height = options.layoutSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
 		var view = new View(
@@ -1102,7 +1121,7 @@
 	};
 
 	/**
-     * Resize and redraw.
+     * Note: changes style too.
 	 *
 	 * @method resizeElement
 	 * @param width {Number}
@@ -1115,7 +1134,7 @@
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
 		_setupContext(this._ctx);
-		return this.redraw(pxl.emptyOptions);
+		return this;
     };
 
 	/**
@@ -1217,6 +1236,8 @@
 	 * Pass width and height parameters;
 	 * Or just already existing ImageData as a source.
 	 *
+	 * @example
+		var layout = pxl.Layout(8, 16);
 	 * @constructor
 	 * @class Layout
 	 * @param param1 {ImageData|Number} [out]
@@ -1256,7 +1277,6 @@
 		 * @type {Observer}
 		 */
 		this.observer = new pxl.Observer;
-
 		Object.seal(this);
 	};
 
@@ -1277,17 +1297,55 @@
 	 * Append new Layer instance into the layerList;
 	 * activeLayer point on new instance.
 	 *
-	 * @method appendLayer
-	 * @param name {String|undefined} [in]
+	 * @example
+		var layer = layout.insertLayer(0); //push to front
+	 * @method insertLayer
+	 * @param index {Number|undefined} [in] Index where to insert. Or it would be added to top if no index passed.
+	 * @return {Layer|null} The newly created layer.
+	 */
+	layoutProto.insertLayer = function(index){
+		var layer = null;
+		if (arguments.length){
+			layer = _makeLayer.call(this);
+			if (index >= 0 && index <= this.layerList.length){
+				this.layerList.splice(index, 0, layer);
+			}
+		} else{
+			layer = _makeLayer.call(this);
+			this.layerList.push(layer);
+		}
+		return layer;
+
+		//Helper:
+		function _makeLayer(){
+			return new Layout.Layer(this.getWidth() * this.getHeight(), this);
+		};
+	};
+
+	/**
+	 * Change an active layer.
+	 *
+	 * @method setActiveTo
+	 * @param index {Number} [in] Index where to apply.
 	 * @chainable
 	 */
-	layoutProto.appendLayer = function(name){
-		this.activeLayer = new Layout.Layer(
-			this.getWidth() * this.getHeight(),
-			this,
-			typeof name === "string" ? name : "Layer " + this.layerList.length
-		);
-		this.layerList.push(this.activeLayer);
+	layoutProto.setActiveTo = function(index){
+		var tokenLayer = this.layerList[index];
+		if (tokenLayer){
+			this.activeLayer = tokenLayer;
+		}
+		return this;
+	};
+
+	/**
+	 * @method removeAllLayers
+	 * @chainable
+	 */
+	layoutProto.removeAllLayers = function(){
+		this.activeLayer = null;
+		while (this.layerList.length){
+			this.layerList.pop().destroy();
+		}
 		return this;
 	};
 
@@ -1303,10 +1361,7 @@
 			if (layerList[i] === this.activeLayer){
 				layerList.splice(i, 1);
 				this.activeLayer.destroy();
-				this.activeLayer = (layerList.length === 0
-					? null
-					: layerList[layerList.length - 1] //top layer become active
-				);
+				this.activeLayer = null;
 				break;
 			}
 		}
@@ -1314,30 +1369,35 @@
 	};
 
 	/**
-	 * Each visible layer "drawn" to main dataLayer layer (Back-to-front);
-	 * Notify subscribers.
+	 * "Drawn" each layer to main dataLayer layer (Back-to-front);
+	 * Will use layers from "layerList" parameter or visible layers if parameter is not passed;
+	 * Note: if "layerList" is empty array or if there are novisible layers the model would be reseted;
+	 * Also, will notify subscribers.
 	 *
+	 * @example
+		layout.mergeLayers({isNotifyView: true, isMix: true});
 	 * @method mergeLayers
 	 * @param options {Object} [in]
 	 * @param options.isMix {Boolean}
-	 * @param options.start {Point}
-	 * @param options.offset {Point}
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @param options.isNotifyView {Boolean}
+	 * @param layerList {Array|undefined} [in] List of layers to merge.
 	 * @chainable
 	 */
-	layoutProto.mergeLayers = function(options){
+	layoutProto.mergeLayers = function(options, layerList){
 		var clonedOpts = {};
-		var visibleLayers = this.visibleLayers();
-		var layerCount = visibleLayers.length;
+		var layers = layerList || this.getVisibleLayers();
+		var layerCount = layers.length;
 		var dataLayer = this.dataLayer;
-		if (!layerCount){
+		if (layerCount === 0){
 			dataLayer.reset();
 		} else{
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.isMix = false; //it's important to disable mix first time!
+			clonedOpts.isMix = false; //it's important to disable mix first time (enable force-copy)!
 			for (var i = 0; i < layerCount; ++i){
-				clonedOpts.other = visibleLayers[i];
+				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
 				clonedOpts.isMix = !!options.isMix; //other layers have processed properly
 			}
@@ -1350,7 +1410,7 @@
 
     /**
      * Replace old colour by new one;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.colorReplace
 	 * @method colorReplace
@@ -1365,7 +1425,7 @@
 
     /**
      * Set pixel or group of pixels (force-fill);
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.set
 	 * @method set
@@ -1380,7 +1440,7 @@
 
     /**
      * Setting the value for specific channel;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.setChannel
 	 * @method setChannel
@@ -1395,7 +1455,7 @@
 
     /**
      * Flood fill;
-	 * delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer.
 	 *
 	 * @see pxl.Layout.Layer.fill
 	 * @method fill
@@ -1414,6 +1474,9 @@
 	 * @method indexAt
 	 * @param position {Point} [in]
 	 * @return {Number}
+	 * @example
+		var index = layout.indexAt(new pxl.Point(1, 1));
+		//in 8x16 layout, an index would be equal to 9
 	 */
 	layoutProto.indexAt = function(position){
 		return position.x + position.y * this.getWidth();
@@ -1425,6 +1488,9 @@
 	 * @method positionFrom
 	 * @param index {Number} [in]
 	 * @return {Point}
+	 * @example
+		var position = layout.positionFrom(9);
+		//in 8x16 layout, the position would be equal to {x: 1, y: 1}
 	 */
 	layoutProto.positionFrom = function(index){
 		var width = this.getWidth();
@@ -1436,6 +1502,8 @@
 	 *
 	 * @method getImageData
 	 * @param options {Object} [in]
+	 * @param options.start {Point|undefined}
+	 * @param options.offset {Point|undefined}
 	 * @return {ImageData}
 	 */
 	layoutProto.getImageData = function(options){
@@ -1470,21 +1538,25 @@
 	};
 
 	/**
-	 * @method visibleLayers
+	 * @method getVisibleLayers
 	 * @return {Array}
 	 */
-	layoutProto.visibleLayers = function(){
-		var visibleLayers = [];
+	layoutProto.getVisibleLayers = function(){
+		var getVisibleLayers = [];
 		var layerList = this.layerList;
 		for (var i = 0; i < layerList.length; ++i){
-			if (layerList[i].isVisible){
-				visibleLayers.push(layerList[i]);
+			if (layerList[i].isVisible === true){
+				getVisibleLayers.push(layerList[i]);
 			}
 		}
-		return visibleLayers;
+		return getVisibleLayers;
 	};
 
 	/**
+	 * @example
+		var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
+		layout.fixRange(options);
+		//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
 	 * @method fixRange
 	 * @param options {Object} [out]
 	 * @param options.start {Point}
@@ -1552,10 +1624,8 @@
 	 */
 	layoutProto.destroy = function(){
 		this.dataLayer.destroy();
-		this._imageData = this.dataLayer = this.activeLayer = null;
-		while (this.layerList.length){
-			this.layerList.pop().destroy();
-		}
+		this._imageData = this.dataLayer = null;
+		this.removeAllLayers();
 	};
 })();
 (function(){
@@ -1571,6 +1641,9 @@
 	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
 	 * @param layout {Layout|undefined}
 	 * @param name {String|undefined}
+	 * @example
+		var layer = new pxl.Layout.Layer(8 * 16, layout, "Background");
+		//if suppose that layout is 8x16
 	 */
 	var Layer = pxl.Layout.Layer = function(source, layout, name){
 		/**
@@ -1617,7 +1690,7 @@
 	 * @type {Number}
 	 * @static
 	 * @final
-	 * @default 2048*2048*4
+	 * @default 2048x2048x4
 	 */
 	Layer.MAX_BUFFER_SIZE = 2048 * 2048 * 4;
 
@@ -1631,7 +1704,7 @@
 	layerProto.reset = function(){
 		var data = this.data;
 		if ("fill" in pxl.ImageDataArray.prototype){ //ES6
-			data.fill(0);
+			data.fill(0); //much faster
 		} else{
 			for (var i = 0, length = data.length; i < length; ++i){
 				data[i] = 0;
@@ -1642,11 +1715,11 @@
 	/**
 	 * Warn: layers have to be from same layout or at least have equal size.
 	 *
-	 * @method copy
+	 * @method copyFrom
 	 * @param other {Layer} [in]
 	 * @param fullCopy {Boolean|undefined} [in]
 	 */
-	layerProto.copy = function(other, fullCopy){
+	layerProto.copyFrom = function(other, fullCopy){
 		this.data.set(other.data);
 		if (fullCopy === true){
 			this.name = other.name;
@@ -1683,10 +1756,12 @@
 				}
 			});
 		}
+		//try to avoid possible memory leaks that commes from closure:
+		otherData = self = method = null;
 	};
 
 	/**
-	 * Replace specific color from position with new one on whole layer;
+	 * Replace specific color by the new one on whole layer;
 	 * Or just on area within start and offset options.
 	 *
 	 * @method colorReplace
@@ -1713,6 +1788,7 @@
 				}
 			}
 		});
+		self = null;
 	};
 
 	/**
@@ -1739,6 +1815,7 @@
 				self[method](i, r, g, b, a);
 			}
 		});
+		self = data = method = null;
 	};
 
 	/**
@@ -1747,8 +1824,8 @@
 	 *
 	 * @method setChannel
 	 * @param options {Object} [in]
-	 * @param options.channelOffset {Number} 0-3 (rgba)
-	 * @param options.value {Number} 0-255
+	 * @param options.channelOffset {Number} 0..3 (rgba index)
+	 * @param options.value {Number} 0..255 (byte)
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 */
@@ -1761,6 +1838,7 @@
 				data[i + channelOffset] = value;
 			}
 		});
+		data = null;
 	};
 
 	/**
@@ -1836,6 +1914,8 @@
 				}
 			} while(stack.length);
 
+			self = null;
+
 			//Helper:
 			function _fill(){
 				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
@@ -1862,6 +1942,7 @@
 				thisData[i++] = otherData[index++];
 			}
 		});
+		thisData = otherData = null;
 	};
 
 	/**
@@ -1881,7 +1962,8 @@
 	};
 
 	/**
-	 * @see http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
+	 * Look at: http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
+	 *
 	 * @method mixAt
 	 * @param i {Number} index where to apply.
 	 * @param r {Number}
@@ -1981,7 +2063,7 @@
 			? pxl.createImageData(options.offset.x, options.offset.y)
 			: pxl.createImageData(layout.getWidth(), layout.getHeight())
 		);
-		this._generateData(imageData.data, this.data, options);
+		void this._generateData(imageData.data, this.data, options);
 		return imageData;
 	};
 
@@ -2031,6 +2113,7 @@
 				destData = new pxl.ImageDataArray(sourceData); //copy constructor
 			}
 		}
+		sourceData = null;
 		return destData;
 	};
 
