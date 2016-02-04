@@ -1,15 +1,15 @@
-# FastPixel
+# FastPixel 0.3.0
 
 Fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-Stable version! (v.0.3.0)
+Check out the [documentation][] before started!
 
 Few examples are available online by links below:
 - [Pixel carrying][]
 - [Color replacing][]
 - [Channel setting][]
 
-Look at [examples][] to see more!
+There are even more at [examples][] folder!
 
 ## Dependencies
 
@@ -35,3 +35,4 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [Pixel carrying]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/carry%20pixel.html
 [Color replacing]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/color%20replace.html
 [Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting%20channel.html
+[documentation]: https://rawgit.com/kurzgame/FastPixel/master/docs/index.html
