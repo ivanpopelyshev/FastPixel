@@ -1,8 +1,8 @@
-# FastPixel 0.3.0
+# FastPixel 0.3.1
 
 Fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-Check out the [documentation][] before started!
+The [documentation][] should help you to orient with code!
 
 Few examples are available online by links below:
 - [Pixel carrying][]

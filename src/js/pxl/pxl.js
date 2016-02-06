@@ -137,6 +137,22 @@
 		},
 
 		/**
+		 * @method disableAntialiasing
+		 * @param ctx {CanvasRenderingContext2D} [out]
+		 */
+		disableAntialiasing: function(ctx){
+			if ("imageSmoothingEnabled" in ctx){
+				ctx.imageSmoothingEnabled = false;
+			} else if ("webkitImageSmoothingEnabled" in ctx){
+				ctx.webkitImageSmoothingEnabled = false;
+			} else if ("mozImageSmoothingEnabled" in ctx){
+				ctx.mozImageSmoothingEnabled = false;
+			} else if ("msImageSmoothingEnabled" in ctx){
+				ctx.msImageSmoothingEnabled = false;
+			}
+		},
+
+		/**
 		 * Warn: make sure that parameters are fit to range 0..255!
 		 *
 		 * @method toRGBA

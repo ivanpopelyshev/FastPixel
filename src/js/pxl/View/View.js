@@ -29,7 +29,7 @@
 		 * @private
 		 * @type {Boolean}
 		 */
-		this._layoutOwner = !!isOwner;
+		this._layoutOwner = Boolean(isOwner);
 
 		/**
 		 * @property _imagePoint
@@ -84,6 +84,9 @@
 		var bufferCanvas = null;
 		var layout = null;
 		var isOwner = true;
+		var view = null;
+		var ctx = null;
+		var bufferCtx = null;
 		if (options.element.nodeName.toUpperCase() === "CANVAS"){
 			canvas = options.element;
 		} else{
@@ -99,12 +102,13 @@
 			bufferCanvas.height = options.layoutSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
-		var view = new View(
-			_setupContext(canvas.getContext("2d")),
-			_setupContext(bufferCanvas.getContext("2d")),
-			layout,
-			isOwner
-		);
+		ctx = canvas.getContext("2d");
+		bufferCtx = bufferCanvas.getContext("2d");
+		pxl.disableAntialiasing(ctx);
+		pxl.disableAntialiasing(bufferCtx);
+
+		view = new View(ctx, bufferCtx, layout, isOwner);
+
 		View.instances.push(view);
 		return view;
 	};
@@ -132,11 +136,10 @@
 	var viewProto = View.prototype;
  
 	/**
-	 * Clear canvas and update imageData and draw.
+	 * Clear canvas, update imageData and draw changed area.
 	 *
-	 * @see clear
-	 * @see update
-	 * @see redraw
+	 * Look at: pxl.View.clear, pxl.View.update, pxl.View.redraw
+	 *
 	 * @method render
 	 * @param options {Object} [in]
 	 * @chainable
@@ -283,6 +286,7 @@
 	/**
 	 * @method getBufferContext
 	 * @return {CanvasRenderingContext2D}
+	 * @deprecated
 	 */
 	viewProto.getBufferContext = function(){
 		return this._buffer;
@@ -392,7 +396,7 @@
 	};
 
 	/**
-     * Note: changes style too.
+     * Note: changes element width/height too.
 	 *
 	 * @method resizeElement
 	 * @param width {Number}
@@ -404,7 +408,7 @@
 		this._ctx.canvas.style.height = height + "px";
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
-		_setupContext(this._ctx);
+		pxl.disableAntialiasing(this._ctx);
 		return this;
     };
 
@@ -433,14 +437,17 @@
      * Listen for events that fired when layout (model) has been changed.
 	 *
 	 * @method _subscribe
+	 * @throws {Error} "View instance is already subscribed!"
 	 * @private
 	 * @chainable
      */
     viewProto._subscribe = function(){
-        if (!this._boundedRender){
+        if (this._boundedRender === null){
 			this._boundedRender = this.render.bind(this);
 			this._layout.observer.subscribe(
 				pxl.Layout.PIXELS_CHANGED_EVENT, this._boundedRender);
+		} else{
+			throw new Error("View instance is already subscribed!");
 		}
 		return this;
     };
@@ -476,20 +483,6 @@
 	};
 
 	//Helpers:
-
-	//Disable default image smoothing
-	function _setupContext(dest){
-		if ("imageSmoothingEnabled" in dest){
-			dest.imageSmoothingEnabled = false;
-		} else if ("webkitImageSmoothingEnabled" in dest){
-			dest.webkitImageSmoothingEnabled = false;
-		} else if ("mozImageSmoothingEnabled" in dest){
-			dest.mozImageSmoothingEnabled = false;
-		} else if ("msImageSmoothingEnabled" in dest){
-			dest.msImageSmoothingEnabled = false;
-		}
-		return dest;
-	};
 
 	//clear _layout and _buffer properties
 	function _removeLayout(view){

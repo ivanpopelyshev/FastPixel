@@ -137,6 +137,22 @@
 		},
 
 		/**
+		 * @method disableAntialiasing
+		 * @param ctx {CanvasRenderingContext2D} [out]
+		 */
+		disableAntialiasing: function(ctx){
+			if ("imageSmoothingEnabled" in ctx){
+				ctx.imageSmoothingEnabled = false;
+			} else if ("webkitImageSmoothingEnabled" in ctx){
+				ctx.webkitImageSmoothingEnabled = false;
+			} else if ("mozImageSmoothingEnabled" in ctx){
+				ctx.mozImageSmoothingEnabled = false;
+			} else if ("msImageSmoothingEnabled" in ctx){
+				ctx.msImageSmoothingEnabled = false;
+			}
+		},
+
+		/**
 		 * Warn: make sure that parameters are fit to range 0..255!
 		 *
 		 * @method toRGBA
@@ -589,7 +605,8 @@
 	}
 
 	/**
-	 * @see http://members.chello.at/easyfilter/bresenham.js
+	 * Look at: http://members.chello.at/easyfilter/bresenham.js
+	 *
 	 * @class bresenham
 	 */
 	var bresenham = parent.bresenham = {
@@ -675,17 +692,19 @@
 		 */
 		ellipse: function(x0, y0, x1, y1, callback){
 			var a = x1 - x0;
+			var powA = a * a;
 			if (a < 0){
 				a = -a;
 			}
 			var b = y1 - y0;
+			var powB = b * b;
 			if (b < 0){
 				b = -b;
 			}
 			var b1 = b & 1;
-			var dx = 4 * (1 - a) * b * b;
-			var dy = 4 * (1 + b1) * a * a;
-			var err = dx + dy + b1 * a * a;
+			var dx = (1 - a) * powB << 2;
+			var dy = (1 + b1) * powA << 2;
+			var err = dx + dy + b1 * powA;
 			var e2 = 0;
 			if (x0 > x1){
 				x0 = x1;
@@ -696,8 +715,8 @@
 			}
 			y0 += (b + 1) >> 1;
 			y1 = y0 - b1;
-			a = 8 * a * a;
-			b1 = 8 * b * b;
+			a = powA << 3;
+			b1 = powB << 3;
 			do{
 				callback(x1, y0);
 				callback(x0, y0);
@@ -758,7 +777,7 @@
 		 * @private
 		 * @type {Boolean}
 		 */
-		this._layoutOwner = !!isOwner;
+		this._layoutOwner = Boolean(isOwner);
 
 		/**
 		 * @property _imagePoint
@@ -813,6 +832,9 @@
 		var bufferCanvas = null;
 		var layout = null;
 		var isOwner = true;
+		var view = null;
+		var ctx = null;
+		var bufferCtx = null;
 		if (options.element.nodeName.toUpperCase() === "CANVAS"){
 			canvas = options.element;
 		} else{
@@ -828,12 +850,13 @@
 			bufferCanvas.height = options.layoutSize.height;
 			layout = new pxl.Layout(bufferCanvas.width, bufferCanvas.height);
 		}
-		var view = new View(
-			_setupContext(canvas.getContext("2d")),
-			_setupContext(bufferCanvas.getContext("2d")),
-			layout,
-			isOwner
-		);
+		ctx = canvas.getContext("2d");
+		bufferCtx = bufferCanvas.getContext("2d");
+		pxl.disableAntialiasing(ctx);
+		pxl.disableAntialiasing(bufferCtx);
+
+		view = new View(ctx, bufferCtx, layout, isOwner);
+
 		View.instances.push(view);
 		return view;
 	};
@@ -861,11 +884,10 @@
 	var viewProto = View.prototype;
  
 	/**
-	 * Clear canvas and update imageData and draw.
+	 * Clear canvas, update imageData and draw changed area.
 	 *
-	 * @see clear
-	 * @see update
-	 * @see redraw
+	 * Look at: pxl.View.clear, pxl.View.update, pxl.View.redraw
+	 *
 	 * @method render
 	 * @param options {Object} [in]
 	 * @chainable
@@ -1012,6 +1034,7 @@
 	/**
 	 * @method getBufferContext
 	 * @return {CanvasRenderingContext2D}
+	 * @deprecated
 	 */
 	viewProto.getBufferContext = function(){
 		return this._buffer;
@@ -1121,7 +1144,7 @@
 	};
 
 	/**
-     * Note: changes style too.
+     * Note: changes element width/height too.
 	 *
 	 * @method resizeElement
 	 * @param width {Number}
@@ -1133,7 +1156,7 @@
 		this._ctx.canvas.style.height = height + "px";
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
-		_setupContext(this._ctx);
+		pxl.disableAntialiasing(this._ctx);
 		return this;
     };
 
@@ -1162,14 +1185,17 @@
      * Listen for events that fired when layout (model) has been changed.
 	 *
 	 * @method _subscribe
+	 * @throws {Error} "View instance is already subscribed!"
 	 * @private
 	 * @chainable
      */
     viewProto._subscribe = function(){
-        if (!this._boundedRender){
+        if (this._boundedRender === null){
 			this._boundedRender = this.render.bind(this);
 			this._layout.observer.subscribe(
 				pxl.Layout.PIXELS_CHANGED_EVENT, this._boundedRender);
+		} else{
+			throw new Error("View instance is already subscribed!");
 		}
 		return this;
     };
@@ -1205,20 +1231,6 @@
 	};
 
 	//Helpers:
-
-	//Disable default image smoothing
-	function _setupContext(dest){
-		if ("imageSmoothingEnabled" in dest){
-			dest.imageSmoothingEnabled = false;
-		} else if ("webkitImageSmoothingEnabled" in dest){
-			dest.webkitImageSmoothingEnabled = false;
-		} else if ("mozImageSmoothingEnabled" in dest){
-			dest.mozImageSmoothingEnabled = false;
-		} else if ("msImageSmoothingEnabled" in dest){
-			dest.msImageSmoothingEnabled = false;
-		}
-		return dest;
-	};
 
 	//clear _layout and _buffer properties
 	function _removeLayout(view){
@@ -1306,8 +1318,8 @@
 	layoutProto.insertLayer = function(index){
 		var layer = null;
 		if (arguments.length){
-			layer = _makeLayer.call(this);
 			if (index >= 0 && index <= this.layerList.length){
+				layer = _makeLayer.call(this);
 				this.layerList.splice(index, 0, layer);
 			}
 		} else{
@@ -1330,9 +1342,8 @@
 	 * @chainable
 	 */
 	layoutProto.setActiveTo = function(index){
-		var tokenLayer = this.layerList[index];
-		if (tokenLayer){
-			this.activeLayer = tokenLayer;
+		if (index in this.layerList){
+			this.activeLayer = this.layerList[index];
 		}
 		return this;
 	};
@@ -1412,7 +1423,8 @@
      * Replace old colour by new one;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.colorReplace
+	 * Look at: pxl.Layout.Layer.colorReplace
+	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @chainable
@@ -1427,7 +1439,8 @@
      * Set pixel or group of pixels (force-fill);
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.set
+	 * Look at: pxl.Layout.Layer.set
+	 *
 	 * @method set
 	 * @param options {Object} [in]
 	 * @chainable
@@ -1442,7 +1455,8 @@
      * Setting the value for specific channel;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.setChannel
+	 * Look at: pxl.Layout.Layer.setChannel
+	 *
 	 * @method setChannel
 	 * @param options {Object} [in]
 	 * @chainable
@@ -1457,7 +1471,8 @@
      * Flood fill;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.fill
+	 * Look at: pxl.Layout.Layer.fill
+	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @chainable
@@ -1898,26 +1913,26 @@
 				index = stack.pop();
 				tmpIndex = index + pixelOffset; //move right
 				if (tmpIndex % widthOffset <= rightBorder){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index + widthOffset; //move down
 				if (tmpIndex < endIndex){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index - pixelOffset; //move left
 				if (tmpIndex % widthOffset >= leftBorder){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index - widthOffset; //move up
 				if (tmpIndex > startIndex){
-					_fill();
+					_procCurrent();
 				}
 			} while(stack.length);
 
 			self = null;
 
 			//Helper:
-			function _fill(){
+			function _procCurrent(){
 				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
 					self.setAt(tmpIndex, r, g, b, a);
 					stack.push(tmpIndex);
@@ -2024,7 +2039,8 @@
 	/**
 	 * Warn: index without color-offset!
 	 *
-	 * @see layerProto.pixelAt
+	 * Look at: layerProto.pixelAt.
+	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
 	 * @return {ImageDataArray}
@@ -2270,7 +2286,7 @@
 		 * @method stop
 		 */
 		stop: function(forgetFirst){
-			if (this._isRecording !== true){
+			if (this._isRecording === false){
 				this.resetRecording();
 				throw new Error("Recording has not been started!");
 			}
@@ -2297,6 +2313,8 @@
 		},
 
 		/**
+		 * Clear the whole history.
+		 *
 		 * @method free
 		 */
 		free: function(){
@@ -2399,7 +2417,7 @@
 	};
 
 	/**
-	 * Will cache an index and the color from one.
+	 * Will cache an index and the color of that index.
 	 *
 	 * @method cache
 	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.

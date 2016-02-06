@@ -140,7 +140,7 @@
 		 * @method stop
 		 */
 		stop: function(forgetFirst){
-			if (this._isRecording !== true){
+			if (this._isRecording === false){
 				this.resetRecording();
 				throw new Error("Recording has not been started!");
 			}
@@ -167,6 +167,8 @@
 		},
 
 		/**
+		 * Clear the whole history.
+		 *
 		 * @method free
 		 */
 		free: function(){

@@ -75,8 +75,8 @@
 	layoutProto.insertLayer = function(index){
 		var layer = null;
 		if (arguments.length){
-			layer = _makeLayer.call(this);
 			if (index >= 0 && index <= this.layerList.length){
+				layer = _makeLayer.call(this);
 				this.layerList.splice(index, 0, layer);
 			}
 		} else{
@@ -99,9 +99,8 @@
 	 * @chainable
 	 */
 	layoutProto.setActiveTo = function(index){
-		var tokenLayer = this.layerList[index];
-		if (tokenLayer){
-			this.activeLayer = tokenLayer;
+		if (index in this.layerList){
+			this.activeLayer = this.layerList[index];
 		}
 		return this;
 	};
@@ -181,7 +180,8 @@
      * Replace old colour by new one;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.colorReplace
+	 * Look at: pxl.Layout.Layer.colorReplace
+	 *
 	 * @method colorReplace
 	 * @param options {Object} [in]
 	 * @chainable
@@ -196,7 +196,8 @@
      * Set pixel or group of pixels (force-fill);
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.set
+	 * Look at: pxl.Layout.Layer.set
+	 *
 	 * @method set
 	 * @param options {Object} [in]
 	 * @chainable
@@ -211,7 +212,8 @@
      * Setting the value for specific channel;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.setChannel
+	 * Look at: pxl.Layout.Layer.setChannel
+	 *
 	 * @method setChannel
 	 * @param options {Object} [in]
 	 * @chainable
@@ -226,7 +228,8 @@
      * Flood fill;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * @see pxl.Layout.Layer.fill
+	 * Look at: pxl.Layout.Layer.fill
+	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @chainable

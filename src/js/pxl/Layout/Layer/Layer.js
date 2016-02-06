@@ -268,26 +268,26 @@
 				index = stack.pop();
 				tmpIndex = index + pixelOffset; //move right
 				if (tmpIndex % widthOffset <= rightBorder){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index + widthOffset; //move down
 				if (tmpIndex < endIndex){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index - pixelOffset; //move left
 				if (tmpIndex % widthOffset >= leftBorder){
-					_fill();
+					_procCurrent();
 				}
 				tmpIndex = index - widthOffset; //move up
 				if (tmpIndex > startIndex){
-					_fill();
+					_procCurrent();
 				}
 			} while(stack.length);
 
 			self = null;
 
 			//Helper:
-			function _fill(){
+			function _procCurrent(){
 				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
 					self.setAt(tmpIndex, r, g, b, a);
 					stack.push(tmpIndex);
@@ -394,7 +394,8 @@
 	/**
 	 * Warn: index without color-offset!
 	 *
-	 * @see layerProto.pixelAt
+	 * Look at: layerProto.pixelAt.
+	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
 	 * @return {ImageDataArray}

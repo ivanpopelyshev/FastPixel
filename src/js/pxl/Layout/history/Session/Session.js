@@ -60,7 +60,7 @@
 	};
 
 	/**
-	 * Will cache an index and the color from one.
+	 * Will cache an index and the color of that index.
 	 *
 	 * @method cache
 	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.

@@ -6,7 +6,8 @@
 	}
 
 	/**
-	 * @see http://members.chello.at/easyfilter/bresenham.js
+	 * Look at: http://members.chello.at/easyfilter/bresenham.js
+	 *
 	 * @class bresenham
 	 */
 	var bresenham = parent.bresenham = {
@@ -92,17 +93,19 @@
 		 */
 		ellipse: function(x0, y0, x1, y1, callback){
 			var a = x1 - x0;
+			var powA = a * a;
 			if (a < 0){
 				a = -a;
 			}
 			var b = y1 - y0;
+			var powB = b * b;
 			if (b < 0){
 				b = -b;
 			}
 			var b1 = b & 1;
-			var dx = 4 * (1 - a) * b * b;
-			var dy = 4 * (1 + b1) * a * a;
-			var err = dx + dy + b1 * a * a;
+			var dx = (1 - a) * powB << 2;
+			var dy = (1 + b1) * powA << 2;
+			var err = dx + dy + b1 * powA;
 			var e2 = 0;
 			if (x0 > x1){
 				x0 = x1;
@@ -113,8 +116,8 @@
 			}
 			y0 += (b + 1) >> 1;
 			y1 = y0 - b1;
-			a = 8 * a * a;
-			b1 = 8 * b * b;
+			a = powA << 3;
+			b1 = powB << 3;
 			do{
 				callback(x1, y0);
 				callback(x0, y0);
