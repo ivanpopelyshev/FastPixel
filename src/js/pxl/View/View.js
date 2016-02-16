@@ -155,17 +155,27 @@
 	 * @param options {Object} [in]
 	 * @param options.start {Point}
 	 * @param options.offset {Point}
-	 * @param options.pixel {ImageDataArray|Array}
+	 * @param options.pixel {TypedArray|Array|Number}
 	 * @chainable
 	 */
 	viewProto.drawRect = function(options){
 		var pixel = options.pixel;
-		this._ctx.fillStyle = "rgba(" +
-			pixel[0] + "," + 	//r
-			pixel[1] + "," + 	//g
-			pixel[2] + "," + 	//b
-			(pixel[3] / 255) +	//a, somehow its require 0.0..1.0 format
-		")";
+		var RGBA = pxl.RGBA;
+		if (options.pixel.constructor === Number){
+			this._ctx.fillStyle = "rgba(" +
+				RGBA.getR(pixel) + "," +
+				RGBA.getG(pixel) + "," +
+				RGBA.getB(pixel) + "," +
+				(RGBA.getA(pixel) / 255) +
+			")";
+		} else{
+			this._ctx.fillStyle = "rgba(" +
+				pixel[0] + "," +
+				pixel[1] + "," + 
+				pixel[2] + "," +
+				(pixel[3] / 255) +
+			")";
+		}
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
 			options.start.y + this._imagePoint.y,
@@ -381,6 +391,17 @@
 	 */
 	viewProto.setImagePoint = function(x, y){
 		return this._imagePoint.set(x, y);
+	};
+
+	/**
+	 *
+	 * @method setAlpha
+	 * @param aplha {Number} [in] Should fit the range in 0.0..1.0
+	 * @chainable
+	 */
+	viewProto.setAlpha = function(aplha){
+		this._ctx.globalAlpha = aplha;
+		return this;
 	};
 
 	/**

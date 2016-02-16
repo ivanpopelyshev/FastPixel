@@ -25,21 +25,18 @@ describe("Sessions", function(){
 		it("should be OK", function(){
 			var layer = new pxl.Layout.Layer(1);
 			
-			var oldR = 255;
-			var oldG = 255;
-			var oldB = 255;
-			var oldA = 255;
+			var oldRGBA = pxl.RGBA(255, 255, 255, 255);
 			
-			layer.setAt(0, oldR, oldG, oldB, oldA);
+			layer.setAt(0, oldRGBA);
 
 			var session = new pxl.Layout.history.SessionDynamic(layer);
 			session.cache(0);
 
-			layer.setAt(0, 123, 55, 244, 100); //some randomly choosed values
+			layer.setAt(0, pxl.RGBA(11, 22, 33, 44)); //some randomly choosed values
 
 			session.rewrite();
 			
-			expect(layer.compareAt(0, oldR, oldG, oldB, oldA)).to.equal(true);
+			expect(layer.pixelFromIndex(0)).to.equal(oldRGBA);
 		});
 	});
 
@@ -50,12 +47,9 @@ describe("Sessions", function(){
 
 			var layer = layout.activeLayer;
 
-			var oldR = 255;
-			var oldG = 255;
-			var oldB = 255;
-			var oldA = 255;
+			var oldRGBA = pxl.RGBA(255, 255, 255, 255);
 			
-			layer.setAt(0, oldR, oldG, oldB, oldA);
+			layer.setAt(0, oldRGBA);
 
 			var session = new pxl.Layout.history.SessionDynamic(layer);
 			session.cache({
@@ -63,11 +57,11 @@ describe("Sessions", function(){
 				"offset": new pxl.Point(1, 1)
 			});
 
-			layer.setAt(0, 123, 55, 244, 100); //some randomly choosed values
+			layer.setAt(0, pxl.RGBA(11, 22, 33, 44)); //some randomly choosed values
 
 			session.rewrite();
 			
-			expect(layer.compareAt(0, oldR, oldG, oldB, oldA)).to.equal(true);
+			expect(layer.pixelFromIndex(0)).to.equal(oldRGBA);
 		});
 	});
 
@@ -96,22 +90,22 @@ describe("Sessions", function(){
 			var layer = new pxl.Layout.Layer(4, new pxl.Layout(2, 2));
 			
 			var i = 0;
-			var oldValue = 255;
+			var oldRGBA = pxl.RGBA(255, 255, 255, 255);
 			for (; i < layer.data.length; ++i){
-				layer.data[i] = oldValue;
+				layer.data[i] = oldRGBA;
 			}
 
 			var session = new pxl.Layout.history.SessionStatic(layer);
-			session.cache({}); //get whole layer
+			session.cache(pxl.emptyOptions); //get whole layer
 
 			for (i = 0; i < layer.data.length; ++i){
-				layer.data[i] = Math.random() * 256;
+				layer.data[i] = pxl.RGBA(0, 1, 2, 3);
 			}
 
 			session.rewrite();
 
 			for (i = 0; i < layer.data.length; ++i){
-				expect(layer.data[i]).to.equal(oldValue);
+				expect(layer.data[i]).to.equal(oldRGBA);
 			}
 		});
 	});

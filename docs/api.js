@@ -5,6 +5,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "Layout",
         "Observer",
         "Point",
+        "RGBA",
         "Session",
         "SessionDynamic",
         "SessionStatic",

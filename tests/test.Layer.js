@@ -10,27 +10,26 @@ describe("Layer", function(){
 				expect(data[i]).to.equal(0);
 			}
 			
-			expect(layer.data.length).to.equal(8 * 16 * 4);
+			expect(layer.data.length).to.equal(8 * 16);
 		});
 	});
 
 	describe("constructor with image buffer", function(){
 		it("should be OK", function(){
 			var data = new pxl.createImageData(8, 16).data;
-			data[0] = 255;
-			data[4] = 255;
-			data[8] = 255;
+			data[3] = 255; //set alpha for first pixel
+			data[7] = 255; //set alpha for second pixel
 
 			var layer = new pxl.Layout.Layer(data.buffer);
-			
-			layer.data[16] = 255;
 
-			expect(layer.data[0]).to.equal(data[0]);
-			expect(layer.data[4]).to.equal(data[4]);
-			expect(layer.data[8]).to.equal(data[8]);
-			expect(layer.data[16]).to.equal(data[16]);
-	
-			expect(layer.data.length).to.equal(8 * 16 * 4);
+			var COLOR = pxl.RGBA(0, 0, 0, 255);
+			layer.data[8] = COLOR;
+
+			expect(pxl.RGBA.getA(layer.data[0])).to.equal(data[3]); //compare alpha of first pixel
+			expect(pxl.RGBA.getA(layer.data[1])).to.equal(data[7]); //compare alpha of second pixel
+			expect(layer.data[8]).to.equal(COLOR);
+
+			expect(layer.data.length).to.equal(8 * 16);
 		});
 	});
 	
@@ -77,7 +76,7 @@ describe("Layer", function(){
 			
 			var i = 0;
 			for (i = 0; i < layer.data.length; ++i){
-				layer.data[i] = Math.floor(Math.random() * 256); //fill with random values
+				layer.data[i] = pxl.RGBA(255, 255, 255, 255); //fill with white
 			}
 
 			layer.reset();
@@ -95,7 +94,7 @@ describe("Layer", function(){
 
 			var i = 0;
 			for (i = 0; i < layer1.data.length; ++i){
-				layer1.data[i] = Math.floor(Math.random() * 256); //fill with random values
+				layer1.data[i] = pxl.RGBA(255, 0, 255, 255); //fill with magenta
 			}
 
 			layer2.copyFrom(layer1);
@@ -114,7 +113,7 @@ describe("Layer", function(){
 			
 			var i = 0;
 			for (i = 0; i < layer1.data.length; ++i){
-				layer1.data[i] = Math.floor(Math.random() * 255);
+				layer1.data[i] = pxl.RGBA(0, 255, 255, 255); //fill with cyan
 			}
 
 			layer2.copyFrom(layer1, true);
@@ -135,7 +134,7 @@ describe("Layer", function(){
 			
 			var i = 0;
 			for (i = 0; i < layer1.data.length; ++i){
-				layer1.data[i] = Math.floor(Math.random() * 256);
+				layer1.data[i] = pxl.RGBA(0, 255, 255, 255); //fill with cyan
 			}
 
 			layer2.merge({
@@ -151,9 +150,9 @@ describe("Layer", function(){
 
 	describe("merge layers (with mix, but no start/offset)", function(){
 		it("should be OK", function(){
-			var COLOR1 = 200;
-			var COLOR2 = 155;
-			
+			var COLOR1 = pxl.RGBA(0, 255, 255, 100);
+			var COLOR2 = pxl.RGBA(255, 0, 255, 100);
+
 			var layer1 = new pxl.Layout.Layer(8 * 16);
 			var layer2 = new pxl.Layout.Layer(8 * 16, new pxl.Layout(8, 16)); //mix option is require layout
 
@@ -185,7 +184,11 @@ describe("Layer", function(){
 
 			var i = 0;
 			for (i = 0; i < layer1.data.length; ++i){
-				layer1.data[i] = Math.floor(Math.random() * 255);
+				layer1.data[i] = pxl.RGBA(
+					Math.floor(Math.random() * 256),
+					Math.floor(Math.random() * 256),
+					Math.floor(Math.random() * 256),
+					Math.floor(Math.random() * 256));
 			}
 
 			var options = {
@@ -211,18 +214,17 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			layer.fill({
 				"position": new pxl.Point(2, 2),
-				"pixel": new pxl.ImageDataArray([222, 111, 0, 255]),
+				"pixel": COLOR,
 				"isMix": false
 			});
 
-			for (var i = 0; i < layer.data.length; i += 4){
-				expect(layer.data[i]).to.equal(222);
-				expect(layer.data[i + 1]).to.equal(111);
-				expect(layer.data[i + 2]).to.equal(0);
-				expect(layer.data[i + 3]).to.equal(255);
+			for (var i = 0; i < layer.data.length; ++i){
+				expect(layer.data[i]).to.equal(COLOR);
 			}
 		});
 	});
@@ -231,10 +233,12 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			var options = {
 				"position": new pxl.Point(5, 5),
-				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"pixel": COLOR,
 				"isMix": false,
 				"start": new pxl.Point(4, 5),
 				"offset": new pxl.Point(2, 2)
@@ -244,9 +248,7 @@ describe("Layer", function(){
 
 			layout.__process(options, function(i, length){
 				while (i < length){
-					expect(layer.data[i]).is.equal(255);
-
-					++i;
+					expect(layer.data[i++]).is.equal(COLOR);
 				}
 			});
 		});
@@ -256,16 +258,18 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			var options = {
-				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"pixel": COLOR,
 				"isMix": false
 			};
 
 			layer.set(options);
 			
-			for (var i = 0; i < layer.data.length; i += 4){
-				expect(layer.data[i]).to.equal(255);
+			for (var i = 0; i < layer.data.length; ++i){
+				expect(layer.data[i]).to.equal(COLOR);
 			}
 		});
 	});
@@ -274,11 +278,13 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			var options = {
 				"start": new pxl.Point(2, 2),
 				"offset": new pxl.Point(2, 2),
-				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
+				"pixel": COLOR,
 				"isMix": false
 			};
 
@@ -286,9 +292,7 @@ describe("Layer", function(){
 			
 			layout.__process(options, function(i, length){
 				while (i < length){
-					expect(layer.data[i]).is.equal(255);
-
-					++i;
+					expect(layer.data[i++]).is.equal(COLOR);
 				}
 			});
 		});
@@ -298,16 +302,18 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			var options = {
-				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
-				"oldPixel": new pxl.ImageDataArray([0, 0, 0, 0])
+				"pixel": COLOR,
+				"oldPixel": 0
 			};
 
-			layer.colorReplace(options);
+			layer.replace(options);
 			
-			for (var i = 0; i < layer.data.length; i += 4){
-				expect(layer.data[i]).to.equal(255);
+			for (var i = 0; i < layer.data.length; ++i){
+				expect(layer.data[i]).to.equal(COLOR);
 			}
 		});
 	});
@@ -316,21 +322,21 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
+			
+			var COLOR = pxl.RGBA(0, 255, 255, 100);
 
 			var options = {
 				"start": new pxl.Point(2, 2),
 				"offset": new pxl.Point(2, 2),
-				"pixel": new pxl.ImageDataArray([255, 255, 255, 255]),
-				"oldPixel": new pxl.ImageDataArray([0, 0, 0, 0])
+				"pixel": COLOR,
+				"oldPixel": 0
 			};
 
-			layer.colorReplace(options);
+			layer.replace(options);
 
 			layout.__process(options, function(i, length){
 				while (i < length){
-					expect(layer.data[i]).is.equal(255);
-
-					++i;
+					expect(layer.data[i++]).is.equal(COLOR);
 				}
 			});
 		});
@@ -342,14 +348,14 @@ describe("Layer", function(){
 			var layer = new pxl.Layout.Layer(8 * 16, layout);
 
 			var options = {
-				"channelOffset": 2,
+				"channelOffset": 3, //alpha
 				"value": 255
 			};
 
 			layer.setChannel(options);
 
-			for (var i = 0; i < layer.data.length; i += 4){
-				expect(layer.data[i + 2]).to.equal(255);
+			for (var i = 0; i < layer.data.length; ++i){
+				expect(pxl.RGBA.getA(layer.data[i])).to.equal(255);
 			}
 		});
 	});
@@ -362,7 +368,7 @@ describe("Layer", function(){
 			var options = {
 				"start": new pxl.Point(2, 2),
 				"offset": new pxl.Point(2, 2),
-				"channelOffset": 2,
+				"channelOffset": 2, //blue
 				"value": 255
 			};
 
@@ -370,9 +376,7 @@ describe("Layer", function(){
 
 			layout.__process(options, function(i, length){
 				while (i < length){
-					expect(layer.data[i + 2]).is.equal(255);
-
-					i += 4;
+					expect(pxl.RGBA.getB(layer.data[i++])).to.equal(255);
 				}
 			});
 		});
@@ -388,6 +392,7 @@ describe("Layer", function(){
 				255, 255, 255, 255, 255, 255, 255, 255,
 				255, 255, 255, 255, 255, 255, 255, 255
 			]);
+
 			var options = {
 				"start": new pxl.Point(0, 0),
 				"offset": new pxl.Point(2, 2),
@@ -398,7 +403,7 @@ describe("Layer", function(){
 
 			layout.__process(options, function(i, length){
 				while (i < length){
-					expect(layer.data[i++]).is.equal(data[index++]);
+					expect(layer.data[i++]).is.equal(pxl.RGBA(255, 255, 255, 255));
 				}
 			});
 		});
@@ -408,22 +413,12 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layer = new pxl.Layout.Layer(8 * 16);
 
-			layer.setAt(4, 255, 255, 255, 255);
+			layer.setAt(4, pxl.RGBA(0, 255, 255, 100));
 			
-			expect(layer.data[4]).is.equal(255);
-			expect(layer.data[5]).is.equal(255);
-			expect(layer.data[6]).is.equal(255);
-			expect(layer.data[7]).is.equal(255);
-		});
-	});
-
-	describe("compare color", function(){
-		it("should be OK", function(){
-			var layer = new pxl.Layout.Layer(8 * 16);
-
-			layer.setAt(4, 255, 255, 255, 255);
-			
-			expect(layer.compareAt(4, 255, 255, 255, 255)).is.equal(true);
+			expect(pxl.RGBA.getR(layer.data[4])).is.equal(0);
+			expect(pxl.RGBA.getG(layer.data[4])).is.equal(255);
+			expect(pxl.RGBA.getB(layer.data[4])).is.equal(255);
+			expect(pxl.RGBA.getA(layer.data[4])).is.equal(100);
 		});
 	});
 
@@ -431,14 +426,14 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layer = new pxl.Layout.Layer(8 * 16, new pxl.Layout(8, 16));
 			
-			layer.setAt(9 * 4, 255, 255, 255, 255);
+			layer.setAt(9, pxl.RGBA(0, 255, 255, 100));
 			
 			var tokenPixel = layer.pixelFromPosition(new pxl.Point(1, 1));
 			
-			expect(tokenPixel[0]).to.equal(255);
-			expect(tokenPixel[1]).to.equal(255);
-			expect(tokenPixel[2]).to.equal(255);
-			expect(tokenPixel[3]).to.equal(255);
+			expect(pxl.RGBA.getR(tokenPixel)).is.equal(0);
+			expect(pxl.RGBA.getG(tokenPixel)).is.equal(255);
+			expect(pxl.RGBA.getB(tokenPixel)).is.equal(255);
+			expect(pxl.RGBA.getA(tokenPixel)).is.equal(100);
 		});
 	});
 
@@ -446,29 +441,14 @@ describe("Layer", function(){
 		it("should be OK", function(){
 			var layer = new pxl.Layout.Layer(8 * 16);
 			
-			layer.setAt(9 * 4, 255, 255, 255, 255);
+			layer.setAt(9, pxl.RGBA(0, 255, 255, 100));
 			
 			var tokenPixel = layer.pixelFromIndex(9);
 			
-			expect(tokenPixel[0]).to.equal(255);
-			expect(tokenPixel[1]).to.equal(255);
-			expect(tokenPixel[2]).to.equal(255);
-			expect(tokenPixel[3]).to.equal(255);
-		});
-	});
-
-	describe("pixel at index", function(){
-		it("should be OK", function(){
-			var layer = new pxl.Layout.Layer(8 * 16);
-			
-			layer.setAt(9 * 4, 255, 255, 255, 255);
-			
-			var tokenPixel = layer.pixelAt(9 * 4);
-			
-			expect(tokenPixel[0]).to.equal(255);
-			expect(tokenPixel[1]).to.equal(255);
-			expect(tokenPixel[2]).to.equal(255);
-			expect(tokenPixel[3]).to.equal(255);
+			expect(pxl.RGBA.getR(tokenPixel)).is.equal(0);
+			expect(pxl.RGBA.getG(tokenPixel)).is.equal(255);
+			expect(pxl.RGBA.getB(tokenPixel)).is.equal(255);
+			expect(pxl.RGBA.getA(tokenPixel)).is.equal(100);
 		});
 	});
 

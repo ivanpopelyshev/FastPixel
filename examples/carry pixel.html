@@ -56,12 +56,11 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
-						"pixel": new pxl.ImageDataArray([ //pick random color
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0
-						]),
+						"pixel": pxl.RGBA( //pick random color
+							(Math.random() * 256) | 0,
+							(Math.random() * 256) | 0,
+							(Math.random() * 256) | 0,
+							(Math.random() * 256) | 0),
 						"isMix": false,
 						"isNotifyView": true
 					});
@@ -73,7 +72,7 @@
 					var options = {
 						"start": prev,
 						"offset": new pxl.Point(5), //size of the pixel
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255])
+						"pixel": pxl.RGBA(0, 0, 0, 255)
 					};
 					View.activeView
 						.begin() //fit things for the current scale

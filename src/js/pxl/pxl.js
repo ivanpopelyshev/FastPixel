@@ -1,6 +1,7 @@
 ;var pxl = (function(document){
 	"use strict";
 
+	var _isBigEndian = void 0;
 	var _isSupported = true;
 	var _imgDataCtor = null;
 	var _emptyOptions = {};
@@ -14,9 +15,15 @@
 		_ctx = _canvas.getContext("2d");
 		_imgDataCtor = Object.getPrototypeOf( //ES5
 			_ctx.getImageData(0, 0, 1, 1).data).constructor;
-		if (!((new _imgDataCtor).buffer)){
-			throw new Error; //Array or CanvasPixelArray doesn't have a buffer
+		if (!(_imgDataCtor === Uint8ClampedArray ||
+			_imgDataCtor === Uint8Array)){
+			throw new Error;
 		}
+		if (!((new _imgDataCtor).buffer)){
+			throw new Error;
+		}
+		_isBigEndian = new Uint32Array(
+			new Uint8Array([0xA1, 0xB2, 0xC3, 0xD4]).buffer)[0] === 0xA1B2C3D4;
 	} catch(err){
 		_isSupported = false;
 	}
@@ -29,6 +36,7 @@
 	var _pxl = {
 		//Not "linked" yet objects:
 		Layout: null,
+		RGBA: null,
 		View: null,
 		Point: null,
 		Observer: null,
@@ -53,22 +61,37 @@
 		emptyOptions: _emptyOptions,
 
 		/**
-		 * Type of an array that uses by ImageData. Depends on browser.
+		 * TypedArray constructor that uses by ImageData. Depends on a browser.
 		 *
 		 * @example
 			var data = pxl.ImageDataArray(4);
 		 * @property ImageDataArray
-		 * @type {Uint8ClampedArray|Uint8Array|Uint16Array|Uint32Array}
+		 * @type {Uint8ClampedArray|Uint8Array}
 		 */
 		ImageDataArray: _imgDataCtor,
 
 		/**
 		 * Is API supported on current browser.
 		 *
-		 * @property isSupported
+		 * @method isSupported
 		 * @type {Boolean}
 		 */
-		isSupported: _isSupported,
+		isSupported: function(){
+			return _isSupported;
+		},
+
+		/**
+		 * Helps to detect current endianness.
+		 * Equal to "true" if big endian and to "false" if little endian.
+		 * Also may be equal to undefined if API isn't supported.
+		 *
+		 * @method isBigEndian
+		 * @type {Boolean|undefined}
+		 * @final
+		 */
+		isBigEndian: function(){
+			return _isBigEndian;
+		},
 
 		/**
 		 * More safest and fastest method to create ImageData.
@@ -110,18 +133,10 @@
 		},
 
 		/**
-		 * @method extend
-		 * @param child {Function} [out]
-		 * @param parent {Function} [in]
-		 */
-		extend: function(child, parent){
-			var F = function(){};
-			F.prototype = parent.prototype;
-			child.prototype = new F;
-			child.prototype.constructor = child;
-		},
-
-		/**
+		 * @example
+			var img = new Image;
+			img.src = ""; //Some valid url or a base64 string
+			var imageData = pxl.imageDataFromImage(img);
 		 * @method imageDataFromImg
 		 * @param img {Image} [in]
 		 * @return {ImageData}
@@ -137,76 +152,50 @@
 		},
 
 		/**
+		 * @method enableAntialiasing
+		 * @param ctx {CanvasRenderingContext2D} [out]
+		 */
+		enableAntialiasing: function(ctx){
+			_setAntialiasing(ctx, true);
+		},
+
+		/**
 		 * @method disableAntialiasing
 		 * @param ctx {CanvasRenderingContext2D} [out]
 		 */
 		disableAntialiasing: function(ctx){
-			if ("imageSmoothingEnabled" in ctx){
-				ctx.imageSmoothingEnabled = false;
-			} else if ("webkitImageSmoothingEnabled" in ctx){
-				ctx.webkitImageSmoothingEnabled = false;
-			} else if ("mozImageSmoothingEnabled" in ctx){
-				ctx.mozImageSmoothingEnabled = false;
-			} else if ("msImageSmoothingEnabled" in ctx){
-				ctx.msImageSmoothingEnabled = false;
-			}
+			_setAntialiasing(ctx, false);
 		},
 
 		/**
-		 * Warn: make sure that parameters are fit to range 0..255!
-		 *
-		 * @method toRGBA
-		 * @param r {Number} [in]
-		 * @param g {Number} [in]
-		 * @param b {Number} [in]
-		 * @param a {Number} [in]
-		 * @return {Number}
+		 * @method extend
+		 * @param child {Function} [out]
+		 * @param parent {Function} [in]
 		 */
-		toRGBA: function(r, g, b, a){
-			return r | (g << 8) | (b << 16) | (a << 24);
-		},
-
-		/**
-		 * @method getR
-		 * @param rgba {Number} [in]
-		 * @return {Number}
-		 */
-		getR: function(rgba){
-			return rgba & 0xFF;
-		},
-
-		/**
-		 * @method getG
-		 * @param rgba {Number} [in]
-		 * @return {Number}
-		 */
-		getG: function(rgba){
-			return (rgba & 0xFF00) >> 8;
-		},
-
-		/**
-		 * @method getB
-		 * @param rgba {Number} [in]
-		 * @return {Number}
-		 */
-		getB: function(rgba){
-			return (rgba & 0xFF0000) >> 16;
-		},
-
-		/**
-		 * @method getA
-		 * @param rgba {Number} [in]
-		 * @return {Number}
-		 */
-		getA: function(rgba){
-			return (rgba < 0 //detect is there a sign.
-				? 0xFF - ~((rgba & 0xFF000000) >> 24) //invert negative
-				: (rgba & 0xFF000000) >> 24); //usual case
+		extend: function(child, parent){
+			var F = function(){};
+			F.prototype = parent.prototype;
+			child.prototype = new F;
+			child.prototype.constructor = child;
 		}
-	}
+	};
 
 	Object.seal(_pxl);
 
 	return _pxl;
+
+	//Helpers:
+
+	function _setAntialiasing(ctx, value){
+		if ("imageSmoothingEnabled" in ctx){
+			ctx.imageSmoothingEnabled = value;
+		} else if ("webkitImageSmoothingEnabled" in ctx){
+			ctx.webkitImageSmoothingEnabled = value;
+		} else if ("mozImageSmoothingEnabled" in ctx){
+			ctx.mozImageSmoothingEnabled = value;
+		} else if ("msImageSmoothingEnabled" in ctx){
+			ctx.msImageSmoothingEnabled = value;
+		}
+	};
 
 })(document);

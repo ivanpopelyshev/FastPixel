@@ -4,7 +4,7 @@
 	if (!parent){
 		return;
 	}
-	
+
 	var ERR_MESSAGE = "'method' is not a function!";
 
     /**
@@ -21,6 +21,8 @@
 		 * @default {}
 		 */
         this._eventBook = {};
+
+		Object.seal(this);
     };
 
     var observerProto = Observer.prototype;

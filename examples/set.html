@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="common.css"/>
 	</head>
 	<body>
-		<canvas id="canvas" width="1024" height="1024"></canvas>
+		<canvas id="canvas" width="2048" height="2048"></canvas>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -22,15 +22,14 @@
 					//create the new View instance, and set it as active:
 					View.activeView = View.create({
 						layoutSize: {
-							width: 1024,
-							height: 1024
+							width: 2048,
+							height: 2048
 						},
 						element: document.querySelector("#canvas")
 					});
 					var layout = View.activeView.getLayout();
 					layout.activeLayer = layout.insertLayer();
 
-					pxl.bresenham.rectangle(0, 0, 1024 - 1, 1024 - 1, setPixel);
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
 
 					//listen for some of user movements:
@@ -62,12 +61,11 @@
 						y >= 0 && y < layout.getHeight()){
 						history.record(layout.activeLayer, history.STATIC_SHOT);
 						layout.set({
-							"pixel": new pxl.ImageDataArray([
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0
-							]),
+							"pixel": pxl.RGBA(
+								(Math.random() * 256) | 0,
+								(Math.random() * 256) | 0,
+								(Math.random() * 256) | 0,
+								(Math.random() * 256) | 0),
 							"isMix": false,
 							"isNotifyView": true
 						});
@@ -79,7 +77,7 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
+						"pixel": pxl.RGBA(0, 0, 0, 255),
 						"isMix": false,
 						"isNotifyView": true
 					});

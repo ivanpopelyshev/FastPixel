@@ -26,14 +26,6 @@
 		Session.call(this, layer);
 
 		/**
-		 * Reference on the layer.
-		 *
-		 * @property layer
-		 * @type {Layer}
-		 */
-		this.layer = layer;
-
-		/**
 		 * @property _indexMap
 		 * @private
 		 * @type {Object}
@@ -43,7 +35,7 @@
 
 		Object.seal(this);
 	};
-	
+
 	pxl.extend(SessionDynamic, Session);
 
 	var sessionDynamicProto = SessionDynamic.prototype;
@@ -70,30 +62,18 @@
         var indexMap = this._indexMap;
         if (param.constructor === Number){
             _cachePixel(param);
-	    } else if(param.start && param.offset){
-			if (param.offset.x === 1 && param.offset.y === 1){
-				_cachePixel(this.layer.getLayout().indexAt(param.start));
-			} else{
-				this.layer.getLayout().__process(param, _processLine);
-			}
-		} else{
-			this.layer.getLayout().__process(pxl.emptyOptions, _processLine);
+	    } else{
+			this.layer.getLayout().__process(param, function(i, length){
+				while (i < length){
+					_cachePixel(i++);
+				}
+			});
 		}
 
 		//Helpers:
         function _cachePixel(index){
-			if (!(index in indexMap)){
-				indexMap[index] = pxl.toRGBA(data[index],
-											 data[index + 1],
-											 data[index + 2],
-											 data[index + 3]);
-			}
-		};
-
-		function _processLine(i, length){
-			while (i < length){
-				_cachePixel(i);
-				i += 4;
+			if (index in indexMap === false){
+				indexMap[index] = data[index];
 			}
 		};
 	};
@@ -104,28 +84,15 @@
 	 * @method rewrite
 	 */
 	sessionDynamicProto.rewrite = function(){
-		var colorMap = {};
-		var packedColor = 0;
-		var tokenColor = null;
-		var layer = this.layer;
+		var newMap = {};
+		var tokenColor = 0;
+		var data = this.layer.data;
 		var indexMap = this._indexMap;
 		for (var index in indexMap){
-			packedColor = indexMap[index];
-			if (packedColor in colorMap){
-				tokenColor = colorMap[packedColor];
-			} else{
-				tokenColor = [pxl.getR(packedColor),
-							  pxl.getG(packedColor),
-							  pxl.getB(packedColor),
-							  pxl.getA(packedColor)];
-				colorMap[packedColor] = tokenColor;
-			}
-			layer.setAt(+index, //cast to Number, since "index" is a String
-						tokenColor[0],
-						tokenColor[1],
-						tokenColor[2],
-						tokenColor[3]);
+			newMap[index] = data[index];
+			data[index] = indexMap[index];
 		}
+		this._indexMap = newMap;
 	};
 
 	/**

@@ -26,7 +26,7 @@
 					var options = {
 						"start": new pxl.Point,
 						"offset": new pxl.Point(1), //size of the pixel
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255])
+						"pixel": pxl.RGBA(0, 0, 0, 255)
 					};
 
 					//create the new View instance, and set it as active:
@@ -58,12 +58,11 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
-						"pixel": new pxl.ImageDataArray([ //pick random color
+						"pixel": pxl.RGBA( //pick random color
 							(Math.random() * 255) | 0,
 							(Math.random() * 255) | 0,
 							(Math.random() * 255) | 0,
-							(Math.random() * 255) | 0
-						]),
+							(Math.random() * 255) | 0),
 						"isMix": false,
 						"isNotifyView": true
 					});

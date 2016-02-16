@@ -2,28 +2,29 @@
 	"use strict";
 
 	/**
-	 * The Layer object here is just a wrapper for ImageDataArray;
+	 * The Layer object here is just a wrapper for Uint32Array;
 	 * So for most of the methods the reference on layout is required.
 	 *
 	 * @constructor
 	 * @class Layer
 	 * @throws {RangeError} "Buffer limit has been reached!"
-	 * @param source {ArrayBuffer|Number} Specify other buffer or a size (without offset)
+	 * @param source {Array|TypedArray|ArrayBuffer|Number}
 	 * @param layout {Layout|undefined}
 	 * @param name {String|undefined}
 	 * @example
-		var layer = new pxl.Layout.Layer(8 * 16, layout, "Background");
-		//if suppose that layout is 8x16
+		var layer = new pxl.Layout.Layer(8 * 16, layout, "Background"); //suppose that layout is 8x16
+		//or
+		var layer = new pxl.Layout.Layer([255, 255, 255, 255], layout);
 	 */
 	var Layer = pxl.Layout.Layer = function(source, layout, name){
 		/**
 		 * @property data
-		 * @type {ImageDataArray}
+		 * @type {Uint32Array}
 		 */
-		this.data = new pxl.ImageDataArray(
-			typeof source === "number" ? source << 2 : source);
+		this.data = new Uint32Array(source);
 
-		if (this.data.length > Layer.MAX_BUFFER_SIZE){
+		if (this.data.length >
+			Layer.MAX_BUFFER_SIZE / this.data.BYTES_PER_ELEMENT){
 			this.data = null; //free memory
 			throw new RangeError("Buffer limit has been reached!");
 		}
@@ -72,14 +73,7 @@
 	 * @method reset
 	 */
 	layerProto.reset = function(){
-		var data = this.data;
-		if ("fill" in pxl.ImageDataArray.prototype){ //ES6
-			data.fill(0); //much faster
-		} else{
-			for (var i = 0, length = data.length; i < length; ++i){
-				data[i] = 0;
-			}
-		}
+		this._fillLine(0, 0, this.data.length);
 	};
 
 	/**
@@ -100,7 +94,9 @@
 
 	/**
 	 * Merge each pixel of two layers;
-	 * Or apply merging to pixels within start and offset area.
+	 * Or apply merging to pixels within start and offset area;
+	 * 
+	 * Warn: layer have to be from same layout! Or at least have a same size!
 	 *
 	 * @method merge
      * @param options {Object}[in]
@@ -111,54 +107,48 @@
      */
 	layerProto.merge = function(options){
 		var self = this;
+		var data = this.data;
 		var otherData = options.other.data;
-		if ((!options.start || !options.offset) && !options.isMix){
-			self.data.set(otherData); //much faster
-		} else{
-			var method = (options.isMix === true ? "mixAt" : "setAt");
-			self._layout.__process(options, function(i, length){
+		var alphaBlend = pxl.RGBA.alphaBlend;
+		if (options.isMix === true){
+			this._layout.__process(options, function(i, length){
 				while (i < length){
-					self[method](i,
-								otherData[i++],
-								otherData[i++],
-								otherData[i++],
-								otherData[i++]);
+					data[i] = alphaBlend(data[i], otherData[i++]);
 				}
 			});
+		} else{
+			if (options.start && options.offset){
+				this._layout.__process(options, function(i, length){
+					data.set(otherData.subarray(i, length), i);
+				});
+			} else{
+				this.data.set(otherData); //much faster
+			}
 		}
-		//try to avoid possible memory leaks that commes from closure:
-		otherData = self = method = null;
 	};
 
 	/**
 	 * Replace specific color by the new one on whole layer;
 	 * Or just on area within start and offset options.
 	 *
-	 * @method colorReplace
+	 * @method replace
 	 * @param options {Object} [in]
-	 * @param options.pixel {ImageDataArray|Array}
-	 * @param options.oldPixel {ImageDataArray|Array}
+	 * @param options.pixel {Number}
+	 * @param options.oldPixel {Number}
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 */
-	layerProto.colorReplace = function(options){
-		var self = this;
-		var r = options.pixel[0];
-		var g = options.pixel[1];
-		var b = options.pixel[2];
-		var a = options.pixel[3];
-		var oldR = options.oldPixel[0];
-		var oldG = options.oldPixel[1];
-		var oldB = options.oldPixel[2];
-		var oldA = options.oldPixel[3];
+	layerProto.replace = function(options){
+		var data = this.data;
+		var rgba = options.pixel;
+		var oldRGBA = options.oldPixel;
 		this._layout.__process(options, function(i, length){
-			for (; i < length; i += 4){
-				if (self.compareAt(i, oldR, oldG, oldB, oldA)){
-					self.setAt(i, r, g, b, a);
+			for (; i < length; ++i){
+				if (data[i] === oldRGBA){
+					data[i] = rgba;
 				}
 			}
 		});
-		self = null;
 	};
 
 	/**
@@ -167,7 +157,7 @@
 	 *
 	 * @method set
 	 * @param options {Object} [in]
-	 * @param options.pixel {ImageDataArray}
+	 * @param options.pixel {Number}
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 * @param options.isMix {Boolean}
@@ -175,17 +165,19 @@
 	layerProto.set = function(options){
 		var self = this;
 		var data = this.data;
-		var r = options.pixel[0];
-		var g = options.pixel[1];
-		var b = options.pixel[2];
-		var a = options.pixel[3];
-		var method = (options.isMix === true ? "mixAt" : "setAt");
-		this._layout.__process(options, function(i, length){
-			for (; i < length; i += 4){
-				self[method](i, r, g, b, a);
-			}
-		});
-		self = data = method = null;
+		var rgba = options.pixel;
+		var alphaBlend = pxl.RGBA.alphaBlend;
+		if (options.isMix === true){
+			this._layout.__process(options, function(i, length){
+				while (i < length){
+					data[i] = alphaBlend(data[i++], rgba);
+				}
+			});
+		} else{
+			this._layout.__process(options, function(i, length){
+				self._fillLine(rgba, i, length);
+			});
+		}
 	};
 
 	/**
@@ -201,194 +193,195 @@
 	 */
 	layerProto.setChannel = function(options){
 		var data = this.data;
-		var channelOffset = pxl.clamp(options.channelOffset, 0, 3);
 		var value = options.value;
+		var channelOffset = pxl.clamp(options.channelOffset, 0, 3);
 		this._layout.__process(options, function(i, length){
-			for (; i < length; i += 4){
-				data[i + channelOffset] = value;
+			var tmp8BitRepresentation = new Uint8Array(
+				data.subarray(i, length).buffer);
+			length = tmp8BitRepresentation.length;
+			for (i = channelOffset; i < length; i += 4){
+				tmp8BitRepresentation[i] = value;
 			}
 		});
-		data = null;
 	};
 
 	/**
-	 * Flood fill (no recursion, custom stack);
+	 * Scan-line fill (with custom stack);
 	 * Can be applyed for area within start and offset options.
 	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @param options.position {Point}
-	 * @param options.pixel {ImageDataArray|Array}
+	 * @param options.pixel {Number}
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 * @param options.isMix {Boolean|undefined}
-	 * @return {Boolean}
 	 */
-	layerProto.fill = (function(){
-		var _stack = []; //GC-friendly
-		return function(options){
-			var self = this;
-			var leftBorder = 0;
-			var endIndex = this.data.length;
-			var pixel = options.pixel;
-			var index = this._layout.indexAt(options.position) << 2;
-			if (index < 0 || index >= endIndex || //don't fill on out of memory!
-				this.compareAt(index, pixel[0], pixel[1], pixel[2], pixel[3])){ //don't fill on same colour!
-				return;
+	layerProto.fill = function(options){
+		var layout = this._layout;
+		var data = this.data;
+		var startIndex = 0;
+		var leftIndexOffset = 0;
+		var rightIndexOffset = 0;
+		var endIndex = data.length;
+		var pixel = options.pixel;
+		var index = layout.indexAt(options.position);
+		if (options.start && options.offset){
+			leftIndexOffset = options.start.x;
+			rightIndexOffset = options.start.x + options.offset.x;
+			startIndex = layout.indexAt(options.start);
+			endIndex = layout.indexAt(
+				new pxl.Point(options.start).add(options.offset));
+		}
+		if (index < startIndex || index >= endIndex || data[index] === pixel){
+			return;
+		}
+		var begin = 0;
+		var width = layout.getWidth();
+		var height = layout.getHeight();
+		var borderUp = false;
+		var borderDown = false;
+		var oldRGBA = this.pixelFromIndex(index); //pixel before changes
+		var rgba = data[index] = (options.isMix === true
+			? pxl.RGBA.alphaBlend(data[index], pixel)
+			: pixel); //pixel after changes
+		var upIndex = 0;
+		var downIndex = 0;
+		var stepsBack = 0;
+		var leftBorderIndex = 0;
+		var rightBorderIndex = 0;
+		var stack = [index];
+		do{
+			index = stack.pop();
+
+			leftBorderIndex = leftIndexOffset + ((index / width) | 0) * width;
+			rightBorderIndex = leftBorderIndex + width - rightIndexOffset;
+
+			stepsBack = 0;
+
+			//Go to the left:
+			while(--index >= leftBorderIndex && data[index] === oldRGBA){
+				++stepsBack;
 			}
-			var rightBorder = this._layout.getWidth() << 2;
-			var startIndex = 0;
-			var widthOffset = rightBorder;
-			var pixelOffset = 4;
-			var tmpIndex = 0;
-			var tokenPixel = this.pixelAt(index); //pixel before changes
-			var oldR = tokenPixel[0];
-			var oldG = tokenPixel[1];
-			var oldB = tokenPixel[2];
-			var oldA = tokenPixel[3];
-			this[options.isMix === true ? "mixAt" : "setAt"](
-				index, pixel[0], pixel[1], pixel[2], pixel[3]);
-			tokenPixel = this.pixelAt(index); //pixel after changes
-			var r = tokenPixel[0];
-			var g = tokenPixel[1];
-			var b = tokenPixel[2];
-			var a = tokenPixel[3];
-			var stack = _stack; //move reference to the current scope
-			stack.push(index);
-			if (options.start && options.offset){
-				startIndex = pxl.clamp(
-					this._layout.indexAt(options.start), 0, endIndex) << 2;
-				endIndex = pxl.clamp(this._layout.indexAt(
-					new pxl.Point(options.start).add(options.offset)),
-					0, endIndex) << 2;
-				leftBorder = options.start.x << 2;
-				rightBorder = (options.start.x + options.offset.x) << 2;
+
+			begin = ++index;
+			borderUp = borderDown = false;
+
+			//Go to the right to position where it starts:
+			/*while (stepsBack--){
+				_procCurrentLine();
 			}
+
+			//Keep going right:
 			do{
-				index = stack.pop();
-				tmpIndex = index + pixelOffset; //move right
-				if (tmpIndex % widthOffset <= rightBorder){
-					_procCurrent();
-				}
-				tmpIndex = index + widthOffset; //move down
-				if (tmpIndex < endIndex){
-					_procCurrent();
-				}
-				tmpIndex = index - pixelOffset; //move left
-				if (tmpIndex % widthOffset >= leftBorder){
-					_procCurrent();
-				}
-				tmpIndex = index - widthOffset; //move up
-				if (tmpIndex > startIndex){
-					_procCurrent();
-				}
-			} while(stack.length);
+				_procCurrentLine();
+			} while(index <= rightBorderIndex && data[index] === oldRGBA);*/
 
-			self = null;
+			for (;;){
+				upIndex = index - width;
+				downIndex = width + index++;
 
-			//Helper:
-			function _procCurrent(){
-				if (self.compareAt(tmpIndex, oldR, oldG, oldB, oldA)){
-					self.setAt(tmpIndex, r, g, b, a);
-					stack.push(tmpIndex);
+				if (upIndex > startIndex){
+					if (data[upIndex] === oldRGBA){
+						if(borderUp === false){
+							stack.push(upIndex);
+							borderUp = true;
+						}
+					} else{
+						borderUp = false;
+					}
 				}
-			};
-		};
-	})();
+
+				if (downIndex < endIndex){
+					if (data[downIndex] === oldRGBA){
+						if(borderDown === false){
+							stack.push(downIndex);
+							borderDown = true;
+						}
+					} else{
+						borderDown = false;
+					}
+				}
+
+				if (stepsBack === 0){
+					if (index >= rightBorderIndex || data[index] !== oldRGBA){
+						break;
+					}
+				} else{
+					--stepsBack;
+				}
+			}
+
+			//It's time to fill the whole detected line:
+			this._fillLine(rgba, begin, index);
+
+		} while(stack.length);
+
+
+		//Helper:
+		/*function _procCurrentLine(){
+			upIndex = index - width;
+			downIndex = index + width;
+			++index;
+
+			if (upIndex > startIndex){
+				if (data[upIndex] === oldRGBA){
+					if(borderUp === false){
+						stack.push(upIndex);
+						borderUp = true;
+					}
+				} else{
+					borderUp = false;
+				}
+			}
+
+			if (downIndex < endIndex){
+				if (data[downIndex] === oldRGBA){
+					if(borderDown === false){
+						stack.push(downIndex);
+						borderDown = true;
+					}
+				} else{
+					borderDown = false;
+				}
+			}
+		};*/
+	};
 
 	/**
 	 * @method insertData
 	 * @param options {Object} [in]
-	 * @param data {ImageDataArray}
+	 * @param data {TypedArray}
 	 * @param options.start {Point}
 	 * @param options.offset {Point}
 	 */
 	layerProto.insertData = function(options){
 		var index = 0;
-		var thisData = this.data;
-		var otherData = options.data;
+		var data = this.data;
+		var otherData = (options.data.constructor === Uint32Array
+			? options.data
+			: new Uint32Array(options.data.buffer)); //should not be too slow
 		this._layout.__process(options, function(i, length){
-			while (i < length){
-				thisData[i++] = otherData[index++];
-			}
+			data.set(otherData.subarray(index, index += length - i), i);
 		});
-		thisData = otherData = null;
 	};
 
 	/**
 	 * @method setAt
 	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
+	 * @param rgba {Number}
 	 */
-	layerProto.setAt = function(i, r, g, b, a){
-		var data = this.data;
-		data[i] = r;
-		data[i + 1] = g;
-		data[i + 2] = b;
-		data[i + 3] = a;
-	};
-
-	/**
-	 * Look at: http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending
-	 *
-	 * @method mixAt
-	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
-	 */
-	layerProto.mixAt = function(i, r, g, b, a){
-		if (a !== 0){ //don't waste time on transparent pixels
-			var data = this.data;
-			var thisA = data[i + 3];
-			if (thisA === 0){ //same as above ^
-				data[i] = r;
-				data[i + 1] = g;
-				data[i + 2] = b;
-				data[i + 3] = a;
-			} else{
-				thisA /= 255.0; //cast alpha channels to 0.0..1.0 format
-				a /= 255.0;
-				var aMul = thisA * (1 - a);
-				var newA = a + aMul; //new alpha
-				var op1 = a / newA;
-				var op2 = aMul / newA;
-				data[i] = data[i++] * op1 + r * op2;
-				data[i] = data[i++] * op1 + g * op2;
-				data[i] = data[i++] * op1 + b * op2;
-				data[i] = newA * 255;
-			}
-		}
-	};
-
-	/**
-	 * @method compareAt
-	 * @param i {Number} index where to apply.
-	 * @param r {Number}
-	 * @param g {Number}
-	 * @param b {Number}
-	 * @param a {Number}
-	 * @return {Boolean}
-	 */
-	layerProto.compareAt = function(i, r, g, b, a){
-		var data = this.data;
-		return (data[i] === r &&
-				data[i + 1] === g &&
-				data[i + 2] === b &&
-				data[i + 3] === a);
+	layerProto.setAt = function(i, rgba){
+		this.data[i] = rgba;
 	};
 
 	/**
 	 * @method pixelFromPosition
 	 * @param position {Point} [in]
-	 * @return {ImageDataArray}
+	 * @return {Number}
 	 */
 	layerProto.pixelFromPosition = function(position){
-		return this.pixelAt(this._layout.indexAt(position) << 2);
+		return this.pixelFromIndex(this._layout.indexAt(position));
 	};
 
 	/**
@@ -398,27 +391,10 @@
 	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
-	 * @return {ImageDataArray}
+	 * @return {Number}
 	 */
 	layerProto.pixelFromIndex = function(index){
-		return this.pixelAt(index << 2);
-	};
-
-	/**
-	 * Index with color-offset (which equal to x4 (rgba)).
-	 *
-	 * @method pixelAt
-	 * @param index {Number} [in]
-	 * @return {ImageDataArray}
-	 */
-	layerProto.pixelAt = function(index){
-		var pixel = new pxl.ImageDataArray(4);
-		var data = this.data;
-		pixel[0] = data[index];
-		pixel[1] = data[++index];
-		pixel[2] = data[++index];
-		pixel[3] = data[++index];
-		return pixel;
+		return this.data[index];
 	};
 
 	/**
@@ -434,7 +410,8 @@
 			? pxl.createImageData(options.offset.x, options.offset.y)
 			: pxl.createImageData(layout.getWidth(), layout.getHeight())
 		);
-		void this._generateData(imageData.data, this.data, options);
+		void this._generateData(
+			new Uint32Array(imageData.data.buffer), this.data, options);
 		return imageData;
 	};
 
@@ -443,7 +420,7 @@
 	 * @param options {Object} [in]
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
-	 * @return {ImageDataArray}
+	 * @return {Uint32Array}
 	 */
 	layerProto.cloneData = function(options){
 		return this._generateData(null, this.data, options);
@@ -460,32 +437,76 @@
 	/**
 	 * @method _generateData
 	 * @private
-	 * @param destData {ImageDataArray|null} [out]
-	 * @param sourceData {ImageDataArray} [in]
+	 * @param destData {Uint32Array|null} [out]
+	 * @param sourceData {Uint32Array} [in]
 	 * @param options {Object} [in]
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
-	 * @return {ImageDataArray}
+	 * @return {Uint32Array}
 	 */
 	layerProto._generateData = function(destData, sourceData, options){
 		var index = 0;
 		if (options.start && options.offset){
-			destData = destData || new pxl.ImageDataArray(
-				(options.offset.x * options.offset.y) << 2);
+			destData = destData || new Uint32Array(
+				(options.offset.x | 0) * (options.offset.y | 0));
 			this._layout.__process(options, function(i, length){
-				while (i < length){
-					destData[index++] = sourceData[i++];
-				}
+				destData.set(sourceData.subarray(i, length), index);
+				index += length - i;
 			});
 		} else{
 			if (destData){
 				destData.set(sourceData);
 			} else{
-				destData = new pxl.ImageDataArray(sourceData); //copy constructor
+				destData = new Uint32Array(sourceData); //copy constructor
 			}
 		}
-		sourceData = null;
 		return destData;
+	};
+
+	/**
+	 * 
+	 *
+	 * @param begin {Number}
+	 * @param end {Number}
+	 * @param rgba {Number}
+	 * @method _fillLine
+	 * @private
+	 */
+	if ("fill" in Uint32Array.prototype){ //ES6
+		layerProto._fillLine = function(rgba, begin, end){
+			this.data.fill(rgba, begin, end); //much faster
+		};
+	} else{
+		layerProto._fillLine = function(rgba, begin, end){
+			var data = this.data;
+			while (begin < end){
+				data[begin++] = rgba;
+			}
+		};
+	}
+
+	/**
+	 * 
+	 *
+	 * @param start {Number|undefined}
+	 * @param end {Number|undefined}
+	 * @method _reverseLine
+	 * @private
+	 */
+	layerProto._reverseLine = function(start, end){
+		var data = this.data;
+		if (arguments.length === 0 && "reverse" in Uint32Array.prototype){
+			data.reverse(); //ES6, unfortunatly it haven't ranges
+		} else{
+			var tmp = 0;
+			start = start || 0;
+			end = end || data.length;
+			while (start < --end){ //end not included!
+				var tmp = data[end];
+				data[end] = data[start];
+				data[start++] = tmp;
+			}
+		}
 	};
 
 	/**
@@ -498,4 +519,5 @@
 		this._layout = this.data = null;
 		this.isVisible = false;
 	};
+
 })();

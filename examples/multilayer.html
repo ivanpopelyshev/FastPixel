@@ -33,32 +33,23 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
+						"pixel": pxl.RGBA(0, 0, 0, 255),
 						"isMix": false,
-						"isNotifyView": true
+						"isNotifyView": false //don't draw yet...
 					});
 				});
 
 				layout.activeLayer = layout.insertLayer();
 
 				layout.set({
-					"pixel": new pxl.ImageDataArray([255, 0, 0, 127]),
-					"isMix": true,
-					"isNotifyView": true
+					"pixel": pxl.RGBA(81, 188, 87, 25),
+					"isNotifyView": false //don't draw yet...
 				});
 				layout.activeLayer = layout.insertLayer();
 
 				layout.set({
-					"pixel": new pxl.ImageDataArray([0, 255, 0, 127]),
-					"isMix": true,
-					"isNotifyView": true
-				});
-				layout.activeLayer = layout.insertLayer();
-
-				layout.set({
-					"pixel": new pxl.ImageDataArray([0, 0, 255, 127]),
-					"isMix": true,
-					"isNotifyView": true
+					"pixel": pxl.RGBA(239, 133, 11, 204),
+					"isNotifyView": true //TIME TO DRAW!
 				});
 
 			} else{

@@ -180,29 +180,23 @@
 		/**
 		 * Remove sessions with deleted/empty layers.
 		 *
-		 * @method clean
+		 * @method deleteLayer
+		 * @param layer {Layer} [in]
 		 */
-		clean: function(){
-			var container = this._stack;
-			var tokenSession = null;
+		deleteLayer: function(layer){
 			var i = 0;
-			while (i < container.length){
-				tokenSession = container[i];
-				if (!tokenSession.layer || tokenSession.layer.data === null){
-					//correctly move the pointer:
-					if (tokenSession === container[this._pointer]){
-						if (container.length > 1){
-							if (this._pointer !== 0){
-								--this._pointer;
-							}
-						} else{
-							this._pointer = 0;
-						}
+			var tokenSession = null;
+			var stack = this._stack;
+			while (i < stack.length){
+				tokenSession = stack[i];
+				if (layer === tokenSession.layer){
+					if (this._pointer >= i && --this._pointer < 0){
+						this._pointer = 0;
 					}
-					container.splice(i, 1);
-					continue;
+					stack.splice(i, 1);
+					continue; //keep going searching from current index
 				}
-				++i;
+				++i; //iterate...
 			}
 		}
 	};

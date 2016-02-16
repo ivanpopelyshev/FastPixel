@@ -99,7 +99,7 @@
 	 * @chainable
 	 */
 	layoutProto.setActiveTo = function(index){
-		if (index in this.layerList){
+		if (index >= 0 && index < this.layerList.length){
 			this.activeLayer = this.layerList[index];
 		}
 		return this;
@@ -138,15 +138,15 @@
 
 	/**
 	 * "Drawn" each layer to main dataLayer layer (Back-to-front);
-	 * Will use layers from "layerList" parameter or visible layers if parameter is not passed;
-	 * Note: if "layerList" is empty array or if there are novisible layers the model would be reseted;
-	 * Also, will notify subscribers.
+	 * Will use visible layers from "layerList" parameter;
+	 * Or visible layers from internal "layerList" property;
+	 * Note: if "layerList" is empty or if there are no visible layers the model would be reseted;
+	 * Also, notify subscribers.
 	 *
 	 * @example
-		layout.mergeLayers({isNotifyView: true, isMix: true});
+		layout.mergeLayers({isNotifyView: true});
 	 * @method mergeLayers
 	 * @param options {Object} [in]
-	 * @param options.isMix {Boolean}
 	 * @param options.start {Point|undefined}
 	 * @param options.offset {Point|undefined}
 	 * @param options.isNotifyView {Boolean}
@@ -155,7 +155,7 @@
 	 */
 	layoutProto.mergeLayers = function(options, layerList){
 		var clonedOpts = {};
-		var layers = layerList || this.getVisibleLayers();
+		var layers = _getVisibleLayers(layerList || this.layerList);
 		var layerCount = layers.length;
 		var dataLayer = this.dataLayer;
 		if (layerCount === 0){
@@ -167,7 +167,7 @@
 			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
-				clonedOpts.isMix = !!options.isMix; //other layers have processed properly
+				clonedOpts.isMix = true; //other layers have processed properly
 			}
 		}
 		if (options.isNotifyView === true){
@@ -180,14 +180,14 @@
      * Replace old colour by new one;
 	 * Delegate processing to the activeLayer.
 	 *
-	 * Look at: pxl.Layout.Layer.colorReplace
+	 * Look at: pxl.Layout.Layer.replace
 	 *
-	 * @method colorReplace
+	 * @method replace
 	 * @param options {Object} [in]
 	 * @chainable
      */
-	layoutProto.colorReplace = function(options){
-		this.activeLayer.colorReplace(options);
+	layoutProto.replace = function(options){
+		this.activeLayer.replace(options);
 		this.mergeLayers(options);
 		return this;
 	};
@@ -225,7 +225,6 @@
 	};
 
     /**
-     * Flood fill;
 	 * Delegate processing to the activeLayer.
 	 *
 	 * Look at: pxl.Layout.Layer.fill
@@ -251,7 +250,7 @@
 		//in 8x16 layout, an index would be equal to 9
 	 */
 	layoutProto.indexAt = function(position){
-		return position.x + position.y * this.getWidth();
+		return (position.x | 0) + (position.y | 0) * this.getWidth();
 	};
 
 	/**
@@ -314,14 +313,7 @@
 	 * @return {Array}
 	 */
 	layoutProto.getVisibleLayers = function(){
-		var getVisibleLayers = [];
-		var layerList = this.layerList;
-		for (var i = 0; i < layerList.length; ++i){
-			if (layerList[i].isVisible === true){
-				getVisibleLayers.push(layerList[i]);
-			}
-		}
-		return getVisibleLayers;
+		return _getVisibleLayers(this.layerList);
 	};
 
 	/**
@@ -374,14 +366,12 @@
 	 */
 	layoutProto.__process = function(options, callback){
 		if (options.start && options.offset){
-			var length = 0;
-			var high = options.offset.y;
-			var width = this.getWidth() << 2;
-			var wideOffset = options.offset.x << 2;
-			var index = this.indexAt(options.start) << 2;
-			for (var i = 0; i < high; ++i){
-				length = index + wideOffset;
-				callback(index, length);
+			var width = this.getWidth();
+			var high = options.offset.y | 0;
+			var wideOffset = options.offset.x | 0;
+			var index = this.indexAt(options.start);
+			while (high--){
+				callback(index, index + wideOffset);
 				index += width;
 			}
 		} else{
@@ -399,4 +389,16 @@
 		this._imageData = this.dataLayer = null;
 		this.removeAllLayers();
 	};
+
+
+    //Helper:
+    function _getVisibleLayers(layerList){
+        var getVisibleLayers = [];
+		for (var i = 0; i < layerList.length; ++i){
+			if (layerList[i].isVisible === true){
+				getVisibleLayers.push(layerList[i]);
+			}
+		}
+		return getVisibleLayers;
+    };
 })();

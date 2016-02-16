@@ -144,6 +144,6 @@
 		}
 	}
 
-	Object.seal(bresenham);
+	Object.freeze(bresenham);
 
 })(pxl);

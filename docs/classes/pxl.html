@@ -45,6 +45,7 @@
                                 <li><a href="../classes/Observer.html">Observer</a></li>
                                 <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
+                                <li><a href="../classes/RGBA.html">RGBA</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
                                 <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
                                 <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
@@ -92,7 +93,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l24"><code>pxl.js:24</code></a>
+            Defined in: <a href="../files/pxl.js.html#l31"><code>pxl.js:31</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -138,23 +139,11 @@
 
                             </li>
                             <li class="index-item method">
+                                <a href="#method_enableAntialiasing">enableAntialiasing</a>
+
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_extend">extend</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getA">getA</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getB">getB</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getG">getG</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_getR">getR</a>
 
                             </li>
                             <li class="index-item method">
@@ -162,7 +151,11 @@
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_toRGBA">toRGBA</a>
+                                <a href="#method_isBigEndian">isBigEndian</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_isSupported">isSupported</a>
 
                             </li>
                     </ul>
@@ -182,10 +175,6 @@
                             </li>
                             <li class="index-item property">
                                 <a href="#property_ImageDataArray">ImageDataArray</a>
-
-                            </li>
-                            <li class="index-item property">
-                                <a href="#property_isSupported">isSupported</a>
 
                             </li>
                     </ul>
@@ -227,7 +216,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l87"><code>pxl.js:87</code></a>
+        <a href="../files/pxl.js.html#l110"><code>pxl.js:110</code></a>
         </p>
 
 
@@ -315,7 +304,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l102"><code>pxl.js:102</code></a>
+        <a href="../files/pxl.js.html#l125"><code>pxl.js:125</code></a>
         </p>
 
 
@@ -365,7 +354,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l73"><code>pxl.js:73</code></a>
+        <a href="../files/pxl.js.html#l96"><code>pxl.js:96</code></a>
         </p>
 
 
@@ -445,7 +434,60 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l139"><code>pxl.js:139</code></a>
+        <a href="../files/pxl.js.html#l162"><code>pxl.js:162</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">ctx</code>
+                        <span class="type">CanvasRenderingContext2D</span>
+
+
+                    <div class="param-description">
+                        <p>[out]</p>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
+<div id="method_enableAntialiasing" class="method item">
+    <h3 class="name"><code>enableAntialiasing</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>ctx</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l154"><code>pxl.js:154</code></a>
         </p>
 
 
@@ -501,7 +543,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l112"><code>pxl.js:112</code></a>
+        <a href="../files/pxl.js.html#l170"><code>pxl.js:170</code></a>
         </p>
 
 
@@ -544,258 +586,6 @@
 
 
 </div>
-<div id="method_getA" class="method item">
-    <h3 class="name"><code>getA</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>rgba</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l196"><code>pxl.js:196</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">rgba</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getB" class="method item">
-    <h3 class="name"><code>getB</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>rgba</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l187"><code>pxl.js:187</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">rgba</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getG" class="method item">
-    <h3 class="name"><code>getG</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>rgba</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l178"><code>pxl.js:178</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">rgba</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_getR" class="method item">
-    <h3 class="name"><code>getR</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>rgba</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l169"><code>pxl.js:169</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">rgba</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
-
-
-</div>
 <div id="method_imageDataFromImg" class="method item">
     <h3 class="name"><code>imageDataFromImg</code></h3>
 
@@ -820,7 +610,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l124"><code>pxl.js:124</code></a>
+        <a href="../files/pxl.js.html#l135"><code>pxl.js:135</code></a>
         </p>
 
 
@@ -858,30 +648,56 @@
         </div>
 
 
-</div>
-<div id="method_toRGBA" class="method item">
-    <h3 class="name"><code>toRGBA</code></h3>
+        <div class="example">
+            <h4>Example:</h4>
 
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
+            <div class="example-content">
+                <pre class="code prettyprint"><code>        var img = new Image;
+        img.src = &quot;&quot;; //Some valid url or a base64 string
+        var imageData = pxl.imageDataFromImage(img);</code></pre>
+
+            </div>
         </div>
+</div>
+<div id="method_isBigEndian" class="method item">
+    <h3 class="name"><code>isBigEndian</code></h3>
 
-        <span class="returns-inline">
-            <span class="type">Number</span>
-        </span>
+        <span class="paren">()</span>
+
+
+
+
+        <span class="flag final">final</span>
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l83"><code>pxl.js:83</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Helps to detect current endianness.
+Equal to &quot;true&quot; if big endian and to &quot;false&quot; if little endian.
+Also may be equal to undefined if API isn't supported.</p>
+
+    </div>
+
+
+
+
+</div>
+<div id="method_isSupported" class="method item">
+    <h3 class="name"><code>isSupported</code></h3>
+
+        <span class="paren">()</span>
+
 
 
 
@@ -892,7 +708,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l155"><code>pxl.js:155</code></a>
+        <a href="../files/pxl.js.html#l73"><code>pxl.js:73</code></a>
         </p>
 
 
@@ -900,68 +716,11 @@
     </div>
 
     <div class="description">
-        <p>Warn: make sure that parameters are fit to range 0..255!</p>
+        <p>Is API supported on current browser.</p>
 
     </div>
 
-        <div class="params">
-            <h4>Parameters:</h4>
 
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Number</span>:
-            </div>
-        </div>
 
 
 </div>
@@ -981,7 +740,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l37"><code>pxl.js:37</code></a>
+        <a href="../files/pxl.js.html#l45"><code>pxl.js:45</code></a>
         </p>
 
 
@@ -1008,7 +767,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l45"><code>pxl.js:45</code></a>
+        <a href="../files/pxl.js.html#l53"><code>pxl.js:53</code></a>
         </p>
 
 
@@ -1025,7 +784,7 @@
 </div>
 <div id="property_ImageDataArray" class="property item">
     <h3 class="name"><code>ImageDataArray</code></h3>
-    <span class="type">Uint8ClampedArray | Uint8Array | Uint16Array | Uint32Array</span>
+    <span class="type">Uint8ClampedArray | Uint8Array</span>
 
 
 
@@ -1034,14 +793,14 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l55"><code>pxl.js:55</code></a>
+        <a href="../files/pxl.js.html#l63"><code>pxl.js:63</code></a>
         </p>
 
 
     </div>
 
     <div class="description">
-        <p>Type of an array that uses by ImageData. Depends on browser.</p>
+        <p>TypedArray constructor that uses by ImageData. Depends on a browser.</p>
 
     </div>
 
@@ -1054,31 +813,6 @@
 
             </div>
         </div>
-
-</div>
-<div id="property_isSupported" class="property item">
-    <h3 class="name"><code>isSupported</code></h3>
-    <span class="type">Boolean</span>
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l65"><code>pxl.js:65</code></a>
-        </p>
-
-
-    </div>
-
-    <div class="description">
-        <p>Is API supported on current browser.</p>
-
-    </div>
-
-
 
 </div>
             </div>

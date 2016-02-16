@@ -61,24 +61,23 @@
 				function colorReplace(x, y){
 					if (x >= 0 && x < layout.getWidth() &&
 						y >= 0 && y < layout.getHeight()){
-						var oldPixel = layout.activeLayer.pixelFromPosition(
+						var oldPixel = layout.dataLayer.pixelFromPosition(
 							new pxl.Point(x, y));
 						var options = {
-							"pixel": new pxl.ImageDataArray([
+							"pixel": pxl.RGBA(
 								(Math.random() * 256) | 0,
 								(Math.random() * 256) | 0,
 								(Math.random() * 256) | 0,
-								(Math.random() * 256) | 0
-							]),
-							oldPixel: oldPixel,
+								(Math.random() * 256) | 0),
+							"oldPixel": oldPixel,
 							"isMix": true,
 							"isNotifyView": true
 						};
 
-						history.record(layout, history.STATIC_SHOT);
-						history.cache(options);
-						layout.colorReplace(options);
-						history.stop();
+						/*history.record(layout, history.STATIC_SHOT);
+						history.cache(options);*/
+						layout.replace(options);
+						//history.stop();
 					}
 				}
 
@@ -86,7 +85,7 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(20),
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
+						"pixel": pxl.RGBA(0, 0, 0, 255),
 						"isMix": false,
 						"isNotifyView": true
 					});

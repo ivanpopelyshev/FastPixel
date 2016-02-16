@@ -45,6 +45,7 @@
                                 <li><a href="../classes/Observer.html">Observer</a></li>
                                 <li><a href="../classes/Point.html">Point</a></li>
                                 <li><a href="../classes/pxl.html">pxl</a></li>
+                                <li><a href="../classes/RGBA.html">RGBA</a></li>
                                 <li><a href="../classes/Session.html">Session</a></li>
                                 <li><a href="../classes/SessionDynamic.html">SessionDynamic</a></li>
                                 <li><a href="../classes/SessionStatic.html">SessionStatic</a></li>
@@ -92,7 +93,7 @@
 
 
         <div class="foundat">
-            Defined in: <a href="../files/pxl.js.html#l1649"><code>pxl.js:1649</code></a>
+            Defined in: <a href="../files/pxl.js.html#l1783"><code>pxl.js:1783</code></a>
         </div>
 
             Module: <a href="../modules/pxl.html">pxl</a>
@@ -101,7 +102,7 @@
 
 
 <div class="box intro">
-    <p>The Layer object here is just a wrapper for ImageDataArray;
+    <p>The Layer object here is just a wrapper for Uint32Array;
 So for most of the methods the reference on layout is required.</p>
 
 </div>
@@ -135,7 +136,7 @@ So for most of the methods the reference on layout is required.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1649"><code>pxl.js:1649</code></a>
+        <a href="../files/pxl.js.html#l1783"><code>pxl.js:1783</code></a>
         </p>
 
 
@@ -152,12 +153,11 @@ So for most of the methods the reference on layout is required.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">source</code>
-                        <span class="type">ArrayBuffer | Number</span>
+                        <span class="type">Array | TypedArray | ArrayBuffer | Number</span>
 
 
                     <div class="param-description">
-                        <p>Specify other buffer or a size (without offset)</p>
-
+                         
                     </div>
 
                 </li>
@@ -199,8 +199,9 @@ So for most of the methods the reference on layout is required.</p>
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code prettyprint"><code>    var layer = new pxl.Layout.Layer(8 * 16, layout, &quot;Background&quot;);
-    //if suppose that layout is 8x16</code></pre>
+                <pre class="code prettyprint"><code>    var layer = new pxl.Layout.Layer(8 * 16, layout, &quot;Background&quot;); //suppose that layout is 8x16
+    //or
+    var layer = new pxl.Layout.Layer([255, 255, 255, 255], layout);</code></pre>
 
             </div>
         </div>
@@ -224,19 +225,19 @@ So for most of the methods the reference on layout is required.</p>
 
                     <ul class="index-list methods">
                             <li class="index-item method private">
+                                <a href="#method__fillLine">_fillLine</a>
+
+                            </li>
+                            <li class="index-item method private">
                                 <a href="#method__generateData">_generateData</a>
+
+                            </li>
+                            <li class="index-item method private">
+                                <a href="#method__reverseLine">_reverseLine</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_cloneData">cloneData</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_colorReplace">colorReplace</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_compareAt">compareAt</a>
 
                             </li>
                             <li class="index-item method">
@@ -268,19 +269,15 @@ So for most of the methods the reference on layout is required.</p>
 
                             </li>
                             <li class="index-item method">
-                                <a href="#method_mixAt">mixAt</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_pixelAt">pixelAt</a>
-
-                            </li>
-                            <li class="index-item method">
                                 <a href="#method_pixelFromIndex">pixelFromIndex</a>
 
                             </li>
                             <li class="index-item method">
                                 <a href="#method_pixelFromPosition">pixelFromPosition</a>
+
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_replace">replace</a>
 
                             </li>
                             <li class="index-item method">
@@ -336,6 +333,85 @@ So for most of the methods the reference on layout is required.</p>
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
 
+<div id="method__fillLine" class="method item private">
+    <h3 class="name"><code>_fillLine</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>begin</code>
+                </li>
+                <li class="arg">
+                        <code>end</code>
+                </li>
+                <li class="arg">
+                        <code>rgba</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2245"><code>pxl.js:2245</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">begin</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">end</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">rgba</code>
+                        <span class="type">Number</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+
+</div>
 <div id="method__generateData" class="method item private">
     <h3 class="name"><code>_generateData</code></h3>
 
@@ -354,7 +430,7 @@ So for most of the methods the reference on layout is required.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">ImageDataArray</span>
+            <span class="type">Uint32Array</span>
         </span>
 
 
@@ -367,7 +443,7 @@ So for most of the methods the reference on layout is required.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2105"><code>pxl.js:2105</code></a>
+        <a href="../files/pxl.js.html#l2216"><code>pxl.js:2216</code></a>
         </p>
 
 
@@ -384,7 +460,7 @@ So for most of the methods the reference on layout is required.</p>
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">destData</code>
-                        <span class="type">ImageDataArray | Null</span>
+                        <span class="type">Uint32Array | Null</span>
 
 
                     <div class="param-description">
@@ -395,7 +471,7 @@ So for most of the methods the reference on layout is required.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">sourceData</code>
-                        <span class="type">ImageDataArray</span>
+                        <span class="type">Uint32Array</span>
 
 
                     <div class="param-description">
@@ -442,9 +518,75 @@ So for most of the methods the reference on layout is required.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">ImageDataArray</span>:
+                        <span class="type">Uint32Array</span>:
             </div>
         </div>
+
+
+</div>
+<div id="method__reverseLine" class="method item private">
+    <h3 class="name"><code>_reverseLine</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>start</code>
+                </li>
+                <li class="arg">
+                        <code>end</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+        <span class="flag private">private</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l2267"><code>pxl.js:2267</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">start</code>
+                        <span class="type">Number | Undefined</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+                <li class="param">
+                        <code class="param-name">end</code>
+                        <span class="type">Number | Undefined</span>
+
+
+                    <div class="param-description">
+                         
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -460,7 +602,7 @@ So for most of the methods the reference on layout is required.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">ImageDataArray</span>
+            <span class="type">Uint32Array</span>
         </span>
 
 
@@ -472,7 +614,7 @@ So for most of the methods the reference on layout is required.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2086"><code>pxl.js:2086</code></a>
+        <a href="../files/pxl.js.html#l2197"><code>pxl.js:2197</code></a>
         </p>
 
 
@@ -525,215 +667,7 @@ So for most of the methods the reference on layout is required.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">ImageDataArray</span>:
-            </div>
-        </div>
-
-
-</div>
-<div id="method_colorReplace" class="method item">
-    <h3 class="name"><code>colorReplace</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>options</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l1778"><code>pxl.js:1778</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Replace specific color by the new one on whole layer;
-Or just on area within start and offset options.</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">options</code>
-                        <span class="type">Object</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                        <ul class="params-list">
-                            <li class="param">
-                                    <code class="param-name">pixel</code>
-                                    <span class="type">ImageDataArray | Array</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">oldPixel</code>
-                                    <span class="type">ImageDataArray | Array</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">start</code>
-                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                            <li class="param">
-                                    <code class="param-name">offset</code>
-                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
-
-                                <div class="param-description">
-                                    
-                                </div>
-
-                            </li>
-                        </ul>
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_compareAt" class="method item">
-    <h3 class="name"><code>compareAt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>i</code>
-                </li>
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2013"><code>pxl.js:2013</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">i</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>index where to apply.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
+                        <span class="type">Uint32Array</span>:
             </div>
         </div>
 
@@ -763,7 +697,7 @@ Or just on area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1730"><code>pxl.js:1730</code></a>
+        <a href="../files/pxl.js.html#l1858"><code>pxl.js:1858</code></a>
         </p>
 
 
@@ -822,7 +756,7 @@ Or just on area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2136"><code>pxl.js:2136</code></a>
+        <a href="../files/pxl.js.html#l2291"><code>pxl.js:2291</code></a>
         </p>
 
 
@@ -850,9 +784,6 @@ Tip: don't forget to clean the history cache.</p>
             </ul><span class="paren">)</span>
         </div>
 
-        <span class="returns-inline">
-            <span class="type">Boolean</span>
-        </span>
 
 
 
@@ -863,7 +794,7 @@ Tip: don't forget to clean the history cache.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1859"><code>pxl.js:1859</code></a>
+        <a href="../files/pxl.js.html#l1987"><code>pxl.js:1987</code></a>
         </p>
 
 
@@ -871,7 +802,7 @@ Tip: don't forget to clean the history cache.</p>
     </div>
 
     <div class="description">
-        <p>Flood fill (no recursion, custom stack);
+        <p>Scan-line fill (with custom stack);
 Can be applyed for area within start and offset options.</p>
 
     </div>
@@ -902,7 +833,7 @@ Can be applyed for area within start and offset options.</p>
                             </li>
                             <li class="param">
                                     <code class="param-name">pixel</code>
-                                    <span class="type">ImageDataArray | Array</span>
+                                    <span class="type">Number</span>
 
                                 <div class="param-description">
                                     
@@ -941,13 +872,6 @@ Can be applyed for area within start and offset options.</p>
             </ul>
         </div>
 
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">Boolean</span>:
-            </div>
-        </div>
 
 
 </div>
@@ -975,7 +899,7 @@ Can be applyed for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2069"><code>pxl.js:2069</code></a>
+        <a href="../files/pxl.js.html#l2179"><code>pxl.js:2179</code></a>
         </p>
 
 
@@ -1052,7 +976,7 @@ Can be applyed for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2097"><code>pxl.js:2097</code></a>
+        <a href="../files/pxl.js.html#l2208"><code>pxl.js:2208</code></a>
         </p>
 
 
@@ -1098,7 +1022,7 @@ Can be applyed for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1944"><code>pxl.js:1944</code></a>
+        <a href="../files/pxl.js.html#l2130"><code>pxl.js:2130</code></a>
         </p>
 
 
@@ -1146,7 +1070,7 @@ Can be applyed for area within start and offset options.</p>
                 </li>
                 <li class="param">
                         <code class="param-name">data</code>
-                        <span class="type">ImageDataArray</span>
+                        <span class="type">TypedArray</span>
 
 
                     <div class="param-description">
@@ -1181,7 +1105,7 @@ Can be applyed for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1746"><code>pxl.js:1746</code></a>
+        <a href="../files/pxl.js.html#l1874"><code>pxl.js:1874</code></a>
         </p>
 
 
@@ -1190,7 +1114,8 @@ Can be applyed for area within start and offset options.</p>
 
     <div class="description">
         <p>Merge each pixel of two layers;
-Or apply merging to pixels within start and offset area.</p>
+Or apply merging to pixels within start and offset area;</p>
+<p>Warn: layer have to be from same layout! Or at least have a same size!</p>
 
     </div>
 
@@ -1253,176 +1178,6 @@ Or apply merging to pixels within start and offset area.</p>
 
 
 </div>
-<div id="method_mixAt" class="method item">
-    <h3 class="name"><code>mixAt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>i</code>
-                </li>
-                <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l1979"><code>pxl.js:1979</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Look at: <a href="http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending">http://en.wikipedia.org/wiki/Alpha_compositing#Alpha_blending</a></p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">i</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>index where to apply.</p>
-
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-
-
-</div>
-<div id="method_pixelAt" class="method item">
-    <h3 class="name"><code>pixelAt</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>index</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-        <span class="returns-inline">
-            <span class="type">ImageDataArray</span>
-        </span>
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/pxl.js.html#l2052"><code>pxl.js:2052</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>Index with color-offset (which equal to x4 (rgba)).</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">index</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                        <p>[in]</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
-        <div class="returns">
-            <h4>Returns:</h4>
-
-            <div class="returns-description">
-                        <span class="type">ImageDataArray</span>:
-            </div>
-        </div>
-
-
-</div>
 <div id="method_pixelFromIndex" class="method item">
     <h3 class="name"><code>pixelFromIndex</code></h3>
 
@@ -1435,7 +1190,7 @@ Or apply merging to pixels within start and offset area.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">ImageDataArray</span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -1447,7 +1202,7 @@ Or apply merging to pixels within start and offset area.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2039"><code>pxl.js:2039</code></a>
+        <a href="../files/pxl.js.html#l2166"><code>pxl.js:2166</code></a>
         </p>
 
 
@@ -1482,7 +1237,7 @@ Or apply merging to pixels within start and offset area.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">ImageDataArray</span>:
+                        <span class="type">Number</span>:
             </div>
         </div>
 
@@ -1500,7 +1255,7 @@ Or apply merging to pixels within start and offset area.</p>
         </div>
 
         <span class="returns-inline">
-            <span class="type">ImageDataArray</span>
+            <span class="type">Number</span>
         </span>
 
 
@@ -1512,7 +1267,7 @@ Or apply merging to pixels within start and offset area.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l2030"><code>pxl.js:2030</code></a>
+        <a href="../files/pxl.js.html#l2157"><code>pxl.js:2157</code></a>
         </p>
 
 
@@ -1545,9 +1300,102 @@ Or apply merging to pixels within start and offset area.</p>
             <h4>Returns:</h4>
 
             <div class="returns-description">
-                        <span class="type">ImageDataArray</span>:
+                        <span class="type">Number</span>:
             </div>
         </div>
+
+
+</div>
+<div id="method_replace" class="method item">
+    <h3 class="name"><code>replace</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>options</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/pxl.js.html#l1909"><code>pxl.js:1909</code></a>
+        </p>
+
+
+
+    </div>
+
+    <div class="description">
+        <p>Replace specific color by the new one on whole layer;
+Or just on area within start and offset options.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">options</code>
+                        <span class="type">Object</span>
+
+
+                    <div class="param-description">
+                        <p>[in]</p>
+
+                    </div>
+
+                        <ul class="params-list">
+                            <li class="param">
+                                    <code class="param-name">pixel</code>
+                                    <span class="type">Number</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">oldPixel</code>
+                                    <span class="type">Number</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">start</code>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                            <li class="param">
+                                    <code class="param-name">offset</code>
+                                    <span class="type"><a href="../classes/Point.html" class="crosslink">Point</a> | Undefined</span>
+
+                                <div class="param-description">
+                                    
+                                </div>
+
+                            </li>
+                        </ul>
+                </li>
+            </ul>
+        </div>
+
 
 
 </div>
@@ -1566,7 +1414,7 @@ Or apply merging to pixels within start and offset area.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1714"><code>pxl.js:1714</code></a>
+        <a href="../files/pxl.js.html#l1849"><code>pxl.js:1849</code></a>
         </p>
 
 
@@ -1603,7 +1451,7 @@ Or apply merging to pixels within start and offset area.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1809"><code>pxl.js:1809</code></a>
+        <a href="../files/pxl.js.html#l1933"><code>pxl.js:1933</code></a>
         </p>
 
 
@@ -1633,7 +1481,7 @@ Or just for area within start and offset options.</p>
                         <ul class="params-list">
                             <li class="param">
                                     <code class="param-name">pixel</code>
-                                    <span class="type">ImageDataArray</span>
+                                    <span class="type">Number</span>
 
                                 <div class="param-description">
                                     
@@ -1684,16 +1532,7 @@ Or just for area within start and offset options.</p>
                         <code>i</code>
                 </li>
                 <li class="arg">
-                        <code>r</code>
-                </li>
-                <li class="arg">
-                        <code>g</code>
-                </li>
-                <li class="arg">
-                        <code>b</code>
-                </li>
-                <li class="arg">
-                        <code>a</code>
+                        <code>rgba</code>
                 </li>
             </ul><span class="paren">)</span>
         </div>
@@ -1708,7 +1547,7 @@ Or just for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1963"><code>pxl.js:1963</code></a>
+        <a href="../files/pxl.js.html#l2148"><code>pxl.js:2148</code></a>
         </p>
 
 
@@ -1735,37 +1574,7 @@ Or just for area within start and offset options.</p>
 
                 </li>
                 <li class="param">
-                        <code class="param-name">r</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">g</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">b</code>
-                        <span class="type">Number</span>
-
-
-                    <div class="param-description">
-                         
-                    </div>
-
-                </li>
-                <li class="param">
-                        <code class="param-name">a</code>
+                        <code class="param-name">rgba</code>
                         <span class="type">Number</span>
 
 
@@ -1801,7 +1610,7 @@ Or just for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1836"><code>pxl.js:1836</code></a>
+        <a href="../files/pxl.js.html#l1962"><code>pxl.js:1962</code></a>
         </p>
 
 
@@ -1892,7 +1701,7 @@ Or channel for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1690"><code>pxl.js:1690</code></a>
+        <a href="../files/pxl.js.html#l1825"><code>pxl.js:1825</code></a>
         </p>
 
 
@@ -1908,7 +1717,7 @@ Or channel for area within start and offset options.</p>
 </div>
 <div id="property_data" class="property item">
     <h3 class="name"><code>data</code></h3>
-    <span class="type">ImageDataArray</span>
+    <span class="type">Uint32Array</span>
 
 
 
@@ -1917,7 +1726,7 @@ Or channel for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1664"><code>pxl.js:1664</code></a>
+        <a href="../files/pxl.js.html#l1799"><code>pxl.js:1799</code></a>
         </p>
 
 
@@ -1941,7 +1750,7 @@ Or channel for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1683"><code>pxl.js:1683</code></a>
+        <a href="../files/pxl.js.html#l1818"><code>pxl.js:1818</code></a>
         </p>
 
 
@@ -1968,7 +1777,7 @@ Or channel for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1701"><code>pxl.js:1701</code></a>
+        <a href="../files/pxl.js.html#l1836"><code>pxl.js:1836</code></a>
         </p>
 
 
@@ -1994,7 +1803,7 @@ Or channel for area within start and offset options.</p>
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/pxl.js.html#l1676"><code>pxl.js:1676</code></a>
+        <a href="../files/pxl.js.html#l1811"><code>pxl.js:1811</code></a>
         </p>
 
 

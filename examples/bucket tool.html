@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="common.css"/>
 	</head>
 	<body>
-		<canvas id="canvas" width="1024" height="1024"></canvas>
+		<canvas id="canvas" width="2048" height="2048"></canvas>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -22,8 +22,8 @@
 					//create the new View instance, and set it as active:
 					View.activeView = View.create({
 						layoutSize: {
-							width: 1024,
-							height: 1024
+							width: 2048,
+							height: 2048
 						},
 						element: document.querySelector("#canvas")
 					});
@@ -31,6 +31,10 @@
 					layout.activeLayer = layout.insertLayer();
 
 					pxl.bresenham.rectangle(150, 150, 500, 500, setPixel);
+					pxl.bresenham.rectangle(350, 200, 800, 600, setPixel);
+					pxl.bresenham.rectangle(650, 50, 1000, 300, setPixel);
+					
+					layout.mergeLayers({"isNotifyView": true});
 
 					//listen for some of user movements:
 					document.addEventListener("mousedown", userDownMouse, false);
@@ -59,19 +63,18 @@
 				function fill(x, y){
 					if (x >= 0 && x < layout.getWidth() &&
 						y >= 0 && y < layout.getHeight()){
-						history.record(layout.activeLayer, history.STATIC_SHOT);
+						//history.record(layout.activeLayer, history.STATIC_SHOT);
 						layout.fill({
 							"position": new pxl.Point(x, y),
-							"pixel": new pxl.ImageDataArray([
+							"pixel": pxl.RGBA(
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0,
 								(Math.random() * 255) | 0,
-								(Math.random() * 255) | 0
-							]),
-							"isMix": true,
+								(Math.random() * 255) | 0),
+							"isMix": false,
 							"isNotifyView": true
 						});
-						history.stop();
+						//history.stop();
 					}
 				}
 
@@ -79,9 +82,8 @@
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
-						"pixel": new pxl.ImageDataArray([0, 0, 0, 255]),
-						"isMix": false,
-						"isNotifyView": true
+						"pixel": pxl.RGBA(0, 0, 0, 255),
+						"isMix": false
 					});
 				}
 			})();

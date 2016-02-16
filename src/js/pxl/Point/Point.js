@@ -14,6 +14,7 @@
     var Point = parent.Point = function(x, y){
         this.set(x || 0, y);
 
+		Object.seal(this);
 		/**
 		 * @property x
 		 * @type {Number}

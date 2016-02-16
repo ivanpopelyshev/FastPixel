@@ -8,6 +8,7 @@ var FILE_LIST = [
 	"./src/js/pxl/Point/Point.js",
 	"./src/js/pxl/Observer/Observer.js",
 	"./src/js/pxl/bresenham/bresenham.js",
+	"./src/js/pxl/RGBA/RGBA.js",
 	"./src/js/pxl/View/View.js",
 	"./src/js/pxl/Layout/Layout.js",
 	"./src/js/pxl/Layout/Layer/Layer.js",

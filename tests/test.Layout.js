@@ -4,11 +4,6 @@ describe("Layout", function(){
 	describe("constructor with sizes", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(8, 16);
-
-			var data = layout.dataLayer.data;
-			for (var i = 0; i < data.length; ++i){
-				expect(data[i]).to.equal(0);
-			}
 			
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
@@ -18,11 +13,6 @@ describe("Layout", function(){
 	describe("constructor with imageData", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(pxl.createImageData(8, 16));
-
-			var data = layout.dataLayer.data;
-			for (var i = 0; i < data.length; ++i){
-				expect(data[i]).to.equal(0);
-			}
 			
 			expect(layout.getWidth()).to.equal(8);
 			expect(layout.getHeight()).to.equal(16);
@@ -35,7 +25,7 @@ describe("Layout", function(){
 			layout.activeLayer = layout.insertLayer();
 
 			expect(layout.layerList.length).to.equal(1);
-			expect(layout.layerList[0].data.length).to.equal(8 * 16 * 4);
+			expect(layout.layerList[0].data.length).to.equal(8 * 16);
 		});
 	});
 
@@ -66,8 +56,7 @@ describe("Layout", function(){
 			layout.insertLayer();
 			layout.insertLayer();
 			
-			layout.setActiveTo(666);
-			expect(layout.activeLayer).to.equal(null);
+			expect(layout.setActiveTo(666).activeLayer).to.equal(null);
 			
 			layout.setActiveTo(1);
 			expect(layout.activeLayer instanceof pxl.Layout.Layer).to.equal(true);
@@ -111,10 +100,10 @@ describe("Layout", function(){
 	});
 
 	describe("position from index", function(){
-		it("should be equal to 1:1", function(){
+		it("should be equal to 2:1", function(){
 			var layout = new pxl.Layout(8, 16);
 
-			expect(layout.positionFrom(9).cmp(new pxl.Point(1, 1))).to.equal(true);
+			expect(layout.positionFrom(10).cmp(new pxl.Point(2, 1))).to.equal(true);
 		});
 	});
 
@@ -122,7 +111,7 @@ describe("Layout", function(){
 		it("returns ImageData of dataLayer property", function(){
 			var layout = new pxl.Layout(8, 16);
 
-			var imageData = layout.getImageData({});
+			var imageData = layout.getImageData(pxl.emptyOptions);
 			expect(imageData.width).to.equal(8);
 			expect(imageData.height).to.equal(16);
 		});
@@ -184,17 +173,12 @@ describe("Layout", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(5, 5);
 
-			var count = 0;
-			var indexes = [48, 49, 50, 51];
-
 			layout.__process({
 				"start": new pxl.Point(2, 2),
 				"offset": new pxl.Point(1, 1)
 			}, function(i, length){
 				while (i < length){
-					expect(indexes[count]).to.equal(i);
-					++count;
-					++i;
+					expect(i++).to.equal(12);
 				}
 			});
 		});
@@ -205,16 +189,14 @@ describe("Layout", function(){
 			var layout = new pxl.Layout(2, 2);
 
 			var count = 0;
-			var indexes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+			var indexes = [0, 1, 2, 3];
 
 			layout.__process({
 				"start": new pxl.Point(0, 0),
 				"offset": new pxl.Point(2, 2)
 			}, function(i, length){
 				while (i < length){
-					expect(indexes[count]).to.equal(i);
-					++count;
-					++i;
+					expect(indexes[count++]).to.equal(i++);
 				}
 			});
 		});

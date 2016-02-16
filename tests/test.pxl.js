@@ -3,7 +3,7 @@ var expect = chai.expect;
 describe("pxl", function(){
 	describe("support", function(){
 		it("should be supported by your browser!", function(){
-			expect(pxl.isSupported).to.equal(true);
+			expect(pxl.isSupported()).to.equal(true);
 		});
 	});
 
@@ -77,17 +77,6 @@ describe("pxl", function(){
 			} catch(err){
 				expect(true).to.equal(true);
 			}
-			
-		});
-	});
-
-	describe("pack/unpack RGBA", function(){
-		it("should be OK", function(){
-			var packedRGBA = pxl.toRGBA(0, 111, 222, 255);			
-			expect(pxl.getR(packedRGBA)).to.equal(0);
-			expect(pxl.getG(packedRGBA)).to.equal(111);
-			expect(pxl.getB(packedRGBA)).to.equal(222);
-			expect(pxl.getA(packedRGBA)).to.equal(255);
 			
 		});
 	});
