@@ -1,8 +1,8 @@
-# FastPixel 0.4.0 (beta)
+# FastPixel 0.4.1
 
 Very fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
-The [documentation][] should help you to orient with code!
+The [documentation][] should help you orient with code!
 
 Few examples are available online by links below:
 - [Pixel carrying][]
@@ -16,7 +16,7 @@ There are even more at [examples][] folder!
 
 Tested and works well on: IE11+, Chrome42+, FireFox36+, iOS8+ Safari...
 
-In general, it may work on older versions!
+In general, it may work on older versions! The only restriction: ECMAScript 5 is required.
 
 ## Dependencies
 

@@ -14,8 +14,8 @@
 
 	if (isBigEndian){
 		/**
-		 * Color-channels packer;
-		 * Note: each parameter have to fit in 0x00..0xFF range!
+		 * Channel packer;
+		 * Note: each argument have to fit in 0x00..0xFF range!
 		 *
 		 * @example
 			//The result is a 32-bit integer,
@@ -75,7 +75,8 @@
 	 * Mix two colors using integer alpha mixing.
 	 * Note: both parameters have to fit in 0x00000000..0xFFFFFFFF range!
 	 *
-	 * An alpha computes by: (Atop << 8 + (0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8
+	 * An alpha computes by: (Atop << 8 + (0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8;
+	 *
 	 * And other channels: ((Atop * Ctop + (((0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8) * Cbottom + (0xFF >> 1)) / Amixed) | 0
 	 *
 	 * @method alphaBlend
@@ -101,19 +102,19 @@
 
 	//Helpers:
 	function _get0(color){
-		return color & 0xFF;
+		return (color & 0xFF) >>> 0;
 	};
 
 	function _get1(color){
-		return (color & 0xFF00) >> 8;
+		return (color & 0xFF00) >>> 8;
 	};
 
 	function _get2(color){
-		return (color & 0xFF0000) >> 16;
+		return (color & 0xFF0000) >>> 16;
 	};
 
 	function _get3(color){
-		return (color & 0xFF000000) >>> 24; //avoid sign appearing!
+		return (color & 0xFF000000) >>> 24;
 	};
 
 })(pxl, pxl.isBigEndian());

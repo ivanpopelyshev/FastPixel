@@ -35,7 +35,7 @@
 			for (;;){
 				callback(x0, y0);
 				if (x0 === x1 && y0 === y1) break;
-				e2 = err + err;
+				e2 = err << 1;
 				if (e2 >= dy){
 					err += dy;
 					x0 += sx;

@@ -82,7 +82,7 @@
 
 		/**
 		 * Helps to detect current endianness.
-		 * Equal to "true" if big endian and to "false" if little endian.
+		 * "true" if big endian and to "false" if little endian.
 		 * Also may be equal to undefined if API isn't supported.
 		 *
 		 * @method isBigEndian
@@ -626,7 +626,7 @@
 			for (;;){
 				callback(x0, y0);
 				if (x0 === x1 && y0 === y1) break;
-				e2 = err + err;
+				e2 = err << 1;
 				if (e2 >= dy){
 					err += dy;
 					x0 += sx;
@@ -754,14 +754,14 @@
 
 	if (isBigEndian){
 		/**
-		 * Color-channels packer;
-		 * Note: each parameter have to fit in 0x00..0xFF range!
+		 * Channel packer;
+		 * Note: each argument have to fit in 0x00..0xFF range!
 		 *
 		 * @example
 			//The result is a 32-bit integer,
 			//which compactly contains all four color channels:
 			var rgba = RGBA(255, 0, 255, 0); //0xFF00FF00
-		 * @method RGBA
+		 * @class RGBA
 		 * @static
 		 * @param r {Number}
 		 * @param g {Number}
@@ -815,7 +815,8 @@
 	 * Mix two colors using integer alpha mixing.
 	 * Note: both parameters have to fit in 0x00000000..0xFFFFFFFF range!
 	 *
-	 * An alpha computes by: (Atop << 8 + (0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8
+	 * An alpha computes by: (Atop << 8 + (0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8;
+	 *
 	 * And other channels: ((Atop * Ctop + (((0xFF - Atop) * Abottom + (0xFF >> 1)) >> 8) * Cbottom + (0xFF >> 1)) / Amixed) | 0
 	 *
 	 * @method alphaBlend
@@ -841,19 +842,19 @@
 
 	//Helpers:
 	function _get0(color){
-		return color & 0xFF;
+		return (color & 0xFF) >>> 0;
 	};
 
 	function _get1(color){
-		return (color & 0xFF00) >> 8;
+		return (color & 0xFF00) >>> 8;
 	};
 
 	function _get2(color){
-		return (color & 0xFF0000) >> 16;
+		return (color & 0xFF0000) >>> 16;
 	};
 
 	function _get3(color){
-		return (color & 0xFF000000) >>> 24; //avoid sign appearing!
+		return (color & 0xFF000000) >>> 24;
 	};
 
 })(pxl, pxl.isBigEndian());
@@ -1377,8 +1378,8 @@
 	"use strict";
 
 	/**
-	 * Pass width and height parameters;
-	 * Or just already existing ImageData as a source.
+	 * The main model class.
+	 * Contain layers and delegate processing to them.
 	 *
 	 * @example
 		var layout = pxl.Layout(8, 16);
@@ -1451,18 +1452,18 @@
 		var layer = null;
 		if (arguments.length){
 			if (index >= 0 && index <= this.layerList.length){
-				layer = _makeLayer.call(this);
+				layer = _makeLayer(this);
 				this.layerList.splice(index, 0, layer);
 			}
 		} else{
-			layer = _makeLayer.call(this);
+			layer = _makeLayer(this);
 			this.layerList.push(layer);
 		}
 		return layer;
 
 		//Helper:
-		function _makeLayer(){
-			return new Layout.Layer(this.getWidth() * this.getHeight(), this);
+		function _makeLayer(self){
+			return new Layout.Layer(self.getWidth() * self.getHeight(), self);
 		};
 	};
 
@@ -1514,7 +1515,7 @@
 	/**
 	 * "Drawn" each layer to main dataLayer layer (Back-to-front);
 	 * Will use visible layers from "layerList" parameter;
-	 * Or visible layers from internal "layerList" property;
+	 * Or visible layers from self's "layerList" property;
 	 * Note: if "layerList" is empty or if there are no visible layers the model would be reseted;
 	 * Also, notify subscribers.
 	 *
@@ -1536,9 +1537,10 @@
 		if (layerCount === 0){
 			dataLayer.reset();
 		} else{
+			//it's important to disable mix for first layer (force-copy):
+			clonedOpts.isMix = false;
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.isMix = false; //it's important to disable mix first time (enable force-copy)!
 			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
@@ -1553,7 +1555,8 @@
 
     /**
      * Replace old colour by new one;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.replace
 	 *
@@ -1569,7 +1572,8 @@
 
     /**
      * Set pixel or group of pixels (force-fill);
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.set
 	 *
@@ -1585,7 +1589,8 @@
 
     /**
      * Setting the value for specific channel;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.setChannel
 	 *
@@ -1600,7 +1605,8 @@
 	};
 
     /**
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.fill
 	 *
@@ -1781,8 +1787,8 @@
 	"use strict";
 
 	/**
-	 * The Layer object here is just a wrapper for Uint32Array;
-	 * So for most of the methods the reference on layout is required.
+	 * A wrapper for Uint32Array;
+	 * Note: most of the features require the layout.
 	 *
 	 * @constructor
 	 * @class Layer
@@ -1988,6 +1994,8 @@
 	 * Scan-line fill (with custom stack);
 	 * Can be applyed for area within start and offset options.
 	 *
+	 * Look at: http://www.williammalone.com/articles/html5-canvas-javascript-paint-bucket-tool/
+	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @param options.position {Point}
@@ -2046,16 +2054,7 @@
 			begin = ++index;
 			borderUp = borderDown = false;
 
-			//Go to the right to position where it starts:
-			/*while (stepsBack--){
-				_procCurrentLine();
-			}
-
-			//Keep going right:
-			do{
-				_procCurrentLine();
-			} while(index <= rightBorderIndex && data[index] === oldRGBA);*/
-
+			//Go to the right:
 			for (;;){
 				upIndex = index - width;
 				downIndex = width + index++;
@@ -2090,41 +2089,9 @@
 					--stepsBack;
 				}
 			}
-
 			//It's time to fill the whole detected line:
 			this._fillLine(rgba, begin, index);
-
 		} while(stack.length);
-
-
-		//Helper:
-		/*function _procCurrentLine(){
-			upIndex = index - width;
-			downIndex = index + width;
-			++index;
-
-			if (upIndex > startIndex){
-				if (data[upIndex] === oldRGBA){
-					if(borderUp === false){
-						stack.push(upIndex);
-						borderUp = true;
-					}
-				} else{
-					borderUp = false;
-				}
-			}
-
-			if (downIndex < endIndex){
-				if (data[downIndex] === oldRGBA){
-					if(borderDown === false){
-						stack.push(downIndex);
-						borderDown = true;
-					}
-				} else{
-					borderDown = false;
-				}
-			}
-		};*/
 	};
 
 	/**
@@ -2165,8 +2132,6 @@
 
 	/**
 	 * Warn: index without color-offset!
-	 *
-	 * Look at: layerProto.pixelAt.
 	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
@@ -2251,9 +2216,9 @@
 	 * @method _fillLine
 	 * @private
 	 */
-	if ("fill" in Uint32Array.prototype){ //ES6
+	if ("fill" in Uint32Array.prototype){ //ES6, much faster
 		layerProto._fillLine = function(rgba, begin, end){
-			this.data.fill(rgba, begin, end); //much faster
+			this.data.fill(rgba, begin, end);
 		};
 	} else{
 		layerProto._fillLine = function(rgba, begin, end){
@@ -2275,7 +2240,7 @@
 	layerProto._reverseLine = function(start, end){
 		var data = this.data;
 		if (arguments.length === 0 && "reverse" in Uint32Array.prototype){
-			data.reverse(); //ES6, unfortunatly it haven't ranges
+			data.reverse(); //ES6, unfortunatly it doesn't take a range
 		} else{
 			var tmp = 0;
 			start = start || 0;
@@ -2367,7 +2332,7 @@
 		_isRecording: false,
 
 		/**
-		 * @method isHistoryFull
+		 * @method getHistorySize
 		 * @return {Number}
 		 */
 		getHistorySize: function(){
@@ -2480,7 +2445,7 @@
 		},
 
 		/**
-		 * Remove sessions with deleted/empty layers.
+		 * Remove sessions that refer to layer argument.
 		 *
 		 * @method deleteLayer
 		 * @param layer {Layer} [in]
@@ -2559,7 +2524,7 @@
 	};
 
 	/**
-	 * Will cache an index and the color of that index.
+	 * Will cache the whole area from options or an index.
 	 *
 	 * @method cache
 	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.
@@ -2643,7 +2608,8 @@
 	};
 
 	/**
-	 * Will cache the whole token array.
+	 * Will cache the whole area from options.
+	 * Warn: can be invoked only once!
 	 *
 	 * @method cache
 	 * @throws {Error} "Static sessions can be cached only once!"

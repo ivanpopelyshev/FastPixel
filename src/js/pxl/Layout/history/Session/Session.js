@@ -52,7 +52,7 @@
 	};
 
 	/**
-	 * Will cache an index and the color of that index.
+	 * Will cache the whole area from options or an index.
 	 *
 	 * @method cache
 	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.
@@ -136,7 +136,8 @@
 	};
 
 	/**
-	 * Will cache the whole token array.
+	 * Will cache the whole area from options.
+	 * Warn: can be invoked only once!
 	 *
 	 * @method cache
 	 * @throws {Error} "Static sessions can be cached only once!"

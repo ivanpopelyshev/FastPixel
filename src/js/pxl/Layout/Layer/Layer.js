@@ -2,8 +2,8 @@
 	"use strict";
 
 	/**
-	 * The Layer object here is just a wrapper for Uint32Array;
-	 * So for most of the methods the reference on layout is required.
+	 * A wrapper for Uint32Array;
+	 * Note: most of the features require the layout.
 	 *
 	 * @constructor
 	 * @class Layer
@@ -209,6 +209,8 @@
 	 * Scan-line fill (with custom stack);
 	 * Can be applyed for area within start and offset options.
 	 *
+	 * Look at: http://www.williammalone.com/articles/html5-canvas-javascript-paint-bucket-tool/
+	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @param options.position {Point}
@@ -267,16 +269,7 @@
 			begin = ++index;
 			borderUp = borderDown = false;
 
-			//Go to the right to position where it starts:
-			/*while (stepsBack--){
-				_procCurrentLine();
-			}
-
-			//Keep going right:
-			do{
-				_procCurrentLine();
-			} while(index <= rightBorderIndex && data[index] === oldRGBA);*/
-
+			//Go to the right:
 			for (;;){
 				upIndex = index - width;
 				downIndex = width + index++;
@@ -311,41 +304,9 @@
 					--stepsBack;
 				}
 			}
-
 			//It's time to fill the whole detected line:
 			this._fillLine(rgba, begin, index);
-
 		} while(stack.length);
-
-
-		//Helper:
-		/*function _procCurrentLine(){
-			upIndex = index - width;
-			downIndex = index + width;
-			++index;
-
-			if (upIndex > startIndex){
-				if (data[upIndex] === oldRGBA){
-					if(borderUp === false){
-						stack.push(upIndex);
-						borderUp = true;
-					}
-				} else{
-					borderUp = false;
-				}
-			}
-
-			if (downIndex < endIndex){
-				if (data[downIndex] === oldRGBA){
-					if(borderDown === false){
-						stack.push(downIndex);
-						borderDown = true;
-					}
-				} else{
-					borderDown = false;
-				}
-			}
-		};*/
 	};
 
 	/**
@@ -386,8 +347,6 @@
 
 	/**
 	 * Warn: index without color-offset!
-	 *
-	 * Look at: layerProto.pixelAt.
 	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
@@ -472,9 +431,9 @@
 	 * @method _fillLine
 	 * @private
 	 */
-	if ("fill" in Uint32Array.prototype){ //ES6
+	if ("fill" in Uint32Array.prototype){ //ES6, much faster
 		layerProto._fillLine = function(rgba, begin, end){
-			this.data.fill(rgba, begin, end); //much faster
+			this.data.fill(rgba, begin, end);
 		};
 	} else{
 		layerProto._fillLine = function(rgba, begin, end){
@@ -496,7 +455,7 @@
 	layerProto._reverseLine = function(start, end){
 		var data = this.data;
 		if (arguments.length === 0 && "reverse" in Uint32Array.prototype){
-			data.reverse(); //ES6, unfortunatly it haven't ranges
+			data.reverse(); //ES6, unfortunatly it doesn't take a range
 		} else{
 			var tmp = 0;
 			start = start || 0;

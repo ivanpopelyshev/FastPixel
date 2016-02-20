@@ -82,7 +82,7 @@
 
 		/**
 		 * Helps to detect current endianness.
-		 * Equal to "true" if big endian and to "false" if little endian.
+		 * "true" if big endian and to "false" if little endian.
 		 * Also may be equal to undefined if API isn't supported.
 		 *
 		 * @method isBigEndian

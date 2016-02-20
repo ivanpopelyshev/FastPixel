@@ -12,6 +12,14 @@ describe("RGBA", function(){
 		});
 	});
 
+	describe("unsigned 32bit", function(){
+		it("should be unsigned", function(){
+			var rgba = pxl.RGBA(255, 255, 255, 255);
+			expect(rgba).to.equal(0xFFFFFFFF);
+			expect(rgba < 0).to.equal(false);
+		});
+	});
+
 	describe("alpha blending", function(){
 		it("should be OK", function(){
 			var bottom = pxl.RGBA(81, 188, 87, 25);

@@ -2,8 +2,8 @@
 	"use strict";
 
 	/**
-	 * Pass width and height parameters;
-	 * Or just already existing ImageData as a source.
+	 * The main model class.
+	 * Contain layers and delegate processing to them.
 	 *
 	 * @example
 		var layout = pxl.Layout(8, 16);
@@ -76,18 +76,18 @@
 		var layer = null;
 		if (arguments.length){
 			if (index >= 0 && index <= this.layerList.length){
-				layer = _makeLayer.call(this);
+				layer = _makeLayer(this);
 				this.layerList.splice(index, 0, layer);
 			}
 		} else{
-			layer = _makeLayer.call(this);
+			layer = _makeLayer(this);
 			this.layerList.push(layer);
 		}
 		return layer;
 
 		//Helper:
-		function _makeLayer(){
-			return new Layout.Layer(this.getWidth() * this.getHeight(), this);
+		function _makeLayer(self){
+			return new Layout.Layer(self.getWidth() * self.getHeight(), self);
 		};
 	};
 
@@ -139,7 +139,7 @@
 	/**
 	 * "Drawn" each layer to main dataLayer layer (Back-to-front);
 	 * Will use visible layers from "layerList" parameter;
-	 * Or visible layers from internal "layerList" property;
+	 * Or visible layers from self's "layerList" property;
 	 * Note: if "layerList" is empty or if there are no visible layers the model would be reseted;
 	 * Also, notify subscribers.
 	 *
@@ -161,9 +161,10 @@
 		if (layerCount === 0){
 			dataLayer.reset();
 		} else{
+			//it's important to disable mix for first layer (force-copy):
+			clonedOpts.isMix = false;
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.isMix = false; //it's important to disable mix first time (enable force-copy)!
 			for (var i = 0; i < layerCount; ++i){
 				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
@@ -178,7 +179,8 @@
 
     /**
      * Replace old colour by new one;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.replace
 	 *
@@ -194,7 +196,8 @@
 
     /**
      * Set pixel or group of pixels (force-fill);
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.set
 	 *
@@ -210,7 +213,8 @@
 
     /**
      * Setting the value for specific channel;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.setChannel
 	 *
@@ -225,7 +229,8 @@
 	};
 
     /**
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.fill
 	 *

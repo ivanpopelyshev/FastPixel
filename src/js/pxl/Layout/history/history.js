@@ -65,7 +65,7 @@
 		_isRecording: false,
 
 		/**
-		 * @method isHistoryFull
+		 * @method getHistorySize
 		 * @return {Number}
 		 */
 		getHistorySize: function(){
@@ -178,7 +178,7 @@
 		},
 
 		/**
-		 * Remove sessions with deleted/empty layers.
+		 * Remove sessions that refer to layer argument.
 		 *
 		 * @method deleteLayer
 		 * @param layer {Layer} [in]
