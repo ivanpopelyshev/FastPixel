@@ -2009,23 +2009,22 @@
 		var data = this.data;
 		var startIndex = 0;
 		var leftIndexOffset = 0;
-		var rightIndexOffset = 0;
+		var rightIndexOffset = layout.getWidth();
 		var endIndex = data.length;
 		var pixel = options.pixel;
 		var index = layout.indexAt(options.position);
 		if (options.start && options.offset){
-			leftIndexOffset = options.start.x;
-			rightIndexOffset = options.start.x + options.offset.x;
+			leftIndexOffset = options.start.x | 0;
+			rightIndexOffset = options.offset.x | 0;
 			startIndex = layout.indexAt(options.start);
 			endIndex = layout.indexAt(
-				new pxl.Point(options.start).add(options.offset));
+				new pxl.Point(options.start).add(options.offset).floor());
 		}
 		if (index < startIndex || index >= endIndex || data[index] === pixel){
 			return;
 		}
 		var begin = 0;
 		var width = layout.getWidth();
-		var height = layout.getHeight();
 		var borderUp = false;
 		var borderDown = false;
 		var oldRGBA = this.pixelFromIndex(index); //pixel before changes
@@ -2042,7 +2041,7 @@
 			index = stack.pop();
 
 			leftBorderIndex = leftIndexOffset + ((index / width) | 0) * width;
-			rightBorderIndex = leftBorderIndex + width - rightIndexOffset;
+			rightBorderIndex = leftBorderIndex + rightIndexOffset;
 
 			stepsBack = 0;
 
@@ -2089,8 +2088,10 @@
 					--stepsBack;
 				}
 			}
+
 			//It's time to fill the whole detected line:
 			this._fillLine(rgba, begin, index);
+
 		} while(stack.length);
 	};
 
