@@ -1,4 +1,4 @@
-# FastPixel 0.4.1
+# FastPixel 0.4.2
 
 Very fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 

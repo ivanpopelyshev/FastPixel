@@ -2013,15 +2013,25 @@
 		var endIndex = data.length;
 		var pixel = options.pixel;
 		var index = layout.indexAt(options.position);
+		if (data[index] === pixel){
+			return;	//stop, don't fill on equal color
+		}
 		if (options.start && options.offset){
+			var endPoint = new pxl.Point(
+				options.start).add(options.offset).floor();
+			if (options.position.x < options.start.x ||
+				options.position.y < options.start.y ||
+				options.position.x > endPoint.x ||
+				options.position.y > endPoint.y){
+				return;	//stop, out of range
+			}
 			leftIndexOffset = options.start.x | 0;
 			rightIndexOffset = options.offset.x | 0;
 			startIndex = layout.indexAt(options.start);
-			endIndex = layout.indexAt(
-				new pxl.Point(options.start).add(options.offset).floor());
+			endIndex = layout.indexAt(endPoint);
 		}
-		if (index < startIndex || index >= endIndex || data[index] === pixel){
-			return;
+		if (index < startIndex || index >= endIndex ){
+			return;	//stop, out of layout
 		}
 		var begin = 0;
 		var width = layout.getWidth();
@@ -2211,9 +2221,9 @@
 	/**
 	 * 
 	 *
+	 * @param rgba {Number}
 	 * @param begin {Number}
 	 * @param end {Number}
-	 * @param rgba {Number}
 	 * @method _fillLine
 	 * @private
 	 */
@@ -2226,6 +2236,29 @@
 			var data = this.data;
 			while (begin < end){
 				data[begin++] = rgba;
+			}
+		};
+	}
+
+	/**
+	 * 
+	 *
+	 * @param target {Number}
+	 * @param begin {Number}
+	 * @param end {Number}
+	 * @method _copyWithin
+	 * @private
+	 */
+	if ("copyWithin" in Uint32Array.prototype){ //ES6, much faster
+		layerProto._copyWithin = function(target, begin, end){
+			this.data.copyWithin(target, begin, end);
+		};
+	} else{
+		layerProto._copyWithin = function(target, begin, end){
+			var data = this.data;
+			end = end || data.length;
+			while (begin < end){
+				data[target++] = data[begin++];
 			}
 		};
 	}
@@ -2592,6 +2625,16 @@
 		 * @default null
 		 */
         this._cachedOption = null;
+
+		/**
+		 * @property _layerOptions
+		 * @private
+		 * @type {Object}
+		 */
+		this._layerOptions = {
+			"name": layer.name,
+			"isVisible": layer.isVisible
+		};
 
 		Object.seal(this);
 	};

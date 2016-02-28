@@ -23,7 +23,10 @@ describe("history", function(){
 		it("should be OK", function(){
 			var history = pxl.Layout.history;
 			
-			history.record(new pxl.Layout(8, 16), history.STATIC_SHOT);
+			var layout = new pxl.Layout(8, 16);
+			layout.activeLayer = layout.insertLayer();
+			
+			history.record(layout, history.STATIC_SHOT);
 			history.stop();
 
 			expect(pxl.Layout.history.getHistorySize()).to.equal(0); //empty sessions don't pass

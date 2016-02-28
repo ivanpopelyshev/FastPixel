@@ -70,7 +70,10 @@ describe("Sessions", function(){
 			var SessionStatic = pxl.Layout.history.SessionStatic;
 			var Session = pxl.Layout.history.Session;
 			
-			var session = new SessionStatic(null);
+			var layout = new pxl.Layout(8, 16);
+			layout.activeLayer = layout.insertLayer();
+			
+			var session = new SessionStatic(layout.activeLayer);
 			expect(session instanceof SessionStatic).to.equal(true);
 			expect(session instanceof Session).to.equal(true);
 		});
