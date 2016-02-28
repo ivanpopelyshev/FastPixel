@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	
+	<title>FAST PIXEL TUTORIAL 1</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="../common.css"/>
+	<link rel="stylesheet" href="../prism.css"/>
+
+</head>
+<body>
+
+	<div class="block">
+	
+		<div class="block">
+			<p class="text-title" style="text-align:center">
+				Shapes and lines
+			</p>
+			<br/>
+			<p class="text">
+				Last time we've created a simple application which draws a single pixel.
+			</p>
+			<p class="text">
+				This time we're going to make more complex "picture".
+			</p>
+			<br/>
+			<p class="text">
+				Copy canvas element and javascript includes from previous tut into your new .html file. The "main.js" file should look like:
+			</p>
+		</div>
+		
+		<pre><code class="language-js">
+var View = pxl.View;
+var bresenham = pxl.bresenham;	//<----
+
+View.activeView = View.create({
+	"layoutSize": {
+		width: 128,
+		height: 128
+	},
+	"element": document.querySelector("CANVAS")
+});
+
+var options = {
+	"start": new pxl.Point,	//by default, both x and y are equal to 0
+	"offset": new pxl.Point(1), //both x and y are initialized with 1
+	"pixel": pxl.RGBA(0, 0, 0, 255) //black, 0x000000FF
+};
+		</pre></code>
+		
+		<div class="block">
+			<p class="text">
+				The only major difference here is a new variable which refer to "bresenham" class. It is main helper with creating sharp lines and shapes.
+			</p>
+			<br/>
+			<p class="text">
+				The semantics is pretty simple: first two parameters are for start position, next two parameters are for end position and last one is a callback, which is called per pixel.
+			</p>
+			<br/>
+			<p class="text">
+				Now let's draw the line:
+			</p>
+		</div>
+		
+		<pre><code class="language-js">
+bresenham.line(0, 0, 127, 50, function(x, y){
+	//Don't forget about options!
+	//Each time we have to update its "start" property:
+	options.start.set(x, y);
+
+	//Already familiar method from previous tut:
+	View.activeView.drawRect(options);
+});
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Please, run the .html file and as a result you should have a black line on your screen.
+			</p>
+			<br/>
+			<p class="text">
+				The following two methods are the same easy as the previous one:
+			</p>
+			<br/>
+		</div>
+		
+		<pre><code class="language-js">
+bresenham.rectangle(32, 32, 100, 100, function(x, y){
+	//Nothing new here...
+
+	options.start.set(x, y);
+	View.activeView.drawRect(options);
+});
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Even ellipse drawing is not differ. It still have first four parametrs for positioning and fifth for a callback.
+			</p>
+			<br/>
+		</div>
+
+		<pre><code class="language-js">
+//Ellipse inside an "imagine" rectangle:
+bresenham.ellipse(20, 120, 120, 75, function(x, y){
+	options.start.set(x, y);
+	View.activeView.drawRect(options);
+});
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				And that's all for this time! There are no more shapes yet.
+			</p>
+			<br/>
+			<p class="text">
+				You can play with parameters to see how it affects on a result. But be careful and don't jump out of screen!
+			</p>
+			<br/>
+		</div>
+
+	</div>
+
+	<script src="../prism.js"></script>
+
+</body>
+</html>

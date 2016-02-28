@@ -1,0 +1,33 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+
+a{
+	text-decoration: none;
+}
+
+.text-title{
+	font-family: 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', sans-serif;
+	font-size: 32px;
+	color: #242424;
+}
+
+.text{
+	font-family: 'Open Sans', sans-serif;
+	color: #242424;
+}
+
+.block{
+	width: 920px;
+	margin: 0 auto;
+} .block > .block{
+	width: 98%;
+}
+
+@media only screen and (max-width: 920px)
+{
+	.block{
+		width: 100%;
+	}
+}

@@ -59,7 +59,7 @@
 				function setColor(x, y){
 					if (x >= 0 && x < layout.getWidth() &&
 						y >= 0 && y < layout.getHeight()){
-						history.record(layout.activeLayer, history.STATIC_SHOT);
+						history.record(layout, history.STATIC_SHOT);
 						layout.set({
 							"pixel": pxl.RGBA(
 								(Math.random() * 256) | 0,

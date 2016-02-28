@@ -161,21 +161,12 @@
 	viewProto.drawRect = function(options){
 		var pixel = options.pixel;
 		var RGBA = pxl.RGBA;
-		if (options.pixel.constructor === Number){
-			this._ctx.fillStyle = "rgba(" +
-				RGBA.getR(pixel) + "," +
-				RGBA.getG(pixel) + "," +
-				RGBA.getB(pixel) + "," +
-				(RGBA.getA(pixel) / 255) +
-			")";
-		} else{
-			this._ctx.fillStyle = "rgba(" +
-				pixel[0] + "," +
-				pixel[1] + "," + 
-				pixel[2] + "," +
-				(pixel[3] / 255) +
-			")";
-		}
+		this._ctx.fillStyle = "rgba(" +
+			RGBA.getR(pixel) + "," +
+			RGBA.getG(pixel) + "," +
+			RGBA.getB(pixel) + "," +
+			(RGBA.getA(pixel) / 255) +
+		")";
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
 			options.start.y + this._imagePoint.y,

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	
+	<title>FAST PIXEL TUTORIAL 0</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="../common.css"/>
+	<link rel="stylesheet" href="../prism.css"/>
+	
+
+</head>
+<body>
+
+	<div class="block">
+	
+		<div class="block">
+			<p class="text-title" style="text-align:center">
+				First steps
+			</p>
+			<br/>
+			<p class="text">
+				Welcome to the FastPixel API tutorial section! If you love pixel art as much as I am and you are free for a few minutes: please, take a seat comfortably and let's get started!
+			</p>
+			<br/>
+			<p class="text">
+				Basic HTML and JavaScript knowledge is required! Would be a plus if you had an experience with canvas 2d technology.
+			</p>
+			<br/>
+			<p class="text">
+				Okay, first of all we need to put the canvas tag onto the document body:
+			</p>
+		</div>
+		
+		<pre><code class="language-markup">
+&lt;canvas id="canvas" width="128" height="128">&lt;/canvas>
+		</pre></code>
+		
+		<div class="block">
+			<p class="text">
+				At the second step we have to include an API and the main script file where we going to code.
+			</p>
+			<p class="text">
+				(<a href="https://raw.githubusercontent.com/kurzgame/FastPixel/master/pxl.js">Here</a> you can find the latest "pxl.js" file)
+			</p>
+		</div>
+		
+		<pre><code class="language-markup">
+&lt;script src="pxl.js">&lt;/script>
+&lt;script src="main.js">&lt;/script>
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Open your "main.js" file and make sure that the current browser is cool:
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+if (pxl.isSupported()){
+	/*code here further*/
+} else{
+	alert("not suppoted!");
+}
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Now you can run your HTML page... No messages? - Good, let's continue!
+			</p>
+			<br/>
+			<p class="text">
+				FastPixel API is synchronous and don't use worker threads. But don't worry, it is fast enough to process any kind of pixels! 
+			</p>
+			<p class="text">
+				It's based on MVC design pattern which is great for creating drawing tools. You can have only one model and few view instances which are listen changes from the same source. One may be used as preview and the other one is for drawing directly, for example.
+			</p>
+			<p class="text">
+				But we going to talk about model manipulations in future tutorials...
+			</p>
+			<br/>
+			<p class="text">
+				Inside if-body make a reference onto the View class:
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+var View = pxl.View;
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Create the view instance below and make it active:
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+View.activeView = View.create({
+
+	// "Layout" is a model here, so we have to specify our model's size:
+	"layoutSize": {
+		width: 128,
+		height: 128
+	},
+
+	// Our canvas:
+	"element": document.getElementById("CANVAS")
+});
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				As mentioned before, there may be few view instances, but only one of them can be active at a same time. Also, keep in mind that activeView is a static property of View class.
+			</p>
+			<br/>
+			<p class="text">
+				Prepare four color channels (please note that each channel have to be integer and fit in 0..255 range):
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+var r = 255;
+var g = 0;
+var b = 255;
+var a = 255;
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Communication between components mostly based on "options" object:
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+var options = {
+	"start": new pxl.Point(0, 0), //x:y position
+	"offset": new pxl.Point(32, 32), //width:height
+	"pixel": pxl.RGBA(r, g, b, a) //always make a color using this way! In this example it returns 0xFF00FFFF
+};
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				The Point class is just an object which containt two numbers: {"x": 0, "y": 0}. It helps to orient in 2d space and perfect for storing coordinates.
+			</p>
+			<br/>
+			<p class="text">
+				Finally we can draw our first pixel!
+			</p>
+		</div>
+
+		<pre><code class="language-js">
+View.activeView.drawRect(options); //pretty big one :)
+		</pre></code>
+
+		<div class="block">
+			<p class="text">
+				Everything should be OK and you have to see the magenta pixel 32x32 at the top of your screen. 
+			</p>
+			<br/>
+			<p class="text">
+				My congratulations! You has ben passed the first tutorial and on a one step closer to make a pixel art tool!
+			</p>
+			<br/>
+			<a href="../tut_1/tut_1.html" class="text">next -></a>
+			<br/><br/>
+		</div>
+	</div>
+	
+	<script src="../prism.js"></script>
+
+</body>
+</html>

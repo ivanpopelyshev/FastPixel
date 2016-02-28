@@ -120,6 +120,16 @@
 		 */
         this._cachedOption = null;
 
+		/**
+		 * @property _layerOptions
+		 * @private
+		 * @type {Object}
+		 */
+		this._layerOptions = {
+			"name": layer.name,
+			"isVisible": layer.isVisible
+		};
+
 		Object.seal(this);
 	};
 
