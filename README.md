@@ -1,10 +1,10 @@
-# FastPixel 0.4.2
+# FastPixel 0.4.3
 
 Very fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
 The [documentation][] should help you orient with code!
 
-The brand new [tutorial][] section is available now!
+The brand new [wiki][] section is available now!
 
 Few examples are available online by links below:
 - [Pixel carrying][]
@@ -46,4 +46,4 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting%20channel.html
 [Bucket-fill]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/bucket%20tool.html
 [documentation]: https://rawgit.com/kurzgame/FastPixel/master/docs/index.html
-[tutorial]: https://rawgit.com/kurzgame/FastPixel/master/tutorials/tut_0/tut_0.html
+[wiki]: https://github.com/kurzgame/FastPixel/wiki

@@ -155,7 +155,7 @@
 	 * @param options {Object} [in]
 	 * @param options.start {Point}
 	 * @param options.offset {Point}
-	 * @param options.pixel {TypedArray|Array|Number}
+	 * @param options.pixel {Number}
 	 * @chainable
 	 */
 	viewProto.drawRect = function(options){
@@ -265,9 +265,13 @@
 		var scale = this._scale;
 		var ctx = this._ctx;
 		ctx.save();
-		ctx.translate(
+		/*ctx.translate(
 			_offset(scale, this._ctx.canvas.width),
 			_offset(scale, this._ctx.canvas.height)
+		);*/
+		ctx.translate(
+			_offset(scale, this._layout.getWidth()),
+			_offset(scale, this._layout.getHeight())
 		);
 		ctx.scale(scale, scale);
 		return this;
@@ -322,7 +326,7 @@
 	 * @return {Point}
 	 */
 	viewProto.getImagePoint = function(){
-		return this._imagePoint;
+		return new pxl.Point(this._imagePoint);
 	};
 
 	/**
@@ -331,8 +335,8 @@
 	 */
 	viewProto.getScaleOffset = function(){
 		return new pxl.Point(
-			_offset(this._scale, this._ctx.canvas.width),
-			_offset(this._scale, this._ctx.canvas.height)
+			_offset(this._scale, this._layout.getWidth()),
+			_offset(this._scale, this._layout.getHeight())
 		);
 	};
 
@@ -403,7 +407,7 @@
 	 * @chainable
 	 */
 	viewProto.fitToTransition = function(position){
-		position.sub(this.getScaleOffset()).div(this._scale).floor();
+		position.add(this.getScaleOffset().abs()).div(this._scale);
 		return this;
 	};
 
@@ -501,7 +505,7 @@
 		view._buffer = view._layout = null;
 	}
 
-	function _offset(scale, side){
-		return (side * (1 - scale)) >> 1;
+	function _offset(scale, size){
+		return (size * (1 - scale)) >> 1;
 	}
 })();
