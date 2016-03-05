@@ -337,7 +337,7 @@
 		return new pxl.Point(
 			_offset(this._scale, this._layout.getWidth()),
 			_offset(this._scale, this._layout.getHeight())
-		);
+		).abs().div(this._scale);
 	};
 
 	/**
@@ -396,18 +396,6 @@
 	 */
 	viewProto.setAlpha = function(aplha){
 		this._ctx.globalAlpha = aplha;
-		return this;
-	};
-
-	/**
-	 * Transform position according to the current scale offset.
-	 *
-	 * @method fitToTransition
-	 * @param position {Point} [out]
-	 * @chainable
-	 */
-	viewProto.fitToTransition = function(position){
-		position.add(this.getScaleOffset().abs()).div(this._scale);
 		return this;
 	};
 
