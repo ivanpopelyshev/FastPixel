@@ -28,8 +28,13 @@
 				var layout = View.activeView.getLayout();
 				layout.activeLayer = layout.insertLayer();
 
+				View.activeView.setScale(5); //specify new scale
+				
 				//move image point somewhere in of the canvas element
-				View.activeView.setImagePoint(230, 230);
+				var offset = View.activeView.getImagePoint();
+				View.activeView.fitToTransition(offset);
+				
+				View.activeView.setImagePoint(offset.x, offset.y);
 
 				pxl.bresenham.ellipse(12, 12, 25, 25, function(x, y){
 					layout.set({
@@ -42,7 +47,6 @@
 				});
 
 				View.activeView
-					.setScale(5) //specify new scale
 					.clear(pxl.emptyOptions) //clear old state
 					.begin() //begin view transformation according to new scale
 					.redraw(pxl.emptyOptions) //redraw everything

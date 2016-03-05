@@ -176,7 +176,7 @@
 
 		/**
 		 * Helps to detect current endianness.
-		 * Equal to &quot;true&quot; if big endian and to &quot;false&quot; if little endian.
+		 * &quot;true&quot; if big endian and to &quot;false&quot; if little endian.
 		 * Also may be equal to undefined if API isn&#x27;t supported.
 		 *
 		 * @method isBigEndian
@@ -720,7 +720,7 @@
 			for (;;){
 				callback(x0, y0);
 				if (x0 === x1 &amp;&amp; y0 === y1) break;
-				e2 = err + err;
+				e2 = err &lt;&lt; 1;
 				if (e2 &gt;= dy){
 					err += dy;
 					x0 += sx;
@@ -848,8 +848,8 @@
 
 	if (isBigEndian){
 		/**
-		 * Color-channels packer;
-		 * Note: each parameter have to fit in 0x00..0xFF range!
+		 * Channel packer;
+		 * Note: each argument have to fit in 0x00..0xFF range!
 		 *
 		 * @example
 			//The result is a 32-bit integer,
@@ -868,7 +868,7 @@
 		};
 
 		/**
-		 * @method getR
+		 * @method getG
 		 * @param rgba {Number} Have to fit in 0x00000000..0xFFFFFFFF range
 		 * @return {Number}
 		 */
@@ -882,14 +882,14 @@
 		getG = RGBA.getG = _get2;
 
 		/**
-		 * @method getB
+		 * @method getG
 		 * @param rgba {Number} Have to fit in 0x00000000..0xFFFFFFFF range
 		 * @return {Number}
 		 */
 		getB = RGBA.getB = _get1;
 
 		/**
-		 * @method getA
+		 * @method getG
 		 * @param rgba {Number} Have to fit in 0x00000000..0xFFFFFFFF range
 		 * @return {Number}
 		 */
@@ -909,7 +909,8 @@
 	 * Mix two colors using integer alpha mixing.
 	 * Note: both parameters have to fit in 0x00000000..0xFFFFFFFF range!
 	 *
-	 * An alpha computes by: (Atop &lt;&lt; 8 + (0xFF - Atop) * Abottom + (0xFF &gt;&gt; 1)) &gt;&gt; 8
+	 * An alpha computes by: (Atop &lt;&lt; 8 + (0xFF - Atop) * Abottom + (0xFF &gt;&gt; 1)) &gt;&gt; 8;
+	 *
 	 * And other channels: ((Atop * Ctop + (((0xFF - Atop) * Abottom + (0xFF &gt;&gt; 1)) &gt;&gt; 8) * Cbottom + (0xFF &gt;&gt; 1)) / Amixed) | 0
 	 *
 	 * @method alphaBlend
@@ -935,19 +936,19 @@
 
 	//Helpers:
 	function _get0(color){
-		return color &amp; 0xFF;
+		return (color &amp; 0xFF) &gt;&gt;&gt; 0;
 	};
 
 	function _get1(color){
-		return (color &amp; 0xFF00) &gt;&gt; 8;
+		return (color &amp; 0xFF00) &gt;&gt;&gt; 8;
 	};
 
 	function _get2(color){
-		return (color &amp; 0xFF0000) &gt;&gt; 16;
+		return (color &amp; 0xFF0000) &gt;&gt;&gt; 16;
 	};
 
 	function _get3(color){
-		return (color &amp; 0xFF000000) &gt;&gt;&gt; 24; //avoid sign appearing!
+		return (color &amp; 0xFF000000) &gt;&gt;&gt; 24;
 	};
 
 })(pxl, pxl.isBigEndian());
@@ -1108,27 +1109,18 @@
 	 * @param options {Object} [in]
 	 * @param options.start {Point}
 	 * @param options.offset {Point}
-	 * @param options.pixel {TypedArray|Array|Number}
+	 * @param options.pixel {Number}
 	 * @chainable
 	 */
 	viewProto.drawRect = function(options){
 		var pixel = options.pixel;
 		var RGBA = pxl.RGBA;
-		if (options.pixel.constructor === Number){
-			this._ctx.fillStyle = &quot;rgba(&quot; +
-				RGBA.getR(pixel) + &quot;,&quot; +
-				RGBA.getG(pixel) + &quot;,&quot; +
-				RGBA.getB(pixel) + &quot;,&quot; +
-				(RGBA.getA(pixel) / 255) +
-			&quot;)&quot;;
-		} else{
-			this._ctx.fillStyle = &quot;rgba(&quot; +
-				pixel[0] + &quot;,&quot; +
-				pixel[1] + &quot;,&quot; + 
-				pixel[2] + &quot;,&quot; +
-				(pixel[3] / 255) +
-			&quot;)&quot;;
-		}
+		this._ctx.fillStyle = &quot;rgba(&quot; +
+			RGBA.getR(pixel) + &quot;,&quot; +
+			RGBA.getG(pixel) + &quot;,&quot; +
+			RGBA.getB(pixel) + &quot;,&quot; +
+			(RGBA.getA(pixel) / 255) +
+		&quot;)&quot;;
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
 			options.start.y + this._imagePoint.y,
@@ -1227,9 +1219,13 @@
 		var scale = this._scale;
 		var ctx = this._ctx;
 		ctx.save();
-		ctx.translate(
+		/*ctx.translate(
 			_offset(scale, this._ctx.canvas.width),
 			_offset(scale, this._ctx.canvas.height)
+		);*/
+		ctx.translate(
+			_offset(scale, this._layout.getWidth()),
+			_offset(scale, this._layout.getHeight())
 		);
 		ctx.scale(scale, scale);
 		return this;
@@ -1284,7 +1280,7 @@
 	 * @return {Point}
 	 */
 	viewProto.getImagePoint = function(){
-		return this._imagePoint;
+		return new pxl.Point(this._imagePoint);
 	};
 
 	/**
@@ -1293,11 +1289,23 @@
 	 */
 	viewProto.getScaleOffset = function(){
 		return new pxl.Point(
-			_offset(this._scale, this._ctx.canvas.width),
-			_offset(this._scale, this._ctx.canvas.height)
-		);
+			_offset(this._scale, this._layout.getWidth()),
+			_offset(this._scale, this._layout.getHeight())
+		).abs();
 	};
 
+	/**
+	 * Transform position according to the current scale offset.
+	 *
+	 * @method fitToTransition
+	 * @param position {Point} [out]
+	 * @chainable
+	 */
+	viewProto.fitToTransition = function(position){
+		position.add(this.getScaleOffset()).div(this._scale);
+		return this;
+	};
+	
 	/**
 	 * Change current scale rate value;
 	 * Only an integer part will be taken.
@@ -1354,18 +1362,6 @@
 	 */
 	viewProto.setAlpha = function(aplha){
 		this._ctx.globalAlpha = aplha;
-		return this;
-	};
-
-	/**
-	 * Transform position according to the current scale offset.
-	 *
-	 * @method fitToTransition
-	 * @param position {Point} [out]
-	 * @chainable
-	 */
-	viewProto.fitToTransition = function(position){
-		position.sub(this.getScaleOffset()).div(this._scale).floor();
 		return this;
 	};
 
@@ -1463,16 +1459,16 @@
 		view._buffer = view._layout = null;
 	}
 
-	function _offset(scale, side){
-		return (side * (1 - scale)) &gt;&gt; 1;
+	function _offset(scale, size){
+		return (size * (1 - scale)) &gt;&gt; 1;
 	}
 })();
 (function(){
 	&quot;use strict&quot;;
 
 	/**
-	 * Pass width and height parameters;
-	 * Or just already existing ImageData as a source.
+	 * The main model class.
+	 * Contain layers and delegate processing to them.
 	 *
 	 * @example
 		var layout = pxl.Layout(8, 16);
@@ -1545,18 +1541,18 @@
 		var layer = null;
 		if (arguments.length){
 			if (index &gt;= 0 &amp;&amp; index &lt;= this.layerList.length){
-				layer = _makeLayer.call(this);
+				layer = _makeLayer(this);
 				this.layerList.splice(index, 0, layer);
 			}
 		} else{
-			layer = _makeLayer.call(this);
+			layer = _makeLayer(this);
 			this.layerList.push(layer);
 		}
 		return layer;
 
 		//Helper:
-		function _makeLayer(){
-			return new Layout.Layer(this.getWidth() * this.getHeight(), this);
+		function _makeLayer(self){
+			return new Layout.Layer(self.getWidth() * self.getHeight(), self);
 		};
 	};
 
@@ -1608,7 +1604,7 @@
 	/**
 	 * &quot;Drawn&quot; each layer to main dataLayer layer (Back-to-front);
 	 * Will use visible layers from &quot;layerList&quot; parameter;
-	 * Or visible layers from internal &quot;layerList&quot; property;
+	 * Or visible layers from self&#x27;s &quot;layerList&quot; property;
 	 * Note: if &quot;layerList&quot; is empty or if there are no visible layers the model would be reseted;
 	 * Also, notify subscribers.
 	 *
@@ -1630,9 +1626,10 @@
 		if (layerCount === 0){
 			dataLayer.reset();
 		} else{
+			//it&#x27;s important to disable mix for first layer (force-copy):
+			clonedOpts.isMix = false;
 			clonedOpts.start = options.start;
 			clonedOpts.offset = options.offset;
-			clonedOpts.isMix = false; //it&#x27;s important to disable mix first time (enable force-copy)!
 			for (var i = 0; i &lt; layerCount; ++i){
 				clonedOpts.other = layers[i];
 				dataLayer.merge(clonedOpts);
@@ -1647,7 +1644,8 @@
 
     /**
      * Replace old colour by new one;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.replace
 	 *
@@ -1663,7 +1661,8 @@
 
     /**
      * Set pixel or group of pixels (force-fill);
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.set
 	 *
@@ -1679,7 +1678,8 @@
 
     /**
      * Setting the value for specific channel;
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.setChannel
 	 *
@@ -1694,7 +1694,8 @@
 	};
 
     /**
-	 * Delegate processing to the activeLayer.
+	 * Delegate processing to the activeLayer;
+	 * Update the model.
 	 *
 	 * Look at: pxl.Layout.Layer.fill
 	 *
@@ -1875,8 +1876,8 @@
 	&quot;use strict&quot;;
 
 	/**
-	 * The Layer object here is just a wrapper for Uint32Array;
-	 * So for most of the methods the reference on layout is required.
+	 * A wrapper for Uint32Array;
+	 * Note: most of the features require the layout.
 	 *
 	 * @constructor
 	 * @class Layer
@@ -2082,6 +2083,8 @@
 	 * Scan-line fill (with custom stack);
 	 * Can be applyed for area within start and offset options.
 	 *
+	 * Look at: http://www.williammalone.com/articles/html5-canvas-javascript-paint-bucket-tool/
+	 *
 	 * @method fill
 	 * @param options {Object} [in]
 	 * @param options.position {Point}
@@ -2095,23 +2098,32 @@
 		var data = this.data;
 		var startIndex = 0;
 		var leftIndexOffset = 0;
-		var rightIndexOffset = 0;
+		var rightIndexOffset = layout.getWidth();
 		var endIndex = data.length;
 		var pixel = options.pixel;
 		var index = layout.indexAt(options.position);
-		if (options.start &amp;&amp; options.offset){
-			leftIndexOffset = options.start.x;
-			rightIndexOffset = options.start.x + options.offset.x;
-			startIndex = layout.indexAt(options.start);
-			endIndex = layout.indexAt(
-				new pxl.Point(options.start).add(options.offset));
+		if (data[index] === pixel){
+			return;	//stop, don&#x27;t fill on equal color
 		}
-		if (index &lt; startIndex || index &gt;= endIndex || data[index] === pixel){
-			return;
+		if (options.start &amp;&amp; options.offset){
+			var endPoint = new pxl.Point(
+				options.start).add(options.offset).floor();
+			if (options.position.x &lt; options.start.x ||
+				options.position.y &lt; options.start.y ||
+				options.position.x &gt; endPoint.x ||
+				options.position.y &gt; endPoint.y){
+				return;	//stop, out of range
+			}
+			leftIndexOffset = options.start.x | 0;
+			rightIndexOffset = options.offset.x | 0;
+			startIndex = layout.indexAt(options.start);
+			endIndex = layout.indexAt(endPoint);
+		}
+		if (index &lt; startIndex || index &gt;= endIndex ){
+			return;	//stop, out of layout
 		}
 		var begin = 0;
 		var width = layout.getWidth();
-		var height = layout.getHeight();
 		var borderUp = false;
 		var borderDown = false;
 		var oldRGBA = this.pixelFromIndex(index); //pixel before changes
@@ -2128,7 +2140,7 @@
 			index = stack.pop();
 
 			leftBorderIndex = leftIndexOffset + ((index / width) | 0) * width;
-			rightBorderIndex = leftBorderIndex + width - rightIndexOffset;
+			rightBorderIndex = leftBorderIndex + rightIndexOffset;
 
 			stepsBack = 0;
 
@@ -2140,16 +2152,7 @@
 			begin = ++index;
 			borderUp = borderDown = false;
 
-			//Go to the right to position where it starts:
-			/*while (stepsBack--){
-				_procCurrentLine();
-			}
-
-			//Keep going right:
-			do{
-				_procCurrentLine();
-			} while(index &lt;= rightBorderIndex &amp;&amp; data[index] === oldRGBA);*/
-
+			//Go to the right:
 			for (;;){
 				upIndex = index - width;
 				downIndex = width + index++;
@@ -2189,36 +2192,6 @@
 			this._fillLine(rgba, begin, index);
 
 		} while(stack.length);
-
-
-		//Helper:
-		/*function _procCurrentLine(){
-			upIndex = index - width;
-			downIndex = index + width;
-			++index;
-
-			if (upIndex &gt; startIndex){
-				if (data[upIndex] === oldRGBA){
-					if(borderUp === false){
-						stack.push(upIndex);
-						borderUp = true;
-					}
-				} else{
-					borderUp = false;
-				}
-			}
-
-			if (downIndex &lt; endIndex){
-				if (data[downIndex] === oldRGBA){
-					if(borderDown === false){
-						stack.push(downIndex);
-						borderDown = true;
-					}
-				} else{
-					borderDown = false;
-				}
-			}
-		};*/
 	};
 
 	/**
@@ -2259,8 +2232,6 @@
 
 	/**
 	 * Warn: index without color-offset!
-	 *
-	 * Look at: layerProto.pixelAt.
 	 *
 	 * @method pixelFromIndex
 	 * @param index {Number} [in]
@@ -2339,21 +2310,44 @@
 	/**
 	 * 
 	 *
+	 * @param rgba {Number}
 	 * @param begin {Number}
 	 * @param end {Number}
-	 * @param rgba {Number}
 	 * @method _fillLine
 	 * @private
 	 */
-	if (&quot;fill&quot; in Uint32Array.prototype){ //ES6
+	if (&quot;fill&quot; in Uint32Array.prototype){ //ES6, much faster
 		layerProto._fillLine = function(rgba, begin, end){
-			this.data.fill(rgba, begin, end); //much faster
+			this.data.fill(rgba, begin, end);
 		};
 	} else{
 		layerProto._fillLine = function(rgba, begin, end){
 			var data = this.data;
 			while (begin &lt; end){
 				data[begin++] = rgba;
+			}
+		};
+	}
+
+	/**
+	 * 
+	 *
+	 * @param target {Number}
+	 * @param begin {Number}
+	 * @param end {Number}
+	 * @method _copyWithin
+	 * @private
+	 */
+	if (&quot;copyWithin&quot; in Uint32Array.prototype){ //ES6, much faster
+		layerProto._copyWithin = function(target, begin, end){
+			this.data.copyWithin(target, begin, end);
+		};
+	} else{
+		layerProto._copyWithin = function(target, begin, end){
+			var data = this.data;
+			end = end || data.length;
+			while (begin &lt; end){
+				data[target++] = data[begin++];
 			}
 		};
 	}
@@ -2369,7 +2363,7 @@
 	layerProto._reverseLine = function(start, end){
 		var data = this.data;
 		if (arguments.length === 0 &amp;&amp; &quot;reverse&quot; in Uint32Array.prototype){
-			data.reverse(); //ES6, unfortunatly it haven&#x27;t ranges
+			data.reverse(); //ES6, unfortunatly it doesn&#x27;t take a range
 		} else{
 			var tmp = 0;
 			start = start || 0;
@@ -2461,7 +2455,7 @@
 		_isRecording: false,
 
 		/**
-		 * @method isHistoryFull
+		 * @method getHistorySize
 		 * @return {Number}
 		 */
 		getHistorySize: function(){
@@ -2574,7 +2568,7 @@
 		},
 
 		/**
-		 * Remove sessions with deleted/empty layers.
+		 * Remove sessions that refer to layer argument.
 		 *
 		 * @method deleteLayer
 		 * @param layer {Layer} [in]
@@ -2653,7 +2647,7 @@
 	};
 
 	/**
-	 * Will cache an index and the color of that index.
+	 * Will cache the whole area from options or an index.
 	 *
 	 * @method cache
 	 * @param param {Object|Number} [in] Pass the usual options or an index of the pixel.
@@ -2721,6 +2715,16 @@
 		 */
         this._cachedOption = null;
 
+		/**
+		 * @property _layerOptions
+		 * @private
+		 * @type {Object}
+		 */
+		this._layerOptions = {
+			&quot;name&quot;: layer.name,
+			&quot;isVisible&quot;: layer.isVisible
+		};
+
 		Object.seal(this);
 	};
 
@@ -2737,7 +2741,8 @@
 	};
 
 	/**
-	 * Will cache the whole token array.
+	 * Will cache the whole area from options.
+	 * Warn: can be invoked only once!
 	 *
 	 * @method cache
 	 * @throws {Error} &quot;Static sessions can be cached only once!&quot;

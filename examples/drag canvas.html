@@ -9,9 +9,6 @@
 	</head>
 	<body>
 		<canvas id="canvas" width="512" height="512"></canvas>
-		<br>
-		<input type="range" min="0" max="255" step="1" value="0" oninput="setChannel(this.value)">
-		<p class="noselect">change green channel by dragging the range bar</p>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -19,19 +16,22 @@
 			if (pxl.isSupported){
 
 				var View = pxl.View;
+				
+				var width = 44;
+				var height = 15;
 
 				//create the new View instance, and set it as active:
 				View.activeView = View.create({
-					layoutSize: {
-						width: 128,
-						height: 128
+					layoutSize: { //size (in pixels) of your "off-screen" canvas
+						width: width,
+						height: height
 					},
-					element: document.querySelector("#canvas")
+					element: document.querySelector("CANVAS")
 				});
 				var layout = View.activeView.getLayout();
 				layout.activeLayer = layout.insertLayer();
 
-				function setPixel(x, y){
+				pxl.bresenham.rectangle(0, 0, width - 1, height - 1, function(x, y){
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
@@ -39,38 +39,45 @@
 						"isMix": false,
 						"isNotifyView": true
 					});
-				};
+				});
 
-				function setChannel(value){
-					layout.setChannel({
-						"channelOffset": 1, //0 - red, 1 - green, 2 - blue, 3 - alpha
-						"value": value,
-						"isNotifyView": true
-					});
-				};
-
-				View.activeView.setScale(4); //specify new scale
+				setScale(5); //scale up to make it more complex to calculate the position
 				
-				//move image point somewhere in of the canvas element
-				var offset = View.activeView.getImagePoint();
-				View.activeView.fitToTransition(offset);
-				
-				View.activeView.setImagePoint(offset.x, offset.y);
-
-				//set line on bottom layer
-				pxl.bresenham.line(0, 0, 128 - 1, 128 - 1, setPixel);
-				pxl.bresenham.ellipse(100, 100, 25, 25, setPixel);
-
-				View.activeView
-				.clear(pxl.emptyOptions)
-				.begin()
-				.redraw(pxl.emptyOptions)
-				// don't call "end()" and the canvas will be scaled up forever
-				;
+				canvas.addEventListener("mousemove", function(e){
+					var position = new pxl.Point(e.pageX, e.pageY);
+					
+					View.activeView.fitToTransition(position);
+					
+					View.activeView.setImagePoint(position.x, position.y);
+					
+					View
+					.activeView
+					.clear(pxl.emptyOptions)
+					.begin()
+					.redraw(pxl.emptyOptions)
+					.end();
+				}, false);
 
 			} else{
 				alert("Not supported!"); //old IE or something like that
 			}
+
+			function setScale(scale){
+				View.activeView.setScale(scale);
+				
+				var offset = View.activeView.getImagePoint();
+				View.activeView.fitToTransition(offset);
+				
+				View.activeView.setImagePoint(offset.x, offset.y);
+				
+				View
+				.activeView
+				.clear(pxl.emptyOptions)
+				.begin()
+				.redraw(pxl.emptyOptions)
+				.end();
+			};
 		</script>
+		<p class="noselect">just a circle with up scale feature demo</p>
 	</body>
 </html>
