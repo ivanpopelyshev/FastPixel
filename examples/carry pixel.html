@@ -40,9 +40,10 @@
 					//listen for some of user movements:
 					document.addEventListener("wheel", userWheel, false);
 					canvas.addEventListener("mousemove", function(e){
-						var position = new pxl.Point(e.pageX, e.pageY)
-											  .abs().floor();
+						var position = new pxl.Point(e.pageX, e.pageY).floor();
+						
 						View.activeView.fitToTransition(position);
+						
 						position.sub(View.activeView.getImagePoint());
 
 						carry(prevPosition, position);

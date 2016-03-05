@@ -71,7 +71,6 @@
 				//prev is a position to clear previously drawed pixel
 				//current is a position where to draw new pixel
 				function carry(prev, current){
-					
 
 					options.start = current;
 
@@ -82,23 +81,22 @@
 						.begin() //fit things for the current scale
 						.clear(options)
 						.redraw(options);
+						//and don't call "end()" yet...
 
 					isPressed = true;
 				};
 
 				function userUpMouse(event){
-					View.activeView
-						.drawRect(options)
-						.end(); //restore view to default scale
+					View.activeView.end(); //restore view to default scale
 				
 					isPressed = false;
 				};
 
-				function userMove(e){
-					var position = new pxl.Point(e.pageX, e.pageY)
-										  .abs().floor();
+				function userMove(event){
+					var position = new pxl.Point(event.pageX, event.pageY);
 					View.activeView.fitToTransition(position);
-					position.sub(View.activeView.getImagePoint());
+					position.floor();
+					//position.sub(View.activeView.getImagePoint());
 
 					if (isPressed){
 						pxl.bresenham.line(
@@ -113,9 +111,9 @@
 					prevPosition.set(position);
 				}
 
-				function userWheel(e){
+				function userWheel(event){
 					var scale = View.activeView.getScale();
-					if ((e.deltaY || e.detail || e.wheelDelta) > 0){
+					if ((event.deltaY || event.detail || event.wheelDelta) > 0){
 						--scale;
 					} else{
 						++scale;

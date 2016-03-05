@@ -80,7 +80,7 @@ describe("View", function(){
 			
 			view.setScale(2);
 			
-			expect(view.getScaleOffset().cmp(2, 4)).to.equal(true);
+			expect(view.getScaleOffset().cmp(4, 8)).to.equal(true);
 		});
 	});
 

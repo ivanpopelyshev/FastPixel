@@ -1197,9 +1197,21 @@
 		return new pxl.Point(
 			_offset(this._scale, this._layout.getWidth()),
 			_offset(this._scale, this._layout.getHeight())
-		).abs().div(this._scale);
+		).abs();
 	};
 
+	/**
+	 * Transform position according to the current scale offset.
+	 *
+	 * @method fitToTransition
+	 * @param position {Point} [out]
+	 * @chainable
+	 */
+	viewProto.fitToTransition = function(position){
+		position.add(this.getScaleOffset()).div(this._scale);
+		return this;
+	};
+	
 	/**
 	 * Change current scale rate value;
 	 * Only an integer part will be taken.
