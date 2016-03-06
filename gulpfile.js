@@ -32,7 +32,7 @@ gulp.task("compress", function(){
 });
 
 gulp.task("watch", function(){
-	gulp.watch("./src/js/pxl/**/*.js", ["default"]);
+	gulp.watch(FILE_LIST, ["default"]);
 });
 
 gulp.task("clear", function(done){

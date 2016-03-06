@@ -72,7 +72,7 @@
 
 		//Helpers:
         function _cachePixel(index){
-			if (index in indexMap === false){
+			if ((index in indexMap) === false){
 				indexMap[index] = data[index];
 			}
 		};

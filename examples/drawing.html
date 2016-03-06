@@ -19,7 +19,7 @@
 
 					var isPressed = false;
 
-					var history = pxl.Layout.Layer.history;
+					var history = pxl.Layout.history;
 					var View = pxl.View;
 					var prevPosition = new pxl.Point;
 	
@@ -50,11 +50,15 @@
 					canvas.addEventListener("mousemove", userMove, false);
 					document.addEventListener("mousedown", userDownMouse, false);
 					document.addEventListener("mouseup", userUpMouse, false);
+					document.addEventListener("keypress", userKey, false);
 				} else{
 					alert("Not supported!"); //old IE or something like that
 				}
 
 				function setPixel(x, y){
+					if (history.isRecording()){
+						history.cache(layout.indexAt({x: x, y: y}));
+					}
 					layout.set({
 						"start": new pxl.Point(x, y),
 						"offset": new pxl.Point(1),
@@ -77,16 +81,20 @@
 				};
 
 				function userDownMouse(event){
+					history.record(layout, history.DYNAMIC_SHOT);
+
 					View.activeView
 						.begin() //fit things for the current scale
 						.clear(options)
 						.redraw(options);
 						//and don't call "end()" yet...
-
+						
 					isPressed = true;
 				};
 
 				function userUpMouse(event){
+					history.stop();
+				
 					View.activeView.end(); //restore view to default scale
 				
 					isPressed = false;
@@ -124,6 +132,14 @@
 						.begin()
 						.redraw(pxl.emptyOptions)
 						.end();
+				};
+				
+				function userKey(e){
+					if (e.which === 121) history.redo();
+					else if (e.which === 122) history.undo();
+					layout.mergeLayers({
+						"isNotifyView": true
+					});
 				};
 			})();
 		</script>
