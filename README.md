@@ -38,9 +38,9 @@ For any questions/propositions/e.t.c you can contact me at <kurzgame@gmail.com>
 [examples]: ./examples
 [pxl.js]: ./pxl.js
 [pxl.min.js]: ./pxl.min.js
-[Pixel carrying]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/carry%20pixel.html
-[Color replacing]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/color%20replace.html
-[Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting%20channel.html
-[Bucket-fill]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/bucket%20tool.html
+[Pixel carrying]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/carry-pixel.html
+[Color replacing]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/color-replace.html
+[Channel setting]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/setting-channel.html
+[Bucket-fill]: https://cdn.rawgit.com/kurzgame/FastPixel/master/examples/bucket-tool.html
 [documentation]: https://rawgit.com/kurzgame/FastPixel/master/docs/index.html
 [wiki]: https://github.com/kurzgame/FastPixel/wiki
