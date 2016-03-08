@@ -11,7 +11,7 @@
 		<canvas id="canvas" width="512" height="512"></canvas>
 		<br>
 		<input type="range" min="0" max="255" step="1" value="0" oninput="setChannel(this.value)">
-		<p class="noselect">change green channel by dragging the range bar</p>
+		<p class="noselect">change red channel by dragging the range bar</p>
 
 		<script src="../pxl.js"></script>
 		<script>
@@ -43,7 +43,7 @@
 
 				function setChannel(value){
 					layout.setChannel({
-						"channelOffset": 1, //0 - red, 1 - green, 2 - blue, 3 - alpha
+						"channelOffset": 0, //0 - red, 1 - green, 2 - blue, 3 - alpha
 						"value": value,
 						"isNotifyView": true
 					});

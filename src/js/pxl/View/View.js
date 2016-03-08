@@ -165,8 +165,7 @@
 			RGBA.getR(pixel) + "," +
 			RGBA.getG(pixel) + "," +
 			RGBA.getB(pixel) + "," +
-			(RGBA.getA(pixel) / 255) +
-		")";
+			(RGBA.getA(pixel) / 255) + ")";
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
 			options.start.y + this._imagePoint.y,
@@ -265,10 +264,6 @@
 		var scale = this._scale;
 		var ctx = this._ctx;
 		ctx.save();
-		/*ctx.translate(
-			_offset(scale, this._ctx.canvas.width),
-			_offset(scale, this._ctx.canvas.height)
-		);*/
 		ctx.translate(
 			_offset(scale, this._layout.getWidth()),
 			_offset(scale, this._layout.getHeight())
@@ -286,15 +281,6 @@
 	viewProto.end = function(){
 		this._ctx.restore();
 		return this;
-	};
-
-	/**
-	 * @method getBufferContext
-	 * @return {CanvasRenderingContext2D}
-	 * @deprecated
-	 */
-	viewProto.getBufferContext = function(){
-		return this._buffer;
 	};
 
 	/**
@@ -424,7 +410,6 @@
 		this._ctx.canvas.style.height = height + "px";
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
-		pxl.disableAntialiasing(this._ctx);
 		return this;
     };
 

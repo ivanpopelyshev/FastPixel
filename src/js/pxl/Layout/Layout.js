@@ -154,21 +154,26 @@
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options, layerList){
-		var clonedOpts = {};
-		var layers = _getVisibleLayers(layerList || this.layerList);
+		var layers = layerList || this.layerList;
 		var layerCount = layers.length;
 		var dataLayer = this.dataLayer;
-		if (layerCount === 0){
-			dataLayer.reset();
-		} else{
-			//it's important to disable mix for first layer (force-copy):
-			clonedOpts.isMix = false;
-			clonedOpts.start = options.start;
-			clonedOpts.offset = options.offset;
-			for (var i = 0; i < layerCount; ++i){
-				clonedOpts.other = layers[i];
+		var invisibleCounter = 0;
+		var tokenLayer = null;
+		var clonedOpts = {
+			"isMix": false, //disable mix for first layer (force-copy)!!!
+			"start": options.start,
+			"offset": options.offset
+		};
+		for (var i = 0; i < layerCount; ++i){
+			tokenLayer = layers[i];
+			if (tokenLayer.isVisible === true){
+				clonedOpts.other = tokenLayer;
 				dataLayer.merge(clonedOpts);
 				clonedOpts.isMix = true; //other layers have processed properly
+			} else{
+				if (++invisibleCounter === layerCount){
+					dataLayer.reset();
+				}
 			}
 		}
 		if (options.isNotifyView === true){
@@ -318,45 +323,14 @@
 	 * @return {Array}
 	 */
 	layoutProto.getVisibleLayers = function(){
-		return _getVisibleLayers(this.layerList);
-	};
-
-	/**
-	 * @example
-		var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
-		layout.fixRange(options);
-		//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
-	 * @method fixRange
-	 * @param options {Object} [out]
-	 * @param options.start {Point}
-	 * @param options.offset {Point}
-	 * @return {Boolean} False if range can't be fixed.
-	 */
-	layoutProto.fixRange = function(options){
-		var start = options.start;
-		var offset = options.offset;
-		var width = this.getWidth();
-		var height = this.getHeight();
-
-		if (start.x >= width || start.y >= height ||
-			offset.x <= 0 || offset.y <= 0) return false; //unfixed things
-
-		if (start.x < 0){
-			offset.x -= -start.x;
-			start.x = 0;
+		var layerList = this.layerList;
+		var visibleLayers = [];
+		for (var i = 0; i < layerList.length; ++i){
+			if (layerList[i].isVisible === true){
+				visibleLayers.push(layerList[i]);
+			}
 		}
-		if (start.y < 0){
-			offset.y -= -start.y;
-			start.y = 0;
-		}
-		if (start.x + offset.x > width){
-			offset.x = width - start.x;
-		}
-		if (start.y + offset.y > height){
-			offset.y = height - start.y;
-		}
-
-		return !(offset.x <= 0 || offset.y <= 0); //is still bad?
+		return visibleLayers;
 	};
 
 	/**
@@ -395,15 +369,4 @@
 		this.removeAllLayers();
 	};
 
-
-    //Helper:
-    function _getVisibleLayers(layerList){
-        var getVisibleLayers = [];
-		for (var i = 0; i < layerList.length; ++i){
-			if (layerList[i].isVisible === true){
-				getVisibleLayers.push(layerList[i]);
-			}
-		}
-		return getVisibleLayers;
-    };
 })();

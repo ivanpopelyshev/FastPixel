@@ -111,19 +111,19 @@
 		 *
 		 * @method record
 		 * @throws {Error} "Recording has been started before!" | "Unknown flag!"
-		 * @param layout {Layout} [in]
+		 * @param source {Layout|Layer} [in] activeLayer will be taken in case layout is passed.
 		 * @param flag {STATIC_SHOT|DYNAMIC_SHOT} [in]
 		 */
-		record: function(layout, flag){
+		record: function(source, flag){
+			var layer = (source instanceof pxl.Layout.Layer)
+				? source : source.activeLayer;
 			if (this._isRecording === true){
 				throw new Error("Recording has been started before!");
 			}
 			if (flag === pxl.Layout.history.STATIC_SHOT){
-				this._lastSession = new pxl.Layout.history.SessionStatic(
-					layout.activeLayer);
+				this._lastSession = new pxl.Layout.history.SessionStatic(layer);
 			} else if (flag === pxl.Layout.history.DYNAMIC_SHOT){
-				this._lastSession = new pxl.Layout.history.SessionDynamic(
-					layout.activeLayer);
+				this._lastSession = new pxl.Layout.history.SessionDynamic(layer);
 			} else{
 				throw new Error("Unknown flag!");
 			}

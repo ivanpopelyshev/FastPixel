@@ -144,31 +144,6 @@ describe("Layout", function(){
 		});
 	});
 
-	describe("fix the range", function(){
-		it("have to be fixed properly", function(){
-			var layout = new pxl.Layout(8, 16);
-
-			var oldStart = new pxl.Point(2, 2);
-			var oldOffset = new pxl.Point(4, 4);
-
-			var options = {
-				"start": new pxl.Point(oldStart),
-				"offset": new pxl.Point(oldOffset)
-			};
-			expect(layout.fixRange(options)).to.equal(true); //everything is OK here and no changes
-			expect(options.start.cmp(oldStart)).to.equal(true);
-			expect(options.offset.cmp(oldOffset)).to.equal(true);
-			
-
-			oldStart.set(-1, 0); //let's move our start point here
-			options.start.set(oldStart);
-
-			expect(layout.fixRange(options)).to.equal(true); //Ok, and will be changed
-			expect(options.start.cmp(oldStart)).to.equal(false);
-			expect(options.offset.cmp(oldOffset)).to.equal(false);
-		});
-	});
-
 	describe("__process single pixel", function(){
 		it("should be OK", function(){
 			var layout = new pxl.Layout(5, 5);

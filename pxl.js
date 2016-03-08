@@ -177,6 +177,58 @@
 			F.prototype = parent.prototype;
 			child.prototype = new F;
 			child.prototype.constructor = child;
+		},
+
+		/**
+		 * @example
+			var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
+			pxl.fixRange(options, layout);
+			//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
+		 * @method fixRange
+		 * @param src {Object} [out]
+		 * @param src.start {Point}
+		 * @param src.offset {Point}
+		 * @param dest {Object|Layout} [in]
+		 * @param dest.start {Point|undefiend}
+		 * @param dest.offset {Point|undefined}
+		 * @return {Boolean} Returns false value if range can't be fixed.
+		 */
+		fixRange: function(src, dest){
+			var srcStart = src.start;
+			var srcOffset = src.offset;
+			var destStartX = 0;
+			var destStartY = 0;
+			var destWidth = 0;
+			var destHeight = 0;
+			if (dest instanceof pxl.Layout){
+				destWidth = dest.getWidth();
+				destHeight = dest.getHeight();
+			} else{
+				destStartX = dest.start.x;
+				destStartY = dest.start.y;
+				destWidth = destStartX + dest.offset.x;
+				destHeight = destStartY + dest.offset.y;
+			}
+
+			if (srcStart.x >= destWidth ||
+				srcStart.y >= destHeight) return false; //unfixed things
+
+			if (srcStart.x < destStartX){
+				srcOffset.x -= Math.abs(destStartX - srcStart.x);
+				srcStart.x = destStartX;
+			}
+			if (srcStart.y < destStartY){
+				srcOffset.y -= Math.abs(destStartY - srcStart.y);
+				srcStart.y = destStartY;
+			}
+			if (srcStart.x + srcOffset.x > destWidth){
+				srcOffset.x = destWidth - srcStart.x;
+			}
+			if (srcStart.y + srcOffset.y > destHeight){
+				srcOffset.y = destHeight - srcStart.y;
+			}
+
+			return !(srcOffset.x <= destStartX || srcOffset.y <= destStartY); //is still bad?
 		}
 	};
 
@@ -1025,8 +1077,7 @@
 			RGBA.getR(pixel) + "," +
 			RGBA.getG(pixel) + "," +
 			RGBA.getB(pixel) + "," +
-			(RGBA.getA(pixel) / 255) +
-		")";
+			(RGBA.getA(pixel) / 255) + ")";
 		this._ctx.fillRect(
 			options.start.x + this._imagePoint.x,
 			options.start.y + this._imagePoint.y,
@@ -1125,10 +1176,6 @@
 		var scale = this._scale;
 		var ctx = this._ctx;
 		ctx.save();
-		/*ctx.translate(
-			_offset(scale, this._ctx.canvas.width),
-			_offset(scale, this._ctx.canvas.height)
-		);*/
 		ctx.translate(
 			_offset(scale, this._layout.getWidth()),
 			_offset(scale, this._layout.getHeight())
@@ -1146,15 +1193,6 @@
 	viewProto.end = function(){
 		this._ctx.restore();
 		return this;
-	};
-
-	/**
-	 * @method getBufferContext
-	 * @return {CanvasRenderingContext2D}
-	 * @deprecated
-	 */
-	viewProto.getBufferContext = function(){
-		return this._buffer;
 	};
 
 	/**
@@ -1284,7 +1322,6 @@
 		this._ctx.canvas.style.height = height + "px";
 		this._ctx.canvas.width = width;
 		this._ctx.canvas.height = height;
-		pxl.disableAntialiasing(this._ctx);
 		return this;
     };
 
@@ -1525,21 +1562,26 @@
 	 * @chainable
 	 */
 	layoutProto.mergeLayers = function(options, layerList){
-		var clonedOpts = {};
-		var layers = _getVisibleLayers(layerList || this.layerList);
+		var layers = layerList || this.layerList;
 		var layerCount = layers.length;
 		var dataLayer = this.dataLayer;
-		if (layerCount === 0){
-			dataLayer.reset();
-		} else{
-			//it's important to disable mix for first layer (force-copy):
-			clonedOpts.isMix = false;
-			clonedOpts.start = options.start;
-			clonedOpts.offset = options.offset;
-			for (var i = 0; i < layerCount; ++i){
-				clonedOpts.other = layers[i];
+		var invisibleCounter = 0;
+		var tokenLayer = null;
+		var clonedOpts = {
+			"isMix": false, //disable mix for first layer (force-copy)!!!
+			"start": options.start,
+			"offset": options.offset
+		};
+		for (var i = 0; i < layerCount; ++i){
+			tokenLayer = layers[i];
+			if (tokenLayer.isVisible === true){
+				clonedOpts.other = tokenLayer;
 				dataLayer.merge(clonedOpts);
 				clonedOpts.isMix = true; //other layers have processed properly
+			} else{
+				if (++invisibleCounter === layerCount){
+					dataLayer.reset();
+				}
 			}
 		}
 		if (options.isNotifyView === true){
@@ -1689,45 +1731,14 @@
 	 * @return {Array}
 	 */
 	layoutProto.getVisibleLayers = function(){
-		return _getVisibleLayers(this.layerList);
-	};
-
-	/**
-	 * @example
-		var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
-		layout.fixRange(options);
-		//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
-	 * @method fixRange
-	 * @param options {Object} [out]
-	 * @param options.start {Point}
-	 * @param options.offset {Point}
-	 * @return {Boolean} False if range can't be fixed.
-	 */
-	layoutProto.fixRange = function(options){
-		var start = options.start;
-		var offset = options.offset;
-		var width = this.getWidth();
-		var height = this.getHeight();
-
-		if (start.x >= width || start.y >= height ||
-			offset.x <= 0 || offset.y <= 0) return false; //unfixed things
-
-		if (start.x < 0){
-			offset.x -= -start.x;
-			start.x = 0;
+		var layerList = this.layerList;
+		var visibleLayers = [];
+		for (var i = 0; i < layerList.length; ++i){
+			if (layerList[i].isVisible === true){
+				visibleLayers.push(layerList[i]);
+			}
 		}
-		if (start.y < 0){
-			offset.y -= -start.y;
-			start.y = 0;
-		}
-		if (start.x + offset.x > width){
-			offset.x = width - start.x;
-		}
-		if (start.y + offset.y > height){
-			offset.y = height - start.y;
-		}
-
-		return !(offset.x <= 0 || offset.y <= 0); //is still bad?
+		return visibleLayers;
 	};
 
 	/**
@@ -1766,17 +1777,6 @@
 		this.removeAllLayers();
 	};
 
-
-    //Helper:
-    function _getVisibleLayers(layerList){
-        var getVisibleLayers = [];
-		for (var i = 0; i < layerList.length; ++i){
-			if (layerList[i].isVisible === true){
-				getVisibleLayers.push(layerList[i]);
-			}
-		}
-		return getVisibleLayers;
-    };
 })();
 (function(){
 	"use strict";
@@ -1886,20 +1886,19 @@
 	 * @param options.offset {Point|undefined}
      */
 	layerProto.merge = function(options){
-		var self = this;
 		var data = this.data;
 		var otherData = options.other.data;
 		var alphaBlend = pxl.RGBA.alphaBlend;
 		if (options.isMix === true){
 			this._layout.__process(options, function(i, length){
 				while (i < length){
-					data[i] = alphaBlend(data[i], otherData[i++]);
+					data[i] = alphaBlend(data[i], otherData[i++]); //not so fast...
 				}
 			});
 		} else{
 			if (options.start && options.offset){
 				this._layout.__process(options, function(i, length){
-					data.set(otherData.subarray(i, length), i);
+					data.set(otherData.subarray(i, length), i); //fast enough
 				});
 			} else{
 				this.data.set(otherData); //much faster
@@ -2158,8 +2157,7 @@
 		var layout = this._layout;
 		var imageData = (options.start && options.offset
 			? pxl.createImageData(options.offset.x, options.offset.y)
-			: pxl.createImageData(layout.getWidth(), layout.getHeight())
-		);
+			: pxl.createImageData(layout.getWidth(), layout.getHeight()));
 		void this._generateData(
 			new Uint32Array(imageData.data.buffer), this.data, options);
 		return imageData;
@@ -2407,19 +2405,19 @@
 		 *
 		 * @method record
 		 * @throws {Error} "Recording has been started before!" | "Unknown flag!"
-		 * @param layout {Layout} [in]
+		 * @param source {Layout|Layer} [in] activeLayer will be taken in case layout is passed.
 		 * @param flag {STATIC_SHOT|DYNAMIC_SHOT} [in]
 		 */
-		record: function(layout, flag){
+		record: function(source, flag){
+			var layer = (source instanceof pxl.Layout.Layer)
+				? source : source.activeLayer;
 			if (this._isRecording === true){
 				throw new Error("Recording has been started before!");
 			}
 			if (flag === pxl.Layout.history.STATIC_SHOT){
-				this._lastSession = new pxl.Layout.history.SessionStatic(
-					layout.activeLayer);
+				this._lastSession = new pxl.Layout.history.SessionStatic(layer);
 			} else if (flag === pxl.Layout.history.DYNAMIC_SHOT){
-				this._lastSession = new pxl.Layout.history.SessionDynamic(
-					layout.activeLayer);
+				this._lastSession = new pxl.Layout.history.SessionDynamic(layer);
 			} else{
 				throw new Error("Unknown flag!");
 			}

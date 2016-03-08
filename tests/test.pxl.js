@@ -81,4 +81,105 @@ describe("pxl", function(){
 		});
 	});
 
+	describe("fix range", function(){
+		it("should be OK", function(){
+			var source = {
+				start: new pxl.Point(1, 2),
+				offset: new pxl.Point(8, 8)
+			};
+			var destination = {
+				start: new pxl.Point(0),
+				offset: new pxl.Point(8, 8)
+			};
+			
+			if (pxl.fixRange(source, destination)){
+				expect(source.start.cmp(new pxl.Point(1, 2))).to.equal(true);
+				expect(source.offset.cmp(new pxl.Point(7, 6))).to.equal(true);
+			} else{
+				expect(false).to.equal(true);
+			}
+			
+		});
+	});
+
+	describe("fix range", function(){
+		it("should be OK", function(){
+			var source = {
+				start: new pxl.Point(1, 2),
+				offset: new pxl.Point(8, 8)
+			};
+			var destination = {
+				start: new pxl.Point(4, 4),
+				offset: new pxl.Point(8, 8)
+			};
+			
+			if (pxl.fixRange(source, destination)){
+				expect(source.start.cmp(new pxl.Point(4, 4))).to.equal(true);
+				expect(source.offset.cmp(new pxl.Point(5, 6))).to.equal(true);
+			} else{
+				expect(false).to.equal(true);
+			}
+			
+		});
+	});
+
+	describe("fix range", function(){
+		it("should be OK", function(){
+			var source = {
+				start: new pxl.Point(-1, -2),
+				offset: new pxl.Point(14, 16)
+			};
+			var destination = {
+				start: new pxl.Point(0, 0),
+				offset: new pxl.Point(8, 8)
+			};
+			
+			if (pxl.fixRange(source, destination)){
+				expect(source.start.cmp(destination.start)).to.equal(true);
+				expect(source.offset.cmp(destination.offset)).to.equal(true);
+			} else{
+				expect(false).to.equal(true);
+			}
+			
+		});
+	});
+
+	describe("fix range", function(){
+		it("should be OK", function(){
+			var source = {
+				start: new pxl.Point(8, 8),
+				offset: new pxl.Point(1, 1)
+			};
+			var destination = {
+				start: new pxl.Point(0, 0),
+				offset: new pxl.Point(8, 8)
+			};
+			
+			if (pxl.fixRange(source, destination)){
+				
+			} else{
+				expect(true).to.equal(true);
+			}
+			
+		});
+	});
+
+	describe("fix range", function(){
+		it("should be OK", function(){
+			var source = {
+				start: new pxl.Point(2, 2),
+				offset: new pxl.Point(6, 6)
+			};
+			var destination = new pxl.Layout(8, 16);
+			
+			if (pxl.fixRange(source, destination)){
+				expect(source.start.cmp(new pxl.Point(2, 2))).to.equal(true);
+				expect(source.offset.cmp(new pxl.Point(6, 6))).to.equal(true);
+			} else{
+				expect(false).to.equal(true);
+			}
+			
+		});
+	});
+
 });

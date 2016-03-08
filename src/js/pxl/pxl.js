@@ -177,6 +177,58 @@
 			F.prototype = parent.prototype;
 			child.prototype = new F;
 			child.prototype.constructor = child;
+		},
+
+		/**
+		 * @example
+			var options = {start: new pxl.Point(-1, 0), offset: new pxl.Point(100, 100)};
+			pxl.fixRange(options, layout);
+			//in 8x16 layout, the options would fixed to: {start: {x: 0, y: 0},	offset: {x: 8, y: 16}};
+		 * @method fixRange
+		 * @param src {Object} [out]
+		 * @param src.start {Point}
+		 * @param src.offset {Point}
+		 * @param dest {Object|Layout} [in]
+		 * @param dest.start {Point|undefiend}
+		 * @param dest.offset {Point|undefined}
+		 * @return {Boolean} Returns false value if range can't be fixed.
+		 */
+		fixRange: function(src, dest){
+			var srcStart = src.start;
+			var srcOffset = src.offset;
+			var destStartX = 0;
+			var destStartY = 0;
+			var destWidth = 0;
+			var destHeight = 0;
+			if (dest instanceof pxl.Layout){
+				destWidth = dest.getWidth();
+				destHeight = dest.getHeight();
+			} else{
+				destStartX = dest.start.x;
+				destStartY = dest.start.y;
+				destWidth = destStartX + dest.offset.x;
+				destHeight = destStartY + dest.offset.y;
+			}
+
+			if (srcStart.x >= destWidth ||
+				srcStart.y >= destHeight) return false; //unfixed things
+
+			if (srcStart.x < destStartX){
+				srcOffset.x -= Math.abs(destStartX - srcStart.x);
+				srcStart.x = destStartX;
+			}
+			if (srcStart.y < destStartY){
+				srcOffset.y -= Math.abs(destStartY - srcStart.y);
+				srcStart.y = destStartY;
+			}
+			if (srcStart.x + srcOffset.x > destWidth){
+				srcOffset.x = destWidth - srcStart.x;
+			}
+			if (srcStart.y + srcOffset.y > destHeight){
+				srcOffset.y = destHeight - srcStart.y;
+			}
+
+			return !(srcOffset.x <= destStartX || srcOffset.y <= destStartY); //is still bad?
 		}
 	};
 

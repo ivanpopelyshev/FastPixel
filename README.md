@@ -1,4 +1,4 @@
-# FastPixel 0.5.1
+# FastPixel 1.0.0 (Invader)
 
 Very fast &amp; flexible MVC-based API for creating awesome pixel-art tool!
 
@@ -16,8 +16,7 @@ There are even more at [examples][] folder!
 
 ## Browser capability
 
-Tested and works well on: IE11+, Chrome42+, FireFox36+, iOS8+ Safari...
-
+Tested and works well on: IE11+, Chrome42+, FireFox36+, iOS8+ Safari  
 In general, it may work on older versions! The only restriction: ECMAScript 5 is required.
 
 ## Dependencies
@@ -28,10 +27,8 @@ No! At all! Everything is you need is just a one file: [pxl.js][] or [pxl.min.js
 
 API is completely synchronous & single thread (no timers and no workers).
 
-"Model" is a close cooperation of Layout and Layer classes.
-
-The "View" component implemented in View class.
-
+"Model" is a close cooperation of Layout and Layer classes.  
+The "View" component implemented in View class.  
 The "Controller" have to be implemented by developer. By default it is null and called as "controller".
 
 ## Feedback

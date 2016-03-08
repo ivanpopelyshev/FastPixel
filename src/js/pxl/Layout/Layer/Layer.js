@@ -106,20 +106,19 @@
 	 * @param options.offset {Point|undefined}
      */
 	layerProto.merge = function(options){
-		var self = this;
 		var data = this.data;
 		var otherData = options.other.data;
 		var alphaBlend = pxl.RGBA.alphaBlend;
 		if (options.isMix === true){
 			this._layout.__process(options, function(i, length){
 				while (i < length){
-					data[i] = alphaBlend(data[i], otherData[i++]);
+					data[i] = alphaBlend(data[i], otherData[i++]); //not so fast...
 				}
 			});
 		} else{
 			if (options.start && options.offset){
 				this._layout.__process(options, function(i, length){
-					data.set(otherData.subarray(i, length), i);
+					data.set(otherData.subarray(i, length), i); //fast enough
 				});
 			} else{
 				this.data.set(otherData); //much faster
@@ -378,8 +377,7 @@
 		var layout = this._layout;
 		var imageData = (options.start && options.offset
 			? pxl.createImageData(options.offset.x, options.offset.y)
-			: pxl.createImageData(layout.getWidth(), layout.getHeight())
-		);
+			: pxl.createImageData(layout.getWidth(), layout.getHeight()));
 		void this._generateData(
 			new Uint32Array(imageData.data.buffer), this.data, options);
 		return imageData;
